@@ -50,9 +50,9 @@ traversals.
     - [`guard_<F extends HKT>(): <U extends A>(g: (a: A) => a is U) => Prism<S, T · F, U>`](#guard_f-extends-hkt-u-extends-ag-a-a--a-is-u--prisms-t-%C2%B7-f-u)
     - [`index(i: number): Prism<S, _, ElemType<A>>`](#indexi-number-prisms-_-elemtypea)
     - [`find(p: (e: ElemType<A>) => boolean): Prism<S, _, ElemType<A>>`](#findp-e-elemtypea--boolean-prisms-_-elemtypea)
+    - [`when(f: (a: A) => boolean): Prism<S, _, A>`](#whenf-a-a--boolean-prisms-_-a)
   - [Traversals](#traversals)
     - [`elems(): Traversal<S, _, ElemType<A>>`](#elems-traversals-_-elemtypea)
-    - [`when(f: (a: A) => boolean): Traversal<S, _, A>`](#whenf-a-a--boolean-traversals-_-a)
 
 <!-- END doctoc generated TOC please keep comment here to allow auto update -->
 
@@ -539,6 +539,14 @@ finding the first element that matches the given predicate.
 When a different type `B` is written through this optic, the resulting
 array will have the type `Array<A | B>`.
 
+#### `when(f: (a: A) => boolean): Prism<S, _, A>`
+
+Create a prism that skips the focus if it doesn't match the given
+predicate. Especially useful for filtering the focuses of a travesal.
+
+When a different type `B` is written through this optic, the resulting
+value will have the type `A | B`.
+
 ### Traversals
 
 Traversals have the type `Traversal<S, T, A>`. In the following, we
@@ -552,10 +560,3 @@ Only works on array types. `ElemType<A>` is the element type of the
 array type `A`.
 
 Create a traversal that focuses on all the elements of the array.
-
-#### `when(f: (a: A) => boolean): Traversal<S, _, A>`
-
-Only available from `Traversal`.
-
-Skip the elements of a traversal that don't match the given predicate
-`f`.
