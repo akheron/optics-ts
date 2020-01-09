@@ -15,6 +15,47 @@ TypeScript:
 `optics-ts` supports equivalences, isomorphisms, lenses, prisms and
 traversals.
 
+<!-- START doctoc generated TOC please keep comment here to allow auto update -->
+<!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
+## Table of Contents
+
+- [Tutorial](#tutorial)
+  - [Lens](#lens)
+  - [Prism](#prism)
+  - [Traversal](#traversal)
+  - [Other types of optics](#other-types-of-optics)
+  - [Polymorphism](#polymorphism)
+- [API reference](#api-reference)
+  - [Types of optics](#types-of-optics)
+  - [Method chaining](#method-chaining)
+  - [Type parameters](#type-parameters)
+  - [Top-level functions](#top-level-functions)
+    - [`optic<S>(): Equivalence<S, _, S>`](#optics-equivalences-_-s)
+    - [`optic_<S>(): Equivalence<S, _, S>`](#optic_s-equivalences-_-s)
+    - [`get<S, A>(optic: Optic<S, _, A>) => (source: S) => A`](#gets-aoptic-optics-_-a--source-s--a)
+    - [`preview<S, A>(optic: Optic<S, _, A>) => (source: S) => A | undefined`](#previews-aoptic-optics-_-a--source-s--a--undefined)
+    - [`collect<S, A>(optic: Traversal<S, _, A>) => (source: S) => A[]`](#collects-aoptic-traversals-_-a--source-s--a)
+    - [`modify<S, T, A>(optic: Optic<S, T, A>) => <B>(f: (a: A) => B) => (source: S) => T<B>`](#modifys-t-aoptic-optics-t-a--bf-a-a--b--source-s--tb)
+    - [`set<S, T, A>(optic: Optic<S, T, A>) => <B>(value: B) => (source: S) => T<B>`](#sets-t-aoptic-optics-t-a--bvalue-b--source-s--tb)
+  - [Creating optics](#creating-optics)
+  - [Isomorphisms](#isomorphisms)
+    - [`iso<U>(there: (a: A) => U, back: (u: U) => A): Iso<S, _, U>`](#isouthere-a-a--u-back-u-u--a-isos-_-u)
+  - [Lenses](#lenses)
+    - [`prop<K extends keyof A>(key: K): Lens<S, _, A[K]>`](#propk-extends-keyof-akey-k-lenss-_-ak)
+    - [`path<K1, K2, ...>(keys: [K1, K2, ...]): Lens<S, _, A[K1][K2]...>`](#pathk1-k2-keys-k1-k2--lenss-_-ak1k2)
+    - [`pick<K extends keyof A>(keys: K[]): Lens<S, _, Pick<A, K>>`](#pickk-extends-keyof-akeys-k-lenss-_-picka-k)
+  - [Prisms](#prisms)
+    - [`optional(): Prism<S, _, Exclude<A, undefined>>`](#optional-prisms-_-excludea-undefined)
+    - [`guard<U extends A>(g: (a: A) => a is U): Prism<S, _, U>`](#guardu-extends-ag-a-a--a-is-u-prisms-_-u)
+    - [`guard_<F extends HKT>(): <U extends A>(g: (a: A) => a is U) => Prism<S, T · F, U>`](#guard_f-extends-hkt-u-extends-ag-a-a--a-is-u--prisms-t-%C2%B7-f-u)
+    - [`index(i: number): Prism<S, _, ElemType<A>>`](#indexi-number-prisms-_-elemtypea)
+    - [`find(p: (e: ElemType<A>) => boolean): Prism<S, _, ElemType<A>>`](#findp-e-elemtypea--boolean-prisms-_-elemtypea)
+  - [Traversals](#traversals)
+    - [`elems(): Traversal<S, _, ElemType<A>>`](#elems-traversals-_-elemtypea)
+    - [`when(f: (a: A) => boolean): Traversal<S, _, A>`](#whenf-a-a--boolean-traversals-_-a)
+
+<!-- END doctoc generated TOC please keep comment here to allow auto update -->
+
 ## Tutorial
 
 The following import is assumed in all the examples below:

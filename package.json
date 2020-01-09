@@ -12,11 +12,13 @@
   "scripts": {
     "build": "rm -rf dist/ && tsc -p tsconfig.json && tsc -p tsconfig.esm.json",
     "test": "jest",
-    "prepublishOnly": "yarn run build"
+    "prepublishOnly": "yarn run build",
+    "doctoc": "doctoc README.md --title '## Table of Contents'"
   },
   "devDependencies": {
     "@babel/types": "^7.7.4",
     "@types/jest": "^24.0.23",
+    "doctoc": "^1.4.0",
     "jest": "^24.9.0",
     "prettier": "^1.19.1",
     "ts-jest": "^24.1.0",
