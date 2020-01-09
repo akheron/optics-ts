@@ -1,0 +1,26 @@
+{
+  "name": "optics-ts",
+  "version": "0.1.0",
+  "description": "Type-safe, ergonomic, polymorphic optics for TypeScript",
+  "license": "MIT",
+  "main": "./dist/lib/index.js",
+  "module": "./dist/esm/index.js",
+  "typings": "./dist/lib/index.d.ts",
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "build": "rm -rf dist/ && tsc -p tsconfig.json && tsc -p tsconfig.esm.json",
+    "test": "jest",
+    "prepublishOnly": "yarn run build"
+  },
+  "devDependencies": {
+    "@babel/types": "^7.7.4",
+    "@types/jest": "^24.0.23",
+    "jest": "^24.9.0",
+    "prettier": "^1.19.1",
+    "ts-jest": "^24.1.0",
+    "ts-node": "^8.5.2",
+    "typescript": "^3.7.2"
+  }
+}
