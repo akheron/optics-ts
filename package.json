@@ -3,6 +3,15 @@
   "version": "0.1.0",
   "description": "Type-safe, ergonomic, polymorphic optics for TypeScript",
   "license": "MIT",
+  "keywords": [
+    "optics",
+    "lens",
+    "prism",
+    "traveral",
+    "isomorphism",
+    "immutable",
+    "functional-programming"
+  ],
   "main": "./dist/lib/index.js",
   "module": "./dist/esm/index.js",
   "typings": "./dist/lib/index.d.ts",
