@@ -2,6 +2,8 @@
   "name": "optics-ts",
   "version": "0.1.0",
   "description": "Type-safe, ergonomic, polymorphic optics for TypeScript",
+  "repository": "https://github.com/akheron/optics-ts",
+  "author": "Petri Lehtinen <petri@digip.org>",
   "license": "MIT",
   "keywords": [
     "optics",
