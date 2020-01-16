@@ -388,7 +388,7 @@ export class Optic {
 
   index(i: number): Optic {
     return new Optic(
-      compositionType[this._tag]['Lens'],
+      compositionType[this._tag]['Prism'],
       compose(this._ref, index(i))
     )
   }
