@@ -22,7 +22,8 @@ import {
 
 export { Apply, Compose, Eq, HKT }
 
-export type EquivalenceOf<S> = Equivalence<S, Id, S>
+export type OpticFor<S> = Equivalence<S, DisallowTypeChange<S>, S>
+export type OpticFor_<S> = Equivalence<S, Id, S>
 
 export interface Equivalence<S, T extends HKT, A> {
   _tag: 'Equivalence'
@@ -505,11 +506,11 @@ export function compose(optic1: any, optic2: any) {
   return optic1.compose(optic2)
 }
 
-export function optic<S>(): Equivalence<S, DisallowTypeChange<S>, S> {
+export function optic<S>(): OpticFor<S> {
   return I.optic as any
 }
 
-export function optic_<S>(): Equivalence<S, Id, S> {
+export function optic_<S>(): OpticFor_<S> {
   return I.optic as any
 }
 
