@@ -29,7 +29,7 @@ export interface Equivalence<S, T extends HKT, A> {
   _tag: 'Equivalence'
 
   // Equivalence · Iso => Iso
-  compose<T2 extends HKT, A2>(optic: Iso<A, T2, A2>): Iso<S, Compose<T, T2>, A>
+  compose<T2 extends HKT, A2>(optic: Iso<A, T2, A2>): Iso<S, Compose<T, T2>, A2>
   iso<U>(
     there: (a: A) => U,
     back: (u: U) => A
@@ -38,7 +38,7 @@ export interface Equivalence<S, T extends HKT, A> {
   // Equivalence · Lens => Lens
   compose<T2 extends HKT, A2>(
     optic: Lens<A, T2, A2>
-  ): Lens<S, Compose<T, T2>, A>
+  ): Lens<S, Compose<T, T2>, A2>
   prop<K extends keyof A>(key: K): Lens<S, Compose<T, Prop<A, K>>, A[K]>
   path<
     K1 extends keyof A,
@@ -74,7 +74,7 @@ export interface Equivalence<S, T extends HKT, A> {
   // Equivalence · Prism => Prism
   compose<T2 extends HKT, A2>(
     optic: Prism<A, T2, A2>
-  ): Prism<S, Compose<T, T2>, A>
+  ): Prism<S, Compose<T, T2>, A2>
   optional(): Prism<S, Compose<T, Optional>, Exclude<A, undefined>>
   guard_<F extends HKT>(): <U extends A>(
     g: (a: A) => a is U
@@ -89,7 +89,7 @@ export interface Equivalence<S, T extends HKT, A> {
   // Equivalence · Traversal => Traversal
   compose<T2 extends HKT, A2>(
     optic: Traversal<A, T2, A2>
-  ): Traversal<S, Compose<T, T2>, A>
+  ): Traversal<S, Compose<T, T2>, A2>
   elems(): Traversal<S, Compose<T, Elems>, ElemType<A>>
 }
 
@@ -99,10 +99,10 @@ export interface Iso<S, T extends HKT, A> {
   // Iso · Equivalence => Iso
   compose<T2 extends HKT, A2>(
     optic: Equivalence<A, T2, A2>
-  ): Iso<S, Compose<T, T2>, A>
+  ): Iso<S, Compose<T, T2>, A2>
 
   // Iso · Iso => Iso
-  compose<T2 extends HKT, A2>(optic: Iso<A, T2, A2>): Iso<S, Compose<T, T2>, A>
+  compose<T2 extends HKT, A2>(optic: Iso<A, T2, A2>): Iso<S, Compose<T, T2>, A2>
   iso<U>(
     there: (a: A) => U,
     back: (u: U) => A
@@ -111,7 +111,7 @@ export interface Iso<S, T extends HKT, A> {
   // Iso · Lens => Lens
   compose<T2 extends HKT, A2>(
     optic: Lens<A, T2, A2>
-  ): Lens<S, Compose<T, T2>, A>
+  ): Lens<S, Compose<T, T2>, A2>
   prop<K extends keyof A>(key: K): Lens<S, Compose<T, Prop<A, K>>, A[K]>
   path<
     K1 extends keyof A,
@@ -147,7 +147,7 @@ export interface Iso<S, T extends HKT, A> {
   // Iso · Prism => Prism
   compose<T2 extends HKT, A2>(
     optic: Prism<A, T2, A2>
-  ): Prism<S, Compose<T, T2>, A>
+  ): Prism<S, Compose<T, T2>, A2>
   optional(): Prism<S, Compose<T, Optional>, Exclude<A, undefined>>
   guard_<F extends HKT>(): <U extends A>(
     g: (a: A) => a is U
@@ -162,7 +162,7 @@ export interface Iso<S, T extends HKT, A> {
   // Iso · Traversal => Traversal
   compose<T2 extends HKT, A2>(
     optic: Traversal<A, T2, A2>
-  ): Traversal<S, Compose<T, T2>, A>
+  ): Traversal<S, Compose<T, T2>, A2>
   elems(): Traversal<S, Compose<T, Elems>, ElemType<A>>
 }
 
@@ -172,10 +172,12 @@ export interface Lens<S, T extends HKT, A> {
   // Lens · Equivalence => Lens
   compose<T2 extends HKT, A2>(
     optic: Equivalence<A, T2, A2>
-  ): Equivalence<S, Compose<T, T2>, A>
+  ): Equivalence<S, Compose<T, T2>, A2>
 
   // Lens · Iso => Lens
-  compose<T2 extends HKT, A2>(optic: Iso<A, T2, A2>): Lens<S, Compose<T, T2>, A>
+  compose<T2 extends HKT, A2>(
+    optic: Iso<A, T2, A2>
+  ): Lens<S, Compose<T, T2>, A2>
   iso<U>(
     there: (a: A) => U,
     back: (u: U) => A
@@ -184,7 +186,7 @@ export interface Lens<S, T extends HKT, A> {
   // Lens · Lens => Lens
   compose<T2 extends HKT, A2>(
     optic: Lens<A, T2, A2>
-  ): Lens<S, Compose<T, T2>, A>
+  ): Lens<S, Compose<T, T2>, A2>
   prop<K extends keyof A>(key: K): Lens<S, Compose<T, Prop<A, K>>, A[K]>
   path<
     K1 extends keyof A,
@@ -220,7 +222,7 @@ export interface Lens<S, T extends HKT, A> {
   // Lens · Prism => Prism
   compose<T2 extends HKT, A2>(
     optic: Lens<A, T2, A2>
-  ): Prism<S, Compose<T, T2>, A>
+  ): Prism<S, Compose<T, T2>, A2>
   optional(): Prism<S, Compose<T, Optional>, Exclude<A, undefined>>
   guard_<F extends HKT>(): <U extends A>(
     g: (a: A) => a is U
@@ -235,7 +237,7 @@ export interface Lens<S, T extends HKT, A> {
   // Lens · Traversal => Traversal
   compose<T2 extends HKT, A2>(
     optic: Traversal<A, T2, A2>
-  ): Traversal<S, Compose<T, T2>, A>
+  ): Traversal<S, Compose<T, T2>, A2>
   elems(): Traversal<S, Compose<T, Elems>, ElemType<A>>
 }
 
@@ -245,12 +247,12 @@ export interface Prism<S, T extends HKT, A> {
   // Prism · Equivalence => Prism
   compose<T2 extends HKT, A2>(
     optic: Equivalence<A, T2, A2>
-  ): Prism<S, Compose<T, T2>, A>
+  ): Prism<S, Compose<T, T2>, A2>
 
   // Prism · Iso => Prism
   compose<T2 extends HKT, A2>(
     optic: Iso<A, T2, A2>
-  ): Prism<S, Compose<T, T2>, A>
+  ): Prism<S, Compose<T, T2>, A2>
   iso<U>(
     there: (a: A) => U,
     back: (u: U) => A
@@ -259,7 +261,7 @@ export interface Prism<S, T extends HKT, A> {
   // Prism · Lens => Prism
   compose<T2 extends HKT, A2>(
     optic: Lens<A, T2, A2>
-  ): Prism<S, Compose<T, T2>, A>
+  ): Prism<S, Compose<T, T2>, A2>
   prop<K extends keyof A>(key: K): Prism<S, Compose<T, Prop<A, K>>, A[K]>
   path<
     K1 extends keyof A,
@@ -295,7 +297,7 @@ export interface Prism<S, T extends HKT, A> {
   // Prism · Prism => Prism
   compose<T2 extends HKT, A2>(
     optic: Prism<A, T2, A2>
-  ): Prism<S, Compose<T, T2>, A>
+  ): Prism<S, Compose<T, T2>, A2>
   optional(): Prism<S, Compose<T, Optional>, Exclude<A, undefined>>
   guard_<F extends HKT>(): <U extends A>(
     g: (a: A) => a is U
@@ -310,7 +312,7 @@ export interface Prism<S, T extends HKT, A> {
   // Prism · Traversal => Traversal
   compose<T2 extends HKT, A2>(
     optic: Traversal<A, T2, A2>
-  ): Traversal<S, Compose<T, T2>, A>
+  ): Traversal<S, Compose<T, T2>, A2>
   elems(): Traversal<S, Compose<T, Elems>, ElemType<A>>
 }
 
@@ -320,12 +322,12 @@ export interface Traversal<S, T extends HKT, A> {
   // Travesal · Equivalence => Traversal
   compose<T2 extends HKT, A2>(
     optic: Equivalence<A, T2, A2>
-  ): Traversal<S, Compose<T, T2>, A>
+  ): Traversal<S, Compose<T, T2>, A2>
 
   // Travesal · Iso => Traversal
   compose<T2 extends HKT, A2>(
     optic: Iso<A, T2, A2>
-  ): Traversal<S, Compose<T, T2>, A>
+  ): Traversal<S, Compose<T, T2>, A2>
   iso<U>(
     there: (a: A) => U,
     back: (u: U) => A
@@ -334,7 +336,7 @@ export interface Traversal<S, T extends HKT, A> {
   // Traversal · Lens => Traversal
   compose<T2 extends HKT, A2>(
     optic: Lens<A, T2, A2>
-  ): Traversal<S, Compose<T, T2>, A>
+  ): Traversal<S, Compose<T, T2>, A2>
   prop<K extends keyof A>(key: K): Traversal<S, Compose<T, Prop<A, K>>, A[K]>
   path<
     K1 extends keyof A,
@@ -376,7 +378,7 @@ export interface Traversal<S, T extends HKT, A> {
   // Traversal · Prism => Traversal
   compose<T2 extends HKT, A2>(
     optic: Prism<A, T2, A2>
-  ): Traversal<S, Compose<T, T2>, A>
+  ): Traversal<S, Compose<T, T2>, A2>
   optional(): Traversal<S, Compose<T, Optional>, Exclude<A, undefined>>
   guard_<F extends HKT>(): <U extends A>(
     g: (a: A) => a is U
@@ -393,7 +395,7 @@ export interface Traversal<S, T extends HKT, A> {
   // Traversal · Traversal => Traversal
   compose<T2 extends HKT, A2>(
     optic: Traversal<A, T2, A2>
-  ): Traversal<S, Compose<T, T2>, A>
+  ): Traversal<S, Compose<T, T2>, A2>
   elems(): Traversal<S, Compose<T, Elems>, ElemType<A>>
 }
 
