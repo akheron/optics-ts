@@ -149,7 +149,7 @@ Lenses are great for focusing to a part of a larger structure. Prisms
 are much like lenses, but they don't necessarily match anything, i.e.
 they can have zero focuses.
 
-A practical example isfocusing on a branch of a union type. Here, the
+A practical example is focusing on a branch of a union type. Here, the
 `User.age` field can be `number` or `undefined`. With the `.optional()`
 prism we can focus only when the value is a `number`, and do nothing
 when it's `undefined`:
@@ -314,10 +314,10 @@ writing directions:
 ```typescript
 const str = O.optic<string>()
 
-get(str)('original')
+O.get(str)('original')
 // ==> 'original'
 
-set(str)('new')('original')
+O.set(str)('new')('original')
 // ==> 'new' ('original' is discarded)
 ```
 
@@ -359,7 +359,7 @@ This is a type-safe operation, i.e. the compiler knows that the type of
 
 If you ever see a `DisallowedTypeChange` type being returned from an
 `optics-ts` function, it means that you tried to change the type when
-writing through a monomorphic optic.
+writing through a non-polymorphic (monomorphic) optic.
 
 ## API reference
 
