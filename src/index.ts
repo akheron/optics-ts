@@ -1,3 +1,5 @@
+// This file is generated, do not edit! See ../scripts/generate-index.ts
+
 import * as I from './internals'
 import { ElemType, Eq, Simplify } from './utils'
 import {
@@ -27,6 +29,11 @@ export type OpticFor_<S> = Equivalence<S, Id, S>
 
 export interface Equivalence<S, T extends HKT, A> {
   _tag: 'Equivalence'
+
+  // Equivalence · Equivalence => Equivalence
+  compose<T2 extends HKT, A2>(
+    optic: Equivalence<A, T2, A2>
+  ): Equivalence<S, Compose<T, T2>, A2>
 
   // Equivalence · Iso => Iso
   compose<T2 extends HKT, A2>(optic: Iso<A, T2, A2>): Iso<S, Compose<T, T2>, A2>
@@ -172,7 +179,7 @@ export interface Lens<S, T extends HKT, A> {
   // Lens · Equivalence => Lens
   compose<T2 extends HKT, A2>(
     optic: Equivalence<A, T2, A2>
-  ): Equivalence<S, Compose<T, T2>, A2>
+  ): Lens<S, Compose<T, T2>, A2>
 
   // Lens · Iso => Lens
   compose<T2 extends HKT, A2>(
@@ -221,7 +228,7 @@ export interface Lens<S, T extends HKT, A> {
 
   // Lens · Prism => Prism
   compose<T2 extends HKT, A2>(
-    optic: Lens<A, T2, A2>
+    optic: Prism<A, T2, A2>
   ): Prism<S, Compose<T, T2>, A2>
   optional(): Prism<S, Compose<T, Optional>, Exclude<A, undefined>>
   guard_<F extends HKT>(): <U extends A>(
@@ -319,12 +326,12 @@ export interface Prism<S, T extends HKT, A> {
 export interface Traversal<S, T extends HKT, A> {
   _tag: 'Traversal'
 
-  // Travesal · Equivalence => Traversal
+  // Traversal · Equivalence => Traversal
   compose<T2 extends HKT, A2>(
     optic: Equivalence<A, T2, A2>
   ): Traversal<S, Compose<T, T2>, A2>
 
-  // Travesal · Iso => Traversal
+  // Traversal · Iso => Traversal
   compose<T2 extends HKT, A2>(
     optic: Iso<A, T2, A2>
   ): Traversal<S, Compose<T, T2>, A2>
@@ -399,111 +406,136 @@ export interface Traversal<S, T extends HKT, A> {
   elems(): Traversal<S, Compose<T, Elems>, ElemType<A>>
 }
 
-// Equivalence ·
+// Equivalence · Equivalence => Equivalence
 export function compose<S, T1 extends HKT, A1, T2 extends HKT, A2>(
   optic1: Equivalence<S, T1, A1>,
   optic2: Equivalence<A1, T2, A2>
 ): Equivalence<S, Compose<T1, T2>, A2>
+// Equivalence · Iso => Iso
 export function compose<S, T1 extends HKT, A1, T2 extends HKT, A2>(
   optic1: Equivalence<S, T1, A1>,
   optic2: Iso<A1, T2, A2>
 ): Iso<S, Compose<T1, T2>, A2>
+// Equivalence · Lens => Lens
 export function compose<S, T1 extends HKT, A1, T2 extends HKT, A2>(
   optic1: Equivalence<S, T1, A1>,
   optic2: Lens<A1, T2, A2>
 ): Lens<S, Compose<T1, T2>, A2>
+// Equivalence · Prism => Prism
 export function compose<S, T1 extends HKT, A1, T2 extends HKT, A2>(
   optic1: Equivalence<S, T1, A1>,
   optic2: Prism<A1, T2, A2>
 ): Prism<S, Compose<T1, T2>, A2>
+// Equivalence · Traversal => Traversal
 export function compose<S, T1 extends HKT, A1, T2 extends HKT, A2>(
   optic1: Equivalence<S, T1, A1>,
   optic2: Traversal<A1, T2, A2>
 ): Traversal<S, Compose<T1, T2>, A2>
-// Iso ·
+
+// Iso · Equivalence => Iso
 export function compose<S, T1 extends HKT, A1, T2 extends HKT, A2>(
   optic1: Iso<S, T1, A1>,
   optic2: Equivalence<A1, T2, A2>
 ): Iso<S, Compose<T1, T2>, A2>
+// Iso · Iso => Iso
 export function compose<S, T1 extends HKT, A1, T2 extends HKT, A2>(
   optic1: Iso<S, T1, A1>,
   optic2: Iso<A1, T2, A2>
 ): Iso<S, Compose<T1, T2>, A2>
+// Iso · Lens => Lens
 export function compose<S, T1 extends HKT, A1, T2 extends HKT, A2>(
   optic1: Iso<S, T1, A1>,
   optic2: Lens<A1, T2, A2>
 ): Lens<S, Compose<T1, T2>, A2>
+// Iso · Prism => Prism
 export function compose<S, T1 extends HKT, A1, T2 extends HKT, A2>(
   optic1: Iso<S, T1, A1>,
   optic2: Prism<A1, T2, A2>
 ): Prism<S, Compose<T1, T2>, A2>
+// Iso · Traversal => Traversal
 export function compose<S, T1 extends HKT, A1, T2 extends HKT, A2>(
   optic1: Iso<S, T1, A1>,
   optic2: Traversal<A1, T2, A2>
 ): Traversal<S, Compose<T1, T2>, A2>
-// Lens ·
+
+// Lens · Equivalence => Lens
 export function compose<S, T1 extends HKT, A1, T2 extends HKT, A2>(
   optic1: Lens<S, T1, A1>,
   optic2: Equivalence<A1, T2, A2>
 ): Lens<S, Compose<T1, T2>, A2>
+// Lens · Iso => Lens
 export function compose<S, T1 extends HKT, A1, T2 extends HKT, A2>(
   optic1: Lens<S, T1, A1>,
   optic2: Iso<A1, T2, A2>
 ): Lens<S, Compose<T1, T2>, A2>
+// Lens · Lens => Lens
 export function compose<S, T1 extends HKT, A1, T2 extends HKT, A2>(
   optic1: Lens<S, T1, A1>,
   optic2: Lens<A1, T2, A2>
 ): Lens<S, Compose<T1, T2>, A2>
+// Lens · Prism => Prism
 export function compose<S, T1 extends HKT, A1, T2 extends HKT, A2>(
   optic1: Lens<S, T1, A1>,
   optic2: Prism<A1, T2, A2>
 ): Prism<S, Compose<T1, T2>, A2>
+// Lens · Traversal => Traversal
 export function compose<S, T1 extends HKT, A1, T2 extends HKT, A2>(
   optic1: Lens<S, T1, A1>,
   optic2: Traversal<A1, T2, A2>
 ): Traversal<S, Compose<T1, T2>, A2>
-// Prism ·
+
+// Prism · Equivalence => Prism
 export function compose<S, T1 extends HKT, A1, T2 extends HKT, A2>(
   optic1: Prism<S, T1, A1>,
   optic2: Equivalence<A1, T2, A2>
 ): Prism<S, Compose<T1, T2>, A2>
+// Prism · Iso => Prism
 export function compose<S, T1 extends HKT, A1, T2 extends HKT, A2>(
   optic1: Prism<S, T1, A1>,
   optic2: Iso<A1, T2, A2>
 ): Prism<S, Compose<T1, T2>, A2>
+// Prism · Lens => Prism
 export function compose<S, T1 extends HKT, A1, T2 extends HKT, A2>(
   optic1: Prism<S, T1, A1>,
   optic2: Lens<A1, T2, A2>
 ): Prism<S, Compose<T1, T2>, A2>
+// Prism · Prism => Prism
 export function compose<S, T1 extends HKT, A1, T2 extends HKT, A2>(
   optic1: Prism<S, T1, A1>,
   optic2: Prism<A1, T2, A2>
 ): Prism<S, Compose<T1, T2>, A2>
+// Prism · Traversal => Traversal
 export function compose<S, T1 extends HKT, A1, T2 extends HKT, A2>(
   optic1: Prism<S, T1, A1>,
   optic2: Traversal<A1, T2, A2>
 ): Traversal<S, Compose<T1, T2>, A2>
-// Traversal ·
+
+// Traversal · Equivalence => Traversal
 export function compose<S, T1 extends HKT, A1, T2 extends HKT, A2>(
   optic1: Traversal<S, T1, A1>,
   optic2: Equivalence<A1, T2, A2>
 ): Traversal<S, Compose<T1, T2>, A2>
+// Traversal · Iso => Traversal
 export function compose<S, T1 extends HKT, A1, T2 extends HKT, A2>(
   optic1: Traversal<S, T1, A1>,
   optic2: Iso<A1, T2, A2>
 ): Traversal<S, Compose<T1, T2>, A2>
+// Traversal · Lens => Traversal
 export function compose<S, T1 extends HKT, A1, T2 extends HKT, A2>(
   optic1: Traversal<S, T1, A1>,
   optic2: Lens<A1, T2, A2>
 ): Traversal<S, Compose<T1, T2>, A2>
+// Traversal · Prism => Traversal
 export function compose<S, T1 extends HKT, A1, T2 extends HKT, A2>(
   optic1: Traversal<S, T1, A1>,
   optic2: Prism<A1, T2, A2>
 ): Traversal<S, Compose<T1, T2>, A2>
+// Traversal · Traversal => Traversal
 export function compose<S, T1 extends HKT, A1, T2 extends HKT, A2>(
   optic1: Traversal<S, T1, A1>,
   optic2: Traversal<A1, T2, A2>
 ): Traversal<S, Compose<T1, T2>, A2>
+
 export function compose(optic1: any, optic2: any) {
   return optic1.compose(optic2)
 }

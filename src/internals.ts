@@ -235,7 +235,7 @@ type OpticType =
 
 type CompositionType = { [T in OpticType]: { [U in OpticType]: OpticType } }
 
-const compositionType: CompositionType = {
+export const compositionType: CompositionType = {
   Equivalence: {
     Equivalence: 'Equivalence',
     Iso: 'Iso',
