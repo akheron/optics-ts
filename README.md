@@ -103,9 +103,7 @@ const foo = O.optic<Data>().prop('foo')
 To dig deeper, just call `.prop()` again:
 
 ```typescript
-const bar = O.optic<Data>()
-  .prop('foo')
-  .prop('bar')
+const bar = O.optic<Data>().prop('foo').prop('bar')
 // or from the `foo` lens we defined above
 const bar = foo.prop('bar')
 // or use .path() to compose multiple prop lenses with a single call
@@ -160,9 +158,7 @@ type User = {
   age?: number | undefined
 }
 
-const age = O.optic<User>()
-  .prop('age')
-  .optional()
+const age = O.optic<User>().prop('age').optional()
 ```
 
 You read through a prism using the `preview()` function. When the prism
@@ -223,9 +219,7 @@ function isRectangle(s: Shape): s is Rectangle {
   return s.kind === 'rectangle'
 }
 
-const rectWidth = O.optic<Shape>()
-  .guard(isRectangle)
-  .prop('width')
+const rectWidth = O.optic<Shape>().guard(isRectangle).prop('width')
 
 O.preview(rectWidth)({ kind: 'square', size: 10 })
 // ==> undefined
@@ -529,10 +523,7 @@ foo.path(['a', 'b', 'c'])
 is equal to
 
 ```typescript
-foo
-  .prop('a')
-  .prop('b')
-  .prop('c')
+foo.prop('a').prop('b').prop('c')
 ```
 
 #### `pick<K extends keyof A>(keys: K[]): Lens<S, _, Pick<A, K>>`

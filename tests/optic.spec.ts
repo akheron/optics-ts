@@ -57,10 +57,7 @@ describe('lens/prop', () => {
   type Source = { foo: { bar: { baz: string } }; xyzzy: number }
   const source: Source = { foo: { bar: { baz: 'quux' } }, xyzzy: 42 }
 
-  const lens = O.optic_<Source>()
-    .prop('foo')
-    .prop('bar')
-    .prop('baz')
+  const lens = O.optic_<Source>().prop('foo').prop('bar').prop('baz')
   type Focus = string
 
   it('get', () => {
@@ -374,10 +371,7 @@ describe('lens/guard', () => {
   const source1: Source = { foo: { bar: 'quux' } }
   const source2: Source = { foo: { baz: 42 } }
 
-  const prism = O.optic_<Source>()
-    .prop('foo')
-    .guard(isBar)
-    .prop('bar')
+  const prism = O.optic_<Source>().prop('foo').guard(isBar).prop('bar')
   type Focus = string | undefined
 
   it('preview matching', () => {
@@ -527,10 +521,7 @@ describe('lens/elems', () => {
     other: 42,
   }
 
-  const traversal = O.optic_<Source>()
-    .prop('foo')
-    .elems()
-    .prop('bar')
+  const traversal = O.optic_<Source>().prop('foo').elems().prop('bar')
   type Focus = string[]
 
   it('collect', () => {
@@ -564,10 +555,7 @@ describe('prism/prop', () => {
   type Source = { foo: { bar: string } } | undefined
   const source: Source = { foo: { bar: 'baz' } }
 
-  const prism = O.optic_<Source>()
-    .optional()
-    .prop('foo')
-    .prop('bar')
+  const prism = O.optic_<Source>().optional().prop('foo').prop('bar')
   type Focus = string | undefined
 
   it('preview defined', () => {
@@ -604,11 +592,7 @@ describe('prism/optional', () => {
   const source1: Source = { foo: { bar: 'baz' } }
   const source2: Source = { foo: undefined }
 
-  const prism = O.optic_<Source>()
-    .optional()
-    .prop('foo')
-    .optional()
-    .prop('bar')
+  const prism = O.optic_<Source>().optional().prop('foo').optional().prop('bar')
   type Focus = string | undefined
 
   it('preview defined', () => {
@@ -648,9 +632,7 @@ describe('traversal/prop', () => {
   type Source = { bar: string }
   const source: Source[] = [{ bar: 'baz' }, { bar: 'quux' }, { bar: 'xyzzy' }]
 
-  const traversal = O.optic_<Source[]>()
-    .elems()
-    .prop('bar')
+  const traversal = O.optic_<Source[]>().elems().prop('bar')
   type Focus = string[]
 
   it('collect', () => {
@@ -678,10 +660,7 @@ describe('traversal/optional', () => {
   type Source = { bar: string } | undefined
   const source: Source[] = [{ bar: 'baz' }, undefined, { bar: 'xyzzy' }]
 
-  const traversal = O.optic_<Source[]>()
-    .elems()
-    .optional()
-    .prop('bar')
+  const traversal = O.optic_<Source[]>().elems().optional().prop('bar')
   type Focus = Array<string>
 
   it('collect', () => {
@@ -713,10 +692,7 @@ describe('traversal/prop/prop', () => {
     { bar: { baz: 'c' } },
   ]
 
-  const traversal = O.optic_<Source[]>()
-    .elems()
-    .prop('bar')
-    .prop('baz')
+  const traversal = O.optic_<Source[]>().elems().prop('bar').prop('baz')
   type Focus = string[]
 
   it('collect', () => {
@@ -793,9 +769,7 @@ describe('traversal/elems', () => {
     [67, 68],
   ]
 
-  const traversal = O.optic_<number[][]>()
-    .elems()
-    .elems()
+  const traversal = O.optic_<number[][]>().elems().elems()
   type Focus = number
 
   it('collect', () => {
@@ -881,9 +855,7 @@ describe('compose', () => {
     type Inner = { bar: number } | undefined
 
     const lens1 = O.optic<Source>().prop('foo')
-    const prism2 = O.optic<Inner>()
-      .optional()
-      .prop('bar')
+    const prism2 = O.optic<Inner>().optional().prop('bar')
     const prism = O.compose(lens1, prism2)
     type Focus = number | undefined
 
