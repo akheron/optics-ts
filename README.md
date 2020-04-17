@@ -9,7 +9,7 @@ TypeScript:
   data structures, while keeping all data immutable.
 - **Ergonomic**: Optics are composed with method chaining, making it
   easy and fun!
-- **Polymorpic**: When writing through the optics, you can change the
+- **Polymorphic**: When writing through the optics, you can change the
   data types in the nested structure.
 - **Type-safe**: The compiler will type check all operations you do.
   No `any`, ever.
