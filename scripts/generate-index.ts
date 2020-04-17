@@ -1,4 +1,4 @@
-import { compositionType } from '../src/internals'
+import { OpticType, compositionType } from '../src/internals'
 
 const header = `\
 // This file is generated, do not edit! See ../scripts/generate-index.ts
@@ -31,22 +31,46 @@ export type OpticFor<S> = Equivalence<S, DisallowTypeChange<S>, S>
 export type OpticFor_<S> = Equivalence<S, Id, S>
 `
 
-const opticHeader = (optic: string, target: string, composition: string) => `\
-  // ${optic} · ${target} => ${composition}
-  compose<T2 extends HKT, A2>(optic: ${target}<A, T2, A2>): ${composition}<S, Compose<T, T2>, A2>
+const isReadOnly = (optic: OpticType): boolean =>
+  optic === 'Getter' || optic === 'AffineFold' || optic === 'Fold'
+
+const opticHeader = (optic: OpticType, composee: OpticType) => `\
+  // ${optic} · ${composee} => ${compositionType[optic][composee]}
+`
+
+type Composition = (typeOp: string, resultType: string) => string
+
+const makeComposition = (
+  optic: OpticType,
+  composee: OpticType
+): Composition => {
+  const composition = compositionType[optic][composee]
+  if (isReadOnly(composition)) {
+    return (_, resultType) => `${composition}<S, ${resultType}>`
+  } else {
+    return (typeOp, resultType) =>
+      `${composition}<S, Compose<T, ${typeOp}>, ${resultType}>`
+  }
+}
+
+const composeMethod = (composee: OpticType, composition: Composition) =>
+  (isReadOnly(composee)
+    ? `compose<A2>(optic: ${composee}<A, A2>)`
+    : `compose<T2 extends HKT, A2>(optic: ${composee}<A, T2, A2>)`) +
+  `: ${composition('T2', 'A2')}
 `
 
 const equivalence = () => ''
 
-const iso = (composition: string) => `\
+const iso = (composition: Composition) => `\
   iso<U>(
     there: (a: A) => U,
     back: (u: U) => A
-  ): ${composition}<S, Compose<T, Adapt<A, U>>, U>
+  ): ${composition('Adapt<A, U>', 'U')}
 `
 
-const lens = (composition: string) => `\
-  prop<K extends keyof A>(key: K): ${composition}<S, Compose<T, Prop<A, K>>, A[K]>
+const lens = (composition: Composition) => `\
+  prop<K extends keyof A>(key: K): ${composition('Prop<A, K>', 'A[K]')}
   path<
     K1 extends keyof A,
     K2 extends keyof A[K1],
@@ -55,7 +79,7 @@ const lens = (composition: string) => `\
     K5 extends keyof A[K1][K2][K3][K4]
   >(
     path: [K1, K2, K3, K4, K5]
-  ): ${composition}<S, Compose<T, Path5<A, K1, K2, K3, K4, K5>>, A[K1][K2][K3][K4][K5]>
+  ): ${composition('Path5<A, K1, K2, K3, K4, K5>', 'A[K1][K2][K3][K4][K5]')}
   path<
     K1 extends keyof A,
     K2 extends keyof A[K1],
@@ -63,40 +87,46 @@ const lens = (composition: string) => `\
     K4 extends keyof A[K1][K2][K3]
   >(
     path: [K1, K2, K3, K4]
-  ): ${composition}<S, Compose<T, Path4<A, K1, K2, K3, K4>>, A[K1][K2][K3][K4]>
+  ): ${composition('Path4<A, K1, K2, K3, K4>', 'A[K1][K2][K3][K4]')}
   path<K1 extends keyof A, K2 extends keyof A[K1], K3 extends keyof A[K1][K2]>(
     path: [K1, K2, K3]
-  ): ${composition}<S, Compose<T, Path3<A, K1, K2, K3>>, A[K1][K2][K3]>
+  ): ${composition('Path3<A, K1, K2, K3>', 'A[K1][K2][K3]')}
   path<K1 extends keyof A, K2 extends keyof A[K1]>(
     path: [K1, K2]
-  ): ${composition}<S, Compose<T, Path2<A, K1, K2>>, A[K1][K2]>
-  path<K1 extends keyof A>(path: [K1]): ${composition}<S, Compose<T, Prop<A, K1>>, A[K1]>
+  ): ${composition('Path2<A, K1, K2>', 'A[K1][K2]')}
+  path<K1 extends keyof A>(path: [K1]): ${composition('Prop<A, K1>', 'A[K1]')}
   pick<K extends keyof A>(
     keys: K[]
-  ): ${composition}<S, Compose<T, Plant<A, K>>, Pick<A, K>>
+  ): ${composition('Plant<A, K>', 'Pick<A, K>')}
   filter(
     predicate: (item: ElemType<A>) => boolean
-  ): ${composition}<S, Compose<T, Union<A>>, A>
+  ): ${composition('Union<A>', 'A')}
 `
 
-const prism = (composition: string) => `\
-  optional(): ${composition}<S, Compose<T, Optional>, Exclude<A, undefined>>
+const prism = (composition: Composition) => `\
+  optional(): ${composition('Optional', 'Exclude<A, undefined>')}
   guard_<F extends HKT>(): <U extends A>(
     g: (a: A) => a is U
-  ) => ${composition}<S, Compose<T, F>, U>
-  guard<U extends A>(g: (a: A) => a is U): ${composition}<S, Compose<T, Choice<A, U>>, U>
-  index(i: number): ${composition}<S, Compose<T, ElemUnion<A>>, ElemType<A>>
+  ) => ${composition('F', 'U')}
+  guard<U extends A>(g: (a: A) => a is U): ${composition('Choice<A, U>', 'U')}
+  index(i: number): ${composition('ElemUnion<A>', 'ElemType<A>')}
   find(
     predicate: (item: ElemType<A>) => boolean
-  ): ${composition}<S, Compose<T, ElemUnion<A>>, ElemType<A>>
-  when(predicate: (item: A) => boolean): ${composition}<S, Compose<T, Union<A>>, A>
+  ): ${composition('ElemUnion<A>', 'ElemType<A>')}
+  when(predicate: (item: A) => boolean): ${composition('Union<A>', 'A')}
 `
 
-const traversal = (composition: string) => `\
-  elems(): ${composition}<S, Compose<T, Elems>, ElemType<A>>
+const traversal = (composition: Composition) => `\
+  elems(): ${composition('Elems', 'ElemType<A>')}
 `
 
-type OpticType = 'Equivalence' | 'Iso' | 'Lens' | 'Prism' | 'Traversal'
+const getter = (composition: Composition) => `\
+  to<B>(f: (a: A) => B): ${composition('', 'B')}
+`
+
+const affineFold = () => ``
+
+const fold = () => ``
 
 const opticNames: OpticType[] = [
   'Equivalence',
@@ -104,49 +134,74 @@ const opticNames: OpticType[] = [
   'Lens',
   'Prism',
   'Traversal',
+  'Getter',
+  'AffineFold',
+  'Fold',
 ]
 
-const methodGeneratorMap: Record<OpticType, (composition: string) => string> = {
+const methodGeneratorMap: Record<
+  OpticType,
+  (composition: Composition) => string
+> = {
   Equivalence: equivalence,
   Iso: iso,
   Lens: lens,
   Prism: prism,
   Traversal: traversal,
+  Getter: getter,
+  AffineFold: affineFold,
+  Fold: fold,
 }
 
-const generateOpticInterface = (optic: OpticType) => `\
-export interface ${optic}<S, T extends HKT, A> {
+const generateOpticInterface = (optic: OpticType) => {
+  const typeSig = isReadOnly(optic) ? '<S, A>' : '<S, T extends HKT, A>'
+  return `\
+export interface ${optic}${typeSig} {
   _tag: '${optic}'
 
 ${opticNames
-  .map(target => {
-    const composition = compositionType[optic][target]
-    const generateMethods = methodGeneratorMap[target]
+  .map(composee => {
+    const composition = makeComposition(optic, composee)
+    const opticMethods = methodGeneratorMap[composee]
     return (
-      opticHeader(optic, target, composition) + generateMethods(composition)
+      opticHeader(optic, composee) +
+      composeMethod(composee, composition) +
+      opticMethods(composition)
     )
   })
   .join('\n')}
 }
 `
+}
 
 const generateOpticInterfaces = () =>
   opticNames.map(optic => generateOpticInterface(optic)).join('\n')
 
+const composeFunction = (optic: OpticType, composee: OpticType) => {
+  const [typeSig1, optic1] = isReadOnly(optic)
+    ? ['S, A', `optic1: ${optic}<S, A>`]
+    : ['S, T extends HKT, A', `optic1: ${optic}<S, T, A>`]
+  const [typeSig2, optic2] = isReadOnly(composee)
+    ? ['A2', `optic2: ${composee}<S, A>`]
+    : ['T2 extends HKT, A2', `optic2: ${composee}<S, T2, A2>`]
+  const composition = makeComposition(optic, composee)
+
+  return `compose<${typeSig1}, ${typeSig2}>(${optic1}, ${optic2}): ${composition(
+    'T2',
+    'A2'
+  )}`
+}
+
 const generateComposeSignatures = () =>
   opticNames
-    .map(source =>
+    .map(optic =>
       opticNames
         .map(
-          optic => `\
-// ${source} · ${optic} => ${compositionType[source][optic]}
-export function compose<S, T1 extends HKT, A1, T2 extends HKT, A2>(
-  optic1: ${source}<S, T1, A1>,
-  optic2: ${optic}<A1, T2, A2>
-): ${compositionType[source][optic]}<S, Compose<T1, T2>, A2>
-`
+          composee => `\
+// ${optic} · ${composee} => ${compositionType[optic][composee]}
+export function ${composeFunction(optic, composee)}`
         )
-        .join('')
+        .join('\n')
     )
     .join('\n')
 
@@ -170,20 +225,20 @@ export function optic_<S>(): OpticFor_<S> {
   return I.optic as any
 }
 
-export function get<S, T extends HKT, A>(
-  optic: Equivalence<S, T, A> | Iso<S, T, A> | Lens<S, T, A>
+export function get<S, A>(
+  optic: Equivalence<S, any, A> | Iso<S, any, A> | Lens<S, any, A> | Getter<S, A>
 ): (source: S) => A {
   return source => I.get((optic as any)._ref, source)
 }
 
-export function preview<S, T extends HKT, A>(
-  optic: Prism<S, T, A> | Traversal<S, T, A>
+export function preview<S, A>(
+  optic: Prism<S, any, A> | Traversal<S, any, A> | AffineFold<S, A> | Fold<S, A>
 ): (source: S) => A | undefined {
   return source => I.preview((optic as any)._ref, source)
 }
 
-export function collect<S, T extends HKT, A>(
-  optic: Prism<S, T, A> | Traversal<S, T, A>
+export function collect<S, A>(
+  optic: Prism<S, any, A> | Traversal<S, any, A> | Fold<S, A>
 ): (source: S) => A[] {
   return source => I.collect((optic as any)._ref, source)
 }

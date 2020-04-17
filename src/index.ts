@@ -98,6 +98,16 @@ export interface Equivalence<S, T extends HKT, A> {
     optic: Traversal<A, T2, A2>
   ): Traversal<S, Compose<T, T2>, A2>
   elems(): Traversal<S, Compose<T, Elems>, ElemType<A>>
+
+  // Equivalence · Getter => Getter
+  compose<A2>(optic: Getter<A, A2>): Getter<S, A2>
+  to<B>(f: (a: A) => B): Getter<S, B>
+
+  // Equivalence · AffineFold => AffineFold
+  compose<A2>(optic: AffineFold<A, A2>): AffineFold<S, A2>
+
+  // Equivalence · Fold => Fold
+  compose<A2>(optic: Fold<A, A2>): Fold<S, A2>
 }
 
 export interface Iso<S, T extends HKT, A> {
@@ -171,6 +181,16 @@ export interface Iso<S, T extends HKT, A> {
     optic: Traversal<A, T2, A2>
   ): Traversal<S, Compose<T, T2>, A2>
   elems(): Traversal<S, Compose<T, Elems>, ElemType<A>>
+
+  // Iso · Getter => Getter
+  compose<A2>(optic: Getter<A, A2>): Getter<S, A2>
+  to<B>(f: (a: A) => B): Getter<S, B>
+
+  // Iso · AffineFold => AffineFold
+  compose<A2>(optic: AffineFold<A, A2>): AffineFold<S, A2>
+
+  // Iso · Fold => Fold
+  compose<A2>(optic: Fold<A, A2>): Fold<S, A2>
 }
 
 export interface Lens<S, T extends HKT, A> {
@@ -246,6 +266,16 @@ export interface Lens<S, T extends HKT, A> {
     optic: Traversal<A, T2, A2>
   ): Traversal<S, Compose<T, T2>, A2>
   elems(): Traversal<S, Compose<T, Elems>, ElemType<A>>
+
+  // Lens · Getter => Getter
+  compose<A2>(optic: Getter<A, A2>): Getter<S, A2>
+  to<B>(f: (a: A) => B): Getter<S, B>
+
+  // Lens · AffineFold => AffineFold
+  compose<A2>(optic: AffineFold<A, A2>): AffineFold<S, A2>
+
+  // Lens · Fold => Fold
+  compose<A2>(optic: Fold<A, A2>): Fold<S, A2>
 }
 
 export interface Prism<S, T extends HKT, A> {
@@ -321,6 +351,16 @@ export interface Prism<S, T extends HKT, A> {
     optic: Traversal<A, T2, A2>
   ): Traversal<S, Compose<T, T2>, A2>
   elems(): Traversal<S, Compose<T, Elems>, ElemType<A>>
+
+  // Prism · Getter => AffineFold
+  compose<A2>(optic: Getter<A, A2>): AffineFold<S, A2>
+  to<B>(f: (a: A) => B): AffineFold<S, B>
+
+  // Prism · AffineFold => AffineFold
+  compose<A2>(optic: AffineFold<A, A2>): AffineFold<S, A2>
+
+  // Prism · Fold => Fold
+  compose<A2>(optic: Fold<A, A2>): Fold<S, A2>
 }
 
 export interface Traversal<S, T extends HKT, A> {
@@ -404,138 +444,534 @@ export interface Traversal<S, T extends HKT, A> {
     optic: Traversal<A, T2, A2>
   ): Traversal<S, Compose<T, T2>, A2>
   elems(): Traversal<S, Compose<T, Elems>, ElemType<A>>
+
+  // Traversal · Getter => Fold
+  compose<A2>(optic: Getter<A, A2>): Fold<S, A2>
+  to<B>(f: (a: A) => B): Fold<S, B>
+
+  // Traversal · AffineFold => Fold
+  compose<A2>(optic: AffineFold<A, A2>): Fold<S, A2>
+
+  // Traversal · Fold => Fold
+  compose<A2>(optic: Fold<A, A2>): Fold<S, A2>
+}
+
+export interface Getter<S, A> {
+  _tag: 'Getter'
+
+  // Getter · Equivalence => Getter
+  compose<T2 extends HKT, A2>(optic: Equivalence<A, T2, A2>): Getter<S, A2>
+
+  // Getter · Iso => Getter
+  compose<T2 extends HKT, A2>(optic: Iso<A, T2, A2>): Getter<S, A2>
+  iso<U>(there: (a: A) => U, back: (u: U) => A): Getter<S, U>
+
+  // Getter · Lens => Getter
+  compose<T2 extends HKT, A2>(optic: Lens<A, T2, A2>): Getter<S, A2>
+  prop<K extends keyof A>(key: K): Getter<S, A[K]>
+  path<
+    K1 extends keyof A,
+    K2 extends keyof A[K1],
+    K3 extends keyof A[K1][K2],
+    K4 extends keyof A[K1][K2][K3],
+    K5 extends keyof A[K1][K2][K3][K4]
+  >(
+    path: [K1, K2, K3, K4, K5]
+  ): Getter<S, A[K1][K2][K3][K4][K5]>
+  path<
+    K1 extends keyof A,
+    K2 extends keyof A[K1],
+    K3 extends keyof A[K1][K2],
+    K4 extends keyof A[K1][K2][K3]
+  >(
+    path: [K1, K2, K3, K4]
+  ): Getter<S, A[K1][K2][K3][K4]>
+  path<K1 extends keyof A, K2 extends keyof A[K1], K3 extends keyof A[K1][K2]>(
+    path: [K1, K2, K3]
+  ): Getter<S, A[K1][K2][K3]>
+  path<K1 extends keyof A, K2 extends keyof A[K1]>(
+    path: [K1, K2]
+  ): Getter<S, A[K1][K2]>
+  path<K1 extends keyof A>(path: [K1]): Getter<S, A[K1]>
+  pick<K extends keyof A>(keys: K[]): Getter<S, Pick<A, K>>
+  filter(predicate: (item: ElemType<A>) => boolean): Getter<S, A>
+
+  // Getter · Prism => AffineFold
+  compose<T2 extends HKT, A2>(optic: Prism<A, T2, A2>): AffineFold<S, A2>
+  optional(): AffineFold<S, Exclude<A, undefined>>
+  guard_<F extends HKT>(): <U extends A>(
+    g: (a: A) => a is U
+  ) => AffineFold<S, U>
+  guard<U extends A>(g: (a: A) => a is U): AffineFold<S, U>
+  index(i: number): AffineFold<S, ElemType<A>>
+  find(predicate: (item: ElemType<A>) => boolean): AffineFold<S, ElemType<A>>
+  when(predicate: (item: A) => boolean): AffineFold<S, A>
+
+  // Getter · Traversal => Fold
+  compose<T2 extends HKT, A2>(optic: Traversal<A, T2, A2>): Fold<S, A2>
+  elems(): Fold<S, ElemType<A>>
+
+  // Getter · Getter => Getter
+  compose<A2>(optic: Getter<A, A2>): Getter<S, A2>
+  to<B>(f: (a: A) => B): Getter<S, B>
+
+  // Getter · AffineFold => AffineFold
+  compose<A2>(optic: AffineFold<A, A2>): AffineFold<S, A2>
+
+  // Getter · Fold => Fold
+  compose<A2>(optic: Fold<A, A2>): Fold<S, A2>
+}
+
+export interface AffineFold<S, A> {
+  _tag: 'AffineFold'
+
+  // AffineFold · Equivalence => AffineFold
+  compose<T2 extends HKT, A2>(optic: Equivalence<A, T2, A2>): AffineFold<S, A2>
+
+  // AffineFold · Iso => AffineFold
+  compose<T2 extends HKT, A2>(optic: Iso<A, T2, A2>): AffineFold<S, A2>
+  iso<U>(there: (a: A) => U, back: (u: U) => A): AffineFold<S, U>
+
+  // AffineFold · Lens => AffineFold
+  compose<T2 extends HKT, A2>(optic: Lens<A, T2, A2>): AffineFold<S, A2>
+  prop<K extends keyof A>(key: K): AffineFold<S, A[K]>
+  path<
+    K1 extends keyof A,
+    K2 extends keyof A[K1],
+    K3 extends keyof A[K1][K2],
+    K4 extends keyof A[K1][K2][K3],
+    K5 extends keyof A[K1][K2][K3][K4]
+  >(
+    path: [K1, K2, K3, K4, K5]
+  ): AffineFold<S, A[K1][K2][K3][K4][K5]>
+  path<
+    K1 extends keyof A,
+    K2 extends keyof A[K1],
+    K3 extends keyof A[K1][K2],
+    K4 extends keyof A[K1][K2][K3]
+  >(
+    path: [K1, K2, K3, K4]
+  ): AffineFold<S, A[K1][K2][K3][K4]>
+  path<K1 extends keyof A, K2 extends keyof A[K1], K3 extends keyof A[K1][K2]>(
+    path: [K1, K2, K3]
+  ): AffineFold<S, A[K1][K2][K3]>
+  path<K1 extends keyof A, K2 extends keyof A[K1]>(
+    path: [K1, K2]
+  ): AffineFold<S, A[K1][K2]>
+  path<K1 extends keyof A>(path: [K1]): AffineFold<S, A[K1]>
+  pick<K extends keyof A>(keys: K[]): AffineFold<S, Pick<A, K>>
+  filter(predicate: (item: ElemType<A>) => boolean): AffineFold<S, A>
+
+  // AffineFold · Prism => AffineFold
+  compose<T2 extends HKT, A2>(optic: Prism<A, T2, A2>): AffineFold<S, A2>
+  optional(): AffineFold<S, Exclude<A, undefined>>
+  guard_<F extends HKT>(): <U extends A>(
+    g: (a: A) => a is U
+  ) => AffineFold<S, U>
+  guard<U extends A>(g: (a: A) => a is U): AffineFold<S, U>
+  index(i: number): AffineFold<S, ElemType<A>>
+  find(predicate: (item: ElemType<A>) => boolean): AffineFold<S, ElemType<A>>
+  when(predicate: (item: A) => boolean): AffineFold<S, A>
+
+  // AffineFold · Traversal => Fold
+  compose<T2 extends HKT, A2>(optic: Traversal<A, T2, A2>): Fold<S, A2>
+  elems(): Fold<S, ElemType<A>>
+
+  // AffineFold · Getter => AffineFold
+  compose<A2>(optic: Getter<A, A2>): AffineFold<S, A2>
+  to<B>(f: (a: A) => B): AffineFold<S, B>
+
+  // AffineFold · AffineFold => AffineFold
+  compose<A2>(optic: AffineFold<A, A2>): AffineFold<S, A2>
+
+  // AffineFold · Fold => Fold
+  compose<A2>(optic: Fold<A, A2>): Fold<S, A2>
+}
+
+export interface Fold<S, A> {
+  _tag: 'Fold'
+
+  // Fold · Equivalence => Fold
+  compose<T2 extends HKT, A2>(optic: Equivalence<A, T2, A2>): Fold<S, A2>
+
+  // Fold · Iso => Fold
+  compose<T2 extends HKT, A2>(optic: Iso<A, T2, A2>): Fold<S, A2>
+  iso<U>(there: (a: A) => U, back: (u: U) => A): Fold<S, U>
+
+  // Fold · Lens => Fold
+  compose<T2 extends HKT, A2>(optic: Lens<A, T2, A2>): Fold<S, A2>
+  prop<K extends keyof A>(key: K): Fold<S, A[K]>
+  path<
+    K1 extends keyof A,
+    K2 extends keyof A[K1],
+    K3 extends keyof A[K1][K2],
+    K4 extends keyof A[K1][K2][K3],
+    K5 extends keyof A[K1][K2][K3][K4]
+  >(
+    path: [K1, K2, K3, K4, K5]
+  ): Fold<S, A[K1][K2][K3][K4][K5]>
+  path<
+    K1 extends keyof A,
+    K2 extends keyof A[K1],
+    K3 extends keyof A[K1][K2],
+    K4 extends keyof A[K1][K2][K3]
+  >(
+    path: [K1, K2, K3, K4]
+  ): Fold<S, A[K1][K2][K3][K4]>
+  path<K1 extends keyof A, K2 extends keyof A[K1], K3 extends keyof A[K1][K2]>(
+    path: [K1, K2, K3]
+  ): Fold<S, A[K1][K2][K3]>
+  path<K1 extends keyof A, K2 extends keyof A[K1]>(
+    path: [K1, K2]
+  ): Fold<S, A[K1][K2]>
+  path<K1 extends keyof A>(path: [K1]): Fold<S, A[K1]>
+  pick<K extends keyof A>(keys: K[]): Fold<S, Pick<A, K>>
+  filter(predicate: (item: ElemType<A>) => boolean): Fold<S, A>
+
+  // Fold · Prism => Fold
+  compose<T2 extends HKT, A2>(optic: Prism<A, T2, A2>): Fold<S, A2>
+  optional(): Fold<S, Exclude<A, undefined>>
+  guard_<F extends HKT>(): <U extends A>(g: (a: A) => a is U) => Fold<S, U>
+  guard<U extends A>(g: (a: A) => a is U): Fold<S, U>
+  index(i: number): Fold<S, ElemType<A>>
+  find(predicate: (item: ElemType<A>) => boolean): Fold<S, ElemType<A>>
+  when(predicate: (item: A) => boolean): Fold<S, A>
+
+  // Fold · Traversal => Fold
+  compose<T2 extends HKT, A2>(optic: Traversal<A, T2, A2>): Fold<S, A2>
+  elems(): Fold<S, ElemType<A>>
+
+  // Fold · Getter => Fold
+  compose<A2>(optic: Getter<A, A2>): Fold<S, A2>
+  to<B>(f: (a: A) => B): Fold<S, B>
+
+  // Fold · AffineFold => Fold
+  compose<A2>(optic: AffineFold<A, A2>): Fold<S, A2>
+
+  // Fold · Fold => Fold
+  compose<A2>(optic: Fold<A, A2>): Fold<S, A2>
 }
 
 // Equivalence · Equivalence => Equivalence
-export function compose<S, T1 extends HKT, A1, T2 extends HKT, A2>(
-  optic1: Equivalence<S, T1, A1>,
-  optic2: Equivalence<A1, T2, A2>
-): Equivalence<S, Compose<T1, T2>, A2>
+export function compose<S, T extends HKT, A, T2 extends HKT, A2>(
+  optic1: Equivalence<S, T, A>,
+  optic2: Equivalence<S, T2, A2>
+): Equivalence<S, Compose<T, T2>, A2>
 // Equivalence · Iso => Iso
-export function compose<S, T1 extends HKT, A1, T2 extends HKT, A2>(
-  optic1: Equivalence<S, T1, A1>,
-  optic2: Iso<A1, T2, A2>
-): Iso<S, Compose<T1, T2>, A2>
+export function compose<S, T extends HKT, A, T2 extends HKT, A2>(
+  optic1: Equivalence<S, T, A>,
+  optic2: Iso<S, T2, A2>
+): Iso<S, Compose<T, T2>, A2>
 // Equivalence · Lens => Lens
-export function compose<S, T1 extends HKT, A1, T2 extends HKT, A2>(
-  optic1: Equivalence<S, T1, A1>,
-  optic2: Lens<A1, T2, A2>
-): Lens<S, Compose<T1, T2>, A2>
+export function compose<S, T extends HKT, A, T2 extends HKT, A2>(
+  optic1: Equivalence<S, T, A>,
+  optic2: Lens<S, T2, A2>
+): Lens<S, Compose<T, T2>, A2>
 // Equivalence · Prism => Prism
-export function compose<S, T1 extends HKT, A1, T2 extends HKT, A2>(
-  optic1: Equivalence<S, T1, A1>,
-  optic2: Prism<A1, T2, A2>
-): Prism<S, Compose<T1, T2>, A2>
+export function compose<S, T extends HKT, A, T2 extends HKT, A2>(
+  optic1: Equivalence<S, T, A>,
+  optic2: Prism<S, T2, A2>
+): Prism<S, Compose<T, T2>, A2>
 // Equivalence · Traversal => Traversal
-export function compose<S, T1 extends HKT, A1, T2 extends HKT, A2>(
-  optic1: Equivalence<S, T1, A1>,
-  optic2: Traversal<A1, T2, A2>
-): Traversal<S, Compose<T1, T2>, A2>
-
+export function compose<S, T extends HKT, A, T2 extends HKT, A2>(
+  optic1: Equivalence<S, T, A>,
+  optic2: Traversal<S, T2, A2>
+): Traversal<S, Compose<T, T2>, A2>
+// Equivalence · Getter => Getter
+export function compose<S, T extends HKT, A, A2>(
+  optic1: Equivalence<S, T, A>,
+  optic2: Getter<S, A>
+): Getter<S, A2>
+// Equivalence · AffineFold => AffineFold
+export function compose<S, T extends HKT, A, A2>(
+  optic1: Equivalence<S, T, A>,
+  optic2: AffineFold<S, A>
+): AffineFold<S, A2>
+// Equivalence · Fold => Fold
+export function compose<S, T extends HKT, A, A2>(
+  optic1: Equivalence<S, T, A>,
+  optic2: Fold<S, A>
+): Fold<S, A2>
 // Iso · Equivalence => Iso
-export function compose<S, T1 extends HKT, A1, T2 extends HKT, A2>(
-  optic1: Iso<S, T1, A1>,
-  optic2: Equivalence<A1, T2, A2>
-): Iso<S, Compose<T1, T2>, A2>
+export function compose<S, T extends HKT, A, T2 extends HKT, A2>(
+  optic1: Iso<S, T, A>,
+  optic2: Equivalence<S, T2, A2>
+): Iso<S, Compose<T, T2>, A2>
 // Iso · Iso => Iso
-export function compose<S, T1 extends HKT, A1, T2 extends HKT, A2>(
-  optic1: Iso<S, T1, A1>,
-  optic2: Iso<A1, T2, A2>
-): Iso<S, Compose<T1, T2>, A2>
+export function compose<S, T extends HKT, A, T2 extends HKT, A2>(
+  optic1: Iso<S, T, A>,
+  optic2: Iso<S, T2, A2>
+): Iso<S, Compose<T, T2>, A2>
 // Iso · Lens => Lens
-export function compose<S, T1 extends HKT, A1, T2 extends HKT, A2>(
-  optic1: Iso<S, T1, A1>,
-  optic2: Lens<A1, T2, A2>
-): Lens<S, Compose<T1, T2>, A2>
+export function compose<S, T extends HKT, A, T2 extends HKT, A2>(
+  optic1: Iso<S, T, A>,
+  optic2: Lens<S, T2, A2>
+): Lens<S, Compose<T, T2>, A2>
 // Iso · Prism => Prism
-export function compose<S, T1 extends HKT, A1, T2 extends HKT, A2>(
-  optic1: Iso<S, T1, A1>,
-  optic2: Prism<A1, T2, A2>
-): Prism<S, Compose<T1, T2>, A2>
+export function compose<S, T extends HKT, A, T2 extends HKT, A2>(
+  optic1: Iso<S, T, A>,
+  optic2: Prism<S, T2, A2>
+): Prism<S, Compose<T, T2>, A2>
 // Iso · Traversal => Traversal
-export function compose<S, T1 extends HKT, A1, T2 extends HKT, A2>(
-  optic1: Iso<S, T1, A1>,
-  optic2: Traversal<A1, T2, A2>
-): Traversal<S, Compose<T1, T2>, A2>
-
+export function compose<S, T extends HKT, A, T2 extends HKT, A2>(
+  optic1: Iso<S, T, A>,
+  optic2: Traversal<S, T2, A2>
+): Traversal<S, Compose<T, T2>, A2>
+// Iso · Getter => Getter
+export function compose<S, T extends HKT, A, A2>(
+  optic1: Iso<S, T, A>,
+  optic2: Getter<S, A>
+): Getter<S, A2>
+// Iso · AffineFold => AffineFold
+export function compose<S, T extends HKT, A, A2>(
+  optic1: Iso<S, T, A>,
+  optic2: AffineFold<S, A>
+): AffineFold<S, A2>
+// Iso · Fold => Fold
+export function compose<S, T extends HKT, A, A2>(
+  optic1: Iso<S, T, A>,
+  optic2: Fold<S, A>
+): Fold<S, A2>
 // Lens · Equivalence => Lens
-export function compose<S, T1 extends HKT, A1, T2 extends HKT, A2>(
-  optic1: Lens<S, T1, A1>,
-  optic2: Equivalence<A1, T2, A2>
-): Lens<S, Compose<T1, T2>, A2>
+export function compose<S, T extends HKT, A, T2 extends HKT, A2>(
+  optic1: Lens<S, T, A>,
+  optic2: Equivalence<S, T2, A2>
+): Lens<S, Compose<T, T2>, A2>
 // Lens · Iso => Lens
-export function compose<S, T1 extends HKT, A1, T2 extends HKT, A2>(
-  optic1: Lens<S, T1, A1>,
-  optic2: Iso<A1, T2, A2>
-): Lens<S, Compose<T1, T2>, A2>
+export function compose<S, T extends HKT, A, T2 extends HKT, A2>(
+  optic1: Lens<S, T, A>,
+  optic2: Iso<S, T2, A2>
+): Lens<S, Compose<T, T2>, A2>
 // Lens · Lens => Lens
-export function compose<S, T1 extends HKT, A1, T2 extends HKT, A2>(
-  optic1: Lens<S, T1, A1>,
-  optic2: Lens<A1, T2, A2>
-): Lens<S, Compose<T1, T2>, A2>
+export function compose<S, T extends HKT, A, T2 extends HKT, A2>(
+  optic1: Lens<S, T, A>,
+  optic2: Lens<S, T2, A2>
+): Lens<S, Compose<T, T2>, A2>
 // Lens · Prism => Prism
-export function compose<S, T1 extends HKT, A1, T2 extends HKT, A2>(
-  optic1: Lens<S, T1, A1>,
-  optic2: Prism<A1, T2, A2>
-): Prism<S, Compose<T1, T2>, A2>
+export function compose<S, T extends HKT, A, T2 extends HKT, A2>(
+  optic1: Lens<S, T, A>,
+  optic2: Prism<S, T2, A2>
+): Prism<S, Compose<T, T2>, A2>
 // Lens · Traversal => Traversal
-export function compose<S, T1 extends HKT, A1, T2 extends HKT, A2>(
-  optic1: Lens<S, T1, A1>,
-  optic2: Traversal<A1, T2, A2>
-): Traversal<S, Compose<T1, T2>, A2>
-
+export function compose<S, T extends HKT, A, T2 extends HKT, A2>(
+  optic1: Lens<S, T, A>,
+  optic2: Traversal<S, T2, A2>
+): Traversal<S, Compose<T, T2>, A2>
+// Lens · Getter => Getter
+export function compose<S, T extends HKT, A, A2>(
+  optic1: Lens<S, T, A>,
+  optic2: Getter<S, A>
+): Getter<S, A2>
+// Lens · AffineFold => AffineFold
+export function compose<S, T extends HKT, A, A2>(
+  optic1: Lens<S, T, A>,
+  optic2: AffineFold<S, A>
+): AffineFold<S, A2>
+// Lens · Fold => Fold
+export function compose<S, T extends HKT, A, A2>(
+  optic1: Lens<S, T, A>,
+  optic2: Fold<S, A>
+): Fold<S, A2>
 // Prism · Equivalence => Prism
-export function compose<S, T1 extends HKT, A1, T2 extends HKT, A2>(
-  optic1: Prism<S, T1, A1>,
-  optic2: Equivalence<A1, T2, A2>
-): Prism<S, Compose<T1, T2>, A2>
+export function compose<S, T extends HKT, A, T2 extends HKT, A2>(
+  optic1: Prism<S, T, A>,
+  optic2: Equivalence<S, T2, A2>
+): Prism<S, Compose<T, T2>, A2>
 // Prism · Iso => Prism
-export function compose<S, T1 extends HKT, A1, T2 extends HKT, A2>(
-  optic1: Prism<S, T1, A1>,
-  optic2: Iso<A1, T2, A2>
-): Prism<S, Compose<T1, T2>, A2>
+export function compose<S, T extends HKT, A, T2 extends HKT, A2>(
+  optic1: Prism<S, T, A>,
+  optic2: Iso<S, T2, A2>
+): Prism<S, Compose<T, T2>, A2>
 // Prism · Lens => Prism
-export function compose<S, T1 extends HKT, A1, T2 extends HKT, A2>(
-  optic1: Prism<S, T1, A1>,
-  optic2: Lens<A1, T2, A2>
-): Prism<S, Compose<T1, T2>, A2>
+export function compose<S, T extends HKT, A, T2 extends HKT, A2>(
+  optic1: Prism<S, T, A>,
+  optic2: Lens<S, T2, A2>
+): Prism<S, Compose<T, T2>, A2>
 // Prism · Prism => Prism
-export function compose<S, T1 extends HKT, A1, T2 extends HKT, A2>(
-  optic1: Prism<S, T1, A1>,
-  optic2: Prism<A1, T2, A2>
-): Prism<S, Compose<T1, T2>, A2>
+export function compose<S, T extends HKT, A, T2 extends HKT, A2>(
+  optic1: Prism<S, T, A>,
+  optic2: Prism<S, T2, A2>
+): Prism<S, Compose<T, T2>, A2>
 // Prism · Traversal => Traversal
-export function compose<S, T1 extends HKT, A1, T2 extends HKT, A2>(
-  optic1: Prism<S, T1, A1>,
-  optic2: Traversal<A1, T2, A2>
-): Traversal<S, Compose<T1, T2>, A2>
-
+export function compose<S, T extends HKT, A, T2 extends HKT, A2>(
+  optic1: Prism<S, T, A>,
+  optic2: Traversal<S, T2, A2>
+): Traversal<S, Compose<T, T2>, A2>
+// Prism · Getter => AffineFold
+export function compose<S, T extends HKT, A, A2>(
+  optic1: Prism<S, T, A>,
+  optic2: Getter<S, A>
+): AffineFold<S, A2>
+// Prism · AffineFold => AffineFold
+export function compose<S, T extends HKT, A, A2>(
+  optic1: Prism<S, T, A>,
+  optic2: AffineFold<S, A>
+): AffineFold<S, A2>
+// Prism · Fold => Fold
+export function compose<S, T extends HKT, A, A2>(
+  optic1: Prism<S, T, A>,
+  optic2: Fold<S, A>
+): Fold<S, A2>
 // Traversal · Equivalence => Traversal
-export function compose<S, T1 extends HKT, A1, T2 extends HKT, A2>(
-  optic1: Traversal<S, T1, A1>,
-  optic2: Equivalence<A1, T2, A2>
-): Traversal<S, Compose<T1, T2>, A2>
+export function compose<S, T extends HKT, A, T2 extends HKT, A2>(
+  optic1: Traversal<S, T, A>,
+  optic2: Equivalence<S, T2, A2>
+): Traversal<S, Compose<T, T2>, A2>
 // Traversal · Iso => Traversal
-export function compose<S, T1 extends HKT, A1, T2 extends HKT, A2>(
-  optic1: Traversal<S, T1, A1>,
-  optic2: Iso<A1, T2, A2>
-): Traversal<S, Compose<T1, T2>, A2>
+export function compose<S, T extends HKT, A, T2 extends HKT, A2>(
+  optic1: Traversal<S, T, A>,
+  optic2: Iso<S, T2, A2>
+): Traversal<S, Compose<T, T2>, A2>
 // Traversal · Lens => Traversal
-export function compose<S, T1 extends HKT, A1, T2 extends HKT, A2>(
-  optic1: Traversal<S, T1, A1>,
-  optic2: Lens<A1, T2, A2>
-): Traversal<S, Compose<T1, T2>, A2>
+export function compose<S, T extends HKT, A, T2 extends HKT, A2>(
+  optic1: Traversal<S, T, A>,
+  optic2: Lens<S, T2, A2>
+): Traversal<S, Compose<T, T2>, A2>
 // Traversal · Prism => Traversal
-export function compose<S, T1 extends HKT, A1, T2 extends HKT, A2>(
-  optic1: Traversal<S, T1, A1>,
-  optic2: Prism<A1, T2, A2>
-): Traversal<S, Compose<T1, T2>, A2>
+export function compose<S, T extends HKT, A, T2 extends HKT, A2>(
+  optic1: Traversal<S, T, A>,
+  optic2: Prism<S, T2, A2>
+): Traversal<S, Compose<T, T2>, A2>
 // Traversal · Traversal => Traversal
-export function compose<S, T1 extends HKT, A1, T2 extends HKT, A2>(
-  optic1: Traversal<S, T1, A1>,
-  optic2: Traversal<A1, T2, A2>
-): Traversal<S, Compose<T1, T2>, A2>
-
+export function compose<S, T extends HKT, A, T2 extends HKT, A2>(
+  optic1: Traversal<S, T, A>,
+  optic2: Traversal<S, T2, A2>
+): Traversal<S, Compose<T, T2>, A2>
+// Traversal · Getter => Fold
+export function compose<S, T extends HKT, A, A2>(
+  optic1: Traversal<S, T, A>,
+  optic2: Getter<S, A>
+): Fold<S, A2>
+// Traversal · AffineFold => Fold
+export function compose<S, T extends HKT, A, A2>(
+  optic1: Traversal<S, T, A>,
+  optic2: AffineFold<S, A>
+): Fold<S, A2>
+// Traversal · Fold => Fold
+export function compose<S, T extends HKT, A, A2>(
+  optic1: Traversal<S, T, A>,
+  optic2: Fold<S, A>
+): Fold<S, A2>
+// Getter · Equivalence => Getter
+export function compose<S, A, T2 extends HKT, A2>(
+  optic1: Getter<S, A>,
+  optic2: Equivalence<S, T2, A2>
+): Getter<S, A2>
+// Getter · Iso => Getter
+export function compose<S, A, T2 extends HKT, A2>(
+  optic1: Getter<S, A>,
+  optic2: Iso<S, T2, A2>
+): Getter<S, A2>
+// Getter · Lens => Getter
+export function compose<S, A, T2 extends HKT, A2>(
+  optic1: Getter<S, A>,
+  optic2: Lens<S, T2, A2>
+): Getter<S, A2>
+// Getter · Prism => AffineFold
+export function compose<S, A, T2 extends HKT, A2>(
+  optic1: Getter<S, A>,
+  optic2: Prism<S, T2, A2>
+): AffineFold<S, A2>
+// Getter · Traversal => Fold
+export function compose<S, A, T2 extends HKT, A2>(
+  optic1: Getter<S, A>,
+  optic2: Traversal<S, T2, A2>
+): Fold<S, A2>
+// Getter · Getter => Getter
+export function compose<S, A, A2>(
+  optic1: Getter<S, A>,
+  optic2: Getter<S, A>
+): Getter<S, A2>
+// Getter · AffineFold => AffineFold
+export function compose<S, A, A2>(
+  optic1: Getter<S, A>,
+  optic2: AffineFold<S, A>
+): AffineFold<S, A2>
+// Getter · Fold => Fold
+export function compose<S, A, A2>(
+  optic1: Getter<S, A>,
+  optic2: Fold<S, A>
+): Fold<S, A2>
+// AffineFold · Equivalence => AffineFold
+export function compose<S, A, T2 extends HKT, A2>(
+  optic1: AffineFold<S, A>,
+  optic2: Equivalence<S, T2, A2>
+): AffineFold<S, A2>
+// AffineFold · Iso => AffineFold
+export function compose<S, A, T2 extends HKT, A2>(
+  optic1: AffineFold<S, A>,
+  optic2: Iso<S, T2, A2>
+): AffineFold<S, A2>
+// AffineFold · Lens => AffineFold
+export function compose<S, A, T2 extends HKT, A2>(
+  optic1: AffineFold<S, A>,
+  optic2: Lens<S, T2, A2>
+): AffineFold<S, A2>
+// AffineFold · Prism => AffineFold
+export function compose<S, A, T2 extends HKT, A2>(
+  optic1: AffineFold<S, A>,
+  optic2: Prism<S, T2, A2>
+): AffineFold<S, A2>
+// AffineFold · Traversal => Fold
+export function compose<S, A, T2 extends HKT, A2>(
+  optic1: AffineFold<S, A>,
+  optic2: Traversal<S, T2, A2>
+): Fold<S, A2>
+// AffineFold · Getter => AffineFold
+export function compose<S, A, A2>(
+  optic1: AffineFold<S, A>,
+  optic2: Getter<S, A>
+): AffineFold<S, A2>
+// AffineFold · AffineFold => AffineFold
+export function compose<S, A, A2>(
+  optic1: AffineFold<S, A>,
+  optic2: AffineFold<S, A>
+): AffineFold<S, A2>
+// AffineFold · Fold => Fold
+export function compose<S, A, A2>(
+  optic1: AffineFold<S, A>,
+  optic2: Fold<S, A>
+): Fold<S, A2>
+// Fold · Equivalence => Fold
+export function compose<S, A, T2 extends HKT, A2>(
+  optic1: Fold<S, A>,
+  optic2: Equivalence<S, T2, A2>
+): Fold<S, A2>
+// Fold · Iso => Fold
+export function compose<S, A, T2 extends HKT, A2>(
+  optic1: Fold<S, A>,
+  optic2: Iso<S, T2, A2>
+): Fold<S, A2>
+// Fold · Lens => Fold
+export function compose<S, A, T2 extends HKT, A2>(
+  optic1: Fold<S, A>,
+  optic2: Lens<S, T2, A2>
+): Fold<S, A2>
+// Fold · Prism => Fold
+export function compose<S, A, T2 extends HKT, A2>(
+  optic1: Fold<S, A>,
+  optic2: Prism<S, T2, A2>
+): Fold<S, A2>
+// Fold · Traversal => Fold
+export function compose<S, A, T2 extends HKT, A2>(
+  optic1: Fold<S, A>,
+  optic2: Traversal<S, T2, A2>
+): Fold<S, A2>
+// Fold · Getter => Fold
+export function compose<S, A, A2>(
+  optic1: Fold<S, A>,
+  optic2: Getter<S, A>
+): Fold<S, A2>
+// Fold · AffineFold => Fold
+export function compose<S, A, A2>(
+  optic1: Fold<S, A>,
+  optic2: AffineFold<S, A>
+): Fold<S, A2>
+// Fold · Fold => Fold
+export function compose<S, A, A2>(
+  optic1: Fold<S, A>,
+  optic2: Fold<S, A>
+): Fold<S, A2>
 export function compose(optic1: any, optic2: any) {
   return optic1.compose(optic2)
 }
@@ -548,20 +984,24 @@ export function optic_<S>(): OpticFor_<S> {
   return I.optic as any
 }
 
-export function get<S, T extends HKT, A>(
-  optic: Equivalence<S, T, A> | Iso<S, T, A> | Lens<S, T, A>
+export function get<S, A>(
+  optic:
+    | Equivalence<S, any, A>
+    | Iso<S, any, A>
+    | Lens<S, any, A>
+    | Getter<S, A>
 ): (source: S) => A {
   return source => I.get((optic as any)._ref, source)
 }
 
-export function preview<S, T extends HKT, A>(
-  optic: Prism<S, T, A> | Traversal<S, T, A>
+export function preview<S, A>(
+  optic: Prism<S, any, A> | Traversal<S, any, A> | AffineFold<S, A> | Fold<S, A>
 ): (source: S) => A | undefined {
   return source => I.preview((optic as any)._ref, source)
 }
 
-export function collect<S, T extends HKT, A>(
-  optic: Prism<S, T, A> | Traversal<S, T, A>
+export function collect<S, A>(
+  optic: Prism<S, any, A> | Traversal<S, any, A> | Fold<S, A>
 ): (source: S) => A[] {
   return source => I.collect((optic as any)._ref, source)
 }

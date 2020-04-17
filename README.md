@@ -14,8 +14,8 @@ TypeScript:
 - **Type-safe**: The compiler will type check all operations you do.
   No `any`, ever.
 
-`optics-ts` supports equivalences, isomorphisms, lenses, prisms and
-traversals.
+`optics-ts` supports equivalences, isomorphisms, lenses, prisms,
+traversals, getters, affine folds and folds.
 
 <!-- START doctoc generated TOC please keep comment here to allow auto update -->
 <!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
@@ -58,6 +58,8 @@ traversals.
     - [`when(f: (a: A) => boolean): Prism<S, _, A>`](#whenf-a-a--boolean-prisms-_-a)
   - [Traversals](#traversals)
     - [`elems(): Traversal<S, _, ElemType<A>>`](#elems-traversals-_-elemtypea)
+  - [Getters](#getters)
+    - [`to<B>(f: (a: A) => B): Getter<S, B>`](#tobf-a-a--b-getters-b)
   - [Composing](#composing)
     - [`compose<B>(other: Optic<A, _, B>): Optic<S, _, B>`](#composebother-optica-_-b-optics-_-b)
 - [Prior art](#prior-art)
@@ -315,8 +317,12 @@ O.set(str)('new')('original')
 // ==> 'new' ('original' is discarded)
 ```
 
-`optics-ts` also supports isomorphisms, which can be used to do 2-way
-data transformations.
+Supported optic types also include _isomorphism_, which can be used to
+do 2-way data transformations. Furthermore, there are read-only optics
+analoguous to isomorphism, prism, and traversal. While isomorphism is
+2-way transformation (a mapping function and its inverse), _getter_ is a
+one-way transformation (just a mapping function). _Affine fold_ and
+_fold_ are read-only variants of prism and traversal.
 
 ### Polymorphism
 
@@ -359,19 +365,38 @@ writing through a non-polymorphic (monomorphic) optic.
 
 ### Types of optics
 
-The supported optic classes are equivalence, isomorphism, lens, prism
-and traversal. With this (incomplete) optics hierarchy, we can put the
-optic classes in order:
+The supported optic classes are Equivalence, Iso (isomorphism), Lens,
+Prism, Traversal, Getter, AffineFold and Fold.
+
+Equivalence, Iso, Lens, Prism and Traversal are read-write, i.e. you can
+read and write through them. Getter, AffineFold and Fold are read-only.
+
+Equivalence, Iso, Lens and Getter have one focus, i.e. you can
+always read and write through them (Getter doesn't support writing).
+Prism and AffineFold have zero or one focus, i.e. reading may yield no
+value and writing may have no effect if there's no focus. Traversal and
+Fold have zero or more focuses, meaning that reading yields zero or more
+values, and writing modifies zero or more values.
+
+Any optic can be composed with another optic. The type of the resulting
+optic can be determined from this diagram:
 
 ```
-Equivalence < Iso < Lens < Prism < Traversal
+Equivalence -> Iso -> Lens ---> Prism ------> Traversal
+                      |         |             |
+                      v         v             v
+                      Getter -> AffineFold -> Fold
 ```
 
-When you compose two optics, the result is the "greater" of the two,
-i.e. the one that appears rightmost.
+When you compose two optics A and B, the result is the nearest optic
+that you get by following the arrows starting from both A and B.
 
-For example, composing an `Iso` with a `Prism` yields a `Prism`.
-Composing an `Traversal` with a `Lens` yields a `Traversal`.
+For example, composing a Getter with a Traversal yields a Fold.
+Composing an Iso with a Prism yields a Prism.
+
+The naming of the optic classes is taken from
+[Glassery](http://oleg.fi/gists/posts/2017-04-18-glassery.html) by Oleg
+Grenrus.
 
 ### Method chaining
 
@@ -392,7 +417,8 @@ lens and prism, i.e. a prism.
 
 ### Type parameters
 
-All optics have 3 type parameters: `<S, T, A>`:
+All read-write optics have 3 type parameters: `<S, T, A>`, and all
+read-only optics have 2 type parameters: `<S, A>`:
 
 - `S` is the source on which the optic operates
 
@@ -405,6 +431,8 @@ Conceptually, when you write a value of type `B`, the output type will
 be `S` with `A` replaced by `B` at the focus(es) of the optic. `T` is
 the mechanism that transforms `B` to the output type. This construct
 makes it possible for the optics to be polymorphic on the type level.
+The read-only optics don't need `T` because you cannot write through
+them.
 
 In the following, we leave the exact definition of `T` for each optic
 out for clarity, writing just `_` in its place. It's usually clear fom
@@ -441,19 +469,21 @@ Create a polymorphic equivalence for `S`.
 
 #### `get<S, A>(optic: Optic<S, _, A>) => (source: S) => A`
 
-Read a value through an `Equivalence`, `Iso` or `Lens`.
+Read a value through an `Equivalence`, `Iso`, `Lens` or `Getter`.
 
 #### `preview<S, A>(optic: Optic<S, _, A>) => (source: S) => A | undefined`
 
-Read a value through a `Prism` or `Traversal`. For `Prism`, return
-`undefined` if the prism doesn't match. For `Traversal`, returns the
-value of the first focus, or `undefined` if there are no focuses.
+Read a value through a `Prism`, `Traversal`, `AffineFold` or `Fold`. For
+`Prism` and `AffineFold`, return `undefined` if the optic doesn't match
+(has zero focuses). For `Traversal` and `Fold`, returns the value of the
+first focus, or `undefined` if there are no focuses.
 
 #### `collect<S, A>(optic: Optic<S, _, A>) => (source: S) => A[]`
 
-Read all focused values through a `Prism` or `Traversal`. For `Prism`,
-the return value is an array of 0 or 1 elements. For `Traversal`, the
-return value is an array of zero or more elements.
+Read all focused values through a `Prism`, `Traversal`, `AffineFold` or
+`Fold`. For `Prism` and `AffineFold`, the return value is an array of 0
+or 1 elements. For `Traversal` and `Fold`, the return value is an array
+of zero or more elements.
 
 #### `modify<S, T, A>(optic: Optic<S, T, A>) => <B>(f: (a: A) => B) => (source: S) => T<B>`
 
@@ -477,10 +507,16 @@ See [Types of optics](#types-of-optics) for the rules of composition.
 ### Creating optics
 
 The methods documented below are available on all optics types:
-`Equivalence`, `Iso`, `Lens`, `Prism` and `Traversal`. The documented
-return type is the type of the optic that these methods create. The
-actual return type is the composition of the optic on which the method
-is called and on the optic that the method creates.
+`Equivalence`, `Iso`, `Lens`, `Prism`, `Traversal`, `Getter`,
+`AffineFold` and `Fold`. The documented return type is the type of the
+optic that these methods create. The actual return type is the
+composition of the optic on which the method is called and on the optic
+that the method creates.
+
+Note that there are no functions to create `AffineFold` or `Fold`
+optics. You can only get these by composing other types of optics.
+`Equivalence` can be created by calling the top-level `optic()`
+function.
 
 ### Isomorphisms
 
@@ -508,9 +544,10 @@ parameters](#type-parameters) for the meanings of type parameters.
 
 Create a lens that focuses on the property `K` of `A`.
 
-**Note:** Only works for string properties, even though TypeScript's
-type system also allows array's numeric indices when using `keyof`. Use
-the `index()` prism to focus on an array element at a given index.
+**Note:** `prop()` only works for string properties, even though
+TypeScript's type system also allows array's numeric indices when using
+`keyof`. Use the `index()` prism to focus on an array element at a given
+index.
 
 #### `path<K1, K2, ...>(keys: [K1, K2, ...]): Lens<S, _, A[K1][K2]...>`
 
@@ -627,6 +664,14 @@ Only works on array types. `ElemType<A>` is the element type of the
 array type `A`.
 
 Create a traversal that focuses on all the elements of the array.
+
+### Getters
+
+Getters have the type `Getter<S, A>`.
+
+#### `to<B>(f: (a: A) => B): Getter<S, B>`
+
+Create a getter that applies the function `f` to its focus.
 
 ### Composing
 

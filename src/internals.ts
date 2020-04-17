@@ -223,7 +223,7 @@ const filter = (predicate: (item: any) => boolean): any =>
 
 /////////////////////////////////////////////////////////////////////////////
 
-type OpticType =
+export type OpticType =
   | 'Equivalence'
   | 'Iso'
   | 'Lens'
