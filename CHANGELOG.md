@@ -1,6 +1,6 @@
 # Changelog
 
-## 1.0.0
+## 1.0.0 (unreleased)
 
 - **New features**
   - Add `Getter`, `AffineFold` and `Fold` optic classes
