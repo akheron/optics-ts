@@ -7,6 +7,5 @@
     "strict": true,
     "skipLibCheck": true,
     "lib": ["ES6", "DOM"]
-  },
-  "include": ["src/*.ts"]
+  }
 }
