@@ -189,27 +189,25 @@ const guard = <A, U extends A>(fn: (a: A) => a is U) =>
 
 const find = (predicate: (item: any) => boolean): any =>
   compose(
-    lens(
-      (source: any[]) => {
-        const index = source.findIndex(predicate)
-        if (index === -1) {
-          return noMatch
+    compose(
+      lens(
+        (source: any[]) => {
+          const index = source.findIndex(predicate)
+          if (index === -1) {
+            return [noMatch, -1]
+          }
+          return [source[index], index]
+        },
+        ([[value, index], source]: [[any, number], any[]]) => {
+          if (value === noMatch || index === -1) {
+            return source
+          }
+          const result = source.slice()
+          result[index] = value
+          return result
         }
-        return source[index]
-      },
-      ([value, source]: [any, any[]]) => {
-        if (value === noMatch) {
-          return source
-        }
-        const index = source.findIndex(predicate)
-        if (index === -1) {
-          return source
-        }
-        if (index === 0) {
-          return [value, ...source.slice(1)]
-        }
-        return [...source.slice(0, index), value, ...source.slice(index + 1)]
-      }
+      ),
+      index(0)
     ),
     mustMatch
   )
