@@ -54,6 +54,7 @@ traversals, getters, affine folds and folds.
     - [`guard<U extends A>(g: (a: A) => a is U): Prism<S, _, U>`](#guardu-extends-ag-a-a--a-is-u-prisms-_-u)
     - [`guard_<F extends HKT>(): <U extends A>(g: (a: A) => a is U) => Prism<S, T · F, U>`](#guard_f-extends-hkt-u-extends-ag-a-a--a-is-u--prisms-t-%C2%B7-f-u)
     - [`index(i: number): Prism<S, _, ElemType<A>>`](#indexi-number-prisms-_-elemtypea)
+    - [`head(): Prism<S, _, ElemType<A>>`](#head-prisms-_-elemtypea)
     - [`find(p: (e: ElemType<A>) => boolean): Prism<S, _, ElemType<A>>`](#findp-e-elemtypea--boolean-prisms-_-elemtypea)
     - [`when(f: (a: A) => boolean): Prism<S, _, A>`](#whenf-a-a--boolean-prisms-_-a)
   - [Traversals](#traversals)
@@ -62,6 +63,9 @@ traversals, getters, affine folds and folds.
     - [`to<B>(f: (a: A) => B): Getter<S, B>`](#tobf-a-a--b-getters-b)
   - [Composing](#composing)
     - [`compose<B>(other: Optic<A, _, B>): Optic<S, _, B>`](#composebother-optica-_-b-optics-_-b)
+  - [Strings](#strings)
+    - [`chars(): Traversal<S, _, string>`](#chars-traversals-_-string)
+    - [`words(): Traversal<S, _, string>`](#words-traversals-_-string)
 - [Prior art](#prior-art)
 
 <!-- END doctoc generated TOC please keep comment here to allow auto update -->
@@ -624,13 +628,20 @@ the output type.
 
 #### `index(i: number): Prism<S, _, ElemType<A>>`
 
-Only works on array types. `ElemType<A>` is the element type of the
-array type `A`.
+Only works on arrays and strings.
 
-Create a prism that focuses on index `i` of the focus array.
+Create a prism that focuses on the element type of the array `A`, or on
+a substring of length 1 if `A` is `string`.
 
-When a different type `B` is written through this optic, the resulting
-array will have the type `Array<A | B>`.
+When an element of a different type `B` is written to an array, the
+resulting array will have the type `Array<A | B>`.
+
+When writing to a string, only strings can be written. The length of the
+written string can be something else than 1.
+
+#### `head(): Prism<S, _, ElemType<A>>`
+
+Short for `index(0)`.
 
 #### `find(p: (e: ElemType<A>) => boolean): Prism<S, _, ElemType<A>>`
 
@@ -677,7 +688,25 @@ Create a getter that applies the function `f` to its focus.
 
 #### `compose<B>(other: Optic<A, _, B>): Optic<S, _, B>`
 
-`optic.compose(other)` is equivalent to `compose(optic, other)`.
+### Strings
+
+The following optics only work on strings.
+
+#### `chars(): Traversal<S, _, string>`
+
+Create a traversal that focuses on all the characters of the current
+string focus.
+
+When written through, characters can be removed by writing the empty
+string, or changed to longer strings.
+
+#### `words(): Traversal<S, _, string>`
+
+Create a traversal that focuses on all the words of the current string
+focus. Words are substrings that are separated by whitespace.
+
+When written through, words can be removed by writing the empty string,
+or changed to longer or shorter strings.
 
 ## Prior art
 

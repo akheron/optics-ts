@@ -1,4 +1,4 @@
-import { ElemType, Eq } from './utils'
+import { ElemType, Eq, JsonValue } from './utils'
 
 export interface HKT {
   0: unknown

@@ -1,8 +1,16 @@
 # Changelog
 
+## 1.1.0 (unreleased)
+
+- **New features**
+  - Change `.index()` to also work on strings
+  - Add `.head()` as an alias to `.index(0)`
+  - Add string optics: `.chars()`, `.words()`
+
 ## 1.0.0
 
 - **New features**
+
   - Add `Getter`, `AffineFold` and `Fold` optic classes
   - Add `.to()` method for creating Getters
 

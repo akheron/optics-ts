@@ -24,7 +24,7 @@
     "build": "rm -rf dist/ && tsc -p tsconfig.cjs.json && tsc -p tsconfig.esm.json",
     "test": "jest",
     "prepublishOnly": "yarn run build",
-    "doctoc": "doctoc README.md --title '## Table of Contents'",
+    "doctoc": "doctoc README.md --title '## Table of Contents' && prettier --write README.md",
     "generate-index": "ts-node ./scripts/generate-index.ts > src/index.ts && prettier --write src/index.ts"
   },
   "devDependencies": {

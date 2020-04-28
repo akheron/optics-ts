@@ -68,6 +68,11 @@ type Profunctor = any
 
 type OpticFn = (P: Profunctor, optic: OpticFn) => any
 
+const compose = (optic1: OpticFn, optic2: OpticFn): OpticFn => (
+  P: Profunctor,
+  optic: OpticFn
+) => optic1(P, optic2(P, optic))
+
 const eq = (_P: any, optic: any) => optic
 
 const iso = (there: (x: any) => any, back: (x: any) => any) => (
@@ -148,23 +153,33 @@ const mustMatch = prism(
   id
 )
 
-export const index = (i: number): OpticFn =>
+const index = (i: number): OpticFn =>
   compose(
     lens(
       (source: any[]) => (0 <= i && i < source.length ? source[i] : noMatch),
-      ([value, source]: [any, any[]]) => {
+      ([value, source]: [any, any[] | string]) => {
         if (value === noMatch) {
           return source
         }
-        const result = source.slice()
-        result[i] = value
-        return result
+        if (typeof source === 'string') {
+          if (i === 0) {
+            return value + source.substring(1)
+          }
+          if (i === source.length) {
+            return source.substring(0, i - 1) + value
+          }
+          return source.substring(0, i) + value + source.substring(i + 1)
+        } else {
+          const result = source.slice()
+          result[i] = value
+          return result
+        }
       }
     ),
     mustMatch
   )
 
-export const optional = prism(
+const optional = prism(
   (source: any) => (source === undefined ? Left(undefined) : Right(source)),
   id
 )
@@ -220,6 +235,25 @@ const filter = (predicate: (item: any) => boolean): any =>
       return result
     }
   )
+
+const chars = compose(
+  iso(
+    s => s.split(''),
+    a => a.join('')
+  ),
+  elems
+)
+
+const words = compose(
+  compose(
+    iso(
+      s => s.split(/\b/),
+      a => a.join('')
+    ),
+    elems
+  ),
+  when(s => !/\s+/.test(s))
+)
 
 /////////////////////////////////////////////////////////////////////////////
 
@@ -318,11 +352,6 @@ export const compositionType: CompositionType = {
   },
 }
 
-const compose = (optic1: OpticFn, optic2: OpticFn): OpticFn => (
-  P: Profunctor,
-  optic: OpticFn
-) => optic1(P, optic2(P, optic))
-
 export class Optic {
   constructor(public _tag: OpticType, public _ref: OpticFn) {}
 
@@ -393,6 +422,13 @@ export class Optic {
     )
   }
 
+  head(): Optic {
+    return new Optic(
+      compositionType[this._tag]['Prism'],
+      compose(this._ref, index(0))
+    )
+  }
+
   find(predicate: (item: any) => boolean): Optic {
     return new Optic(
       compositionType[this._tag]['Prism'],
@@ -418,6 +454,20 @@ export class Optic {
     return new Optic(
       compositionType[this._tag]['Prism'],
       compose(this._ref, when(predicate))
+    )
+  }
+
+  chars(): Optic {
+    return new Optic(
+      compositionType[this._tag]['Traversal'],
+      compose(this._ref, chars)
+    )
+  }
+
+  words(): Optic {
+    return new Optic(
+      compositionType[this._tag]['Traversal'],
+      compose(this._ref, words)
     )
   }
 }

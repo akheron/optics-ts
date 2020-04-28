@@ -4,7 +4,13 @@ const header = `\
 // This file is generated, do not edit! See ../scripts/generate-index.ts
 
 import * as I from './internals'
-import { ElemType, Eq, Simplify } from './utils'
+import {
+  ElemType,
+  Eq,
+  IfElse,
+  RequireString,
+  Simplify
+} from './utils'
 import {
   Adapt,
   Apply,
@@ -13,8 +19,8 @@ import {
   DisallowTypeChange,
   ElemUnion,
   Elems,
-  Id,
   HKT,
+  Id,
   Path2,
   Path3,
   Path4,
@@ -109,7 +115,14 @@ const prism = (composition: Composition) => `\
     g: (a: A) => a is U
   ) => ${composition('F', 'U')}
   guard<U extends A>(g: (a: A) => a is U): ${composition('Choice<A, U>', 'U')}
-  index(i: number): ${composition('ElemUnion<A>', 'ElemType<A>')}
+  index(i: number): IfElse<Eq<A, string>, ${composition(
+    'DisallowTypeChange<string>',
+    'string'
+  )}, ${composition('ElemUnion<A>', 'ElemType<A>')}>
+  head(): IfElse<Eq<A, string>, ${composition(
+    'DisallowTypeChange<string>',
+    'string'
+  )}, ${composition('ElemUnion<A>', 'ElemType<A>')}>
   find(
     predicate: (item: ElemType<A>) => boolean
   ): ${composition('ElemUnion<A>', 'ElemType<A>')}
@@ -118,6 +131,14 @@ const prism = (composition: Composition) => `\
 
 const traversal = (composition: Composition) => `\
   elems(): ${composition('Elems', 'ElemType<A>')}
+  chars(): RequireString<A, ${composition(
+    'DisallowTypeChange<string>',
+    'string'
+  )}>
+  words(): RequireString<A, ${composition(
+    'DisallowTypeChange<string>',
+    'string'
+  )}>
 `
 
 const getter = (composition: Composition) => `\

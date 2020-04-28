@@ -1,7 +1,7 @@
 // This file is generated, do not edit! See ../scripts/generate-index.ts
 
 import * as I from './internals'
-import { ElemType, Eq, Simplify } from './utils'
+import { ElemType, Eq, IfElse, RequireString, Simplify } from './utils'
 import {
   Adapt,
   Apply,
@@ -10,8 +10,8 @@ import {
   DisallowTypeChange,
   ElemUnion,
   Elems,
-  Id,
   HKT,
+  Id,
   Path2,
   Path3,
   Path4,
@@ -87,7 +87,18 @@ export interface Equivalence<S, T extends HKT, A> {
     g: (a: A) => a is U
   ) => Prism<S, Compose<T, F>, U>
   guard<U extends A>(g: (a: A) => a is U): Prism<S, Compose<T, Choice<A, U>>, U>
-  index(i: number): Prism<S, Compose<T, ElemUnion<A>>, ElemType<A>>
+  index(
+    i: number
+  ): IfElse<
+    Eq<A, string>,
+    Prism<S, Compose<T, DisallowTypeChange<string>>, string>,
+    Prism<S, Compose<T, ElemUnion<A>>, ElemType<A>>
+  >
+  head(): IfElse<
+    Eq<A, string>,
+    Prism<S, Compose<T, DisallowTypeChange<string>>, string>,
+    Prism<S, Compose<T, ElemUnion<A>>, ElemType<A>>
+  >
   find(
     predicate: (item: ElemType<A>) => boolean
   ): Prism<S, Compose<T, ElemUnion<A>>, ElemType<A>>
@@ -98,6 +109,14 @@ export interface Equivalence<S, T extends HKT, A> {
     optic: Traversal<A, T2, A2>
   ): Traversal<S, Compose<T, T2>, A2>
   elems(): Traversal<S, Compose<T, Elems>, ElemType<A>>
+  chars(): RequireString<
+    A,
+    Traversal<S, Compose<T, DisallowTypeChange<string>>, string>
+  >
+  words(): RequireString<
+    A,
+    Traversal<S, Compose<T, DisallowTypeChange<string>>, string>
+  >
 
   // Equivalence · Getter => Getter
   compose<A2>(optic: Getter<A, A2>): Getter<S, A2>
@@ -170,7 +189,18 @@ export interface Iso<S, T extends HKT, A> {
     g: (a: A) => a is U
   ) => Prism<S, Compose<T, F>, U>
   guard<U extends A>(g: (a: A) => a is U): Prism<S, Compose<T, Choice<A, U>>, U>
-  index(i: number): Prism<S, Compose<T, ElemUnion<A>>, ElemType<A>>
+  index(
+    i: number
+  ): IfElse<
+    Eq<A, string>,
+    Prism<S, Compose<T, DisallowTypeChange<string>>, string>,
+    Prism<S, Compose<T, ElemUnion<A>>, ElemType<A>>
+  >
+  head(): IfElse<
+    Eq<A, string>,
+    Prism<S, Compose<T, DisallowTypeChange<string>>, string>,
+    Prism<S, Compose<T, ElemUnion<A>>, ElemType<A>>
+  >
   find(
     predicate: (item: ElemType<A>) => boolean
   ): Prism<S, Compose<T, ElemUnion<A>>, ElemType<A>>
@@ -181,6 +211,14 @@ export interface Iso<S, T extends HKT, A> {
     optic: Traversal<A, T2, A2>
   ): Traversal<S, Compose<T, T2>, A2>
   elems(): Traversal<S, Compose<T, Elems>, ElemType<A>>
+  chars(): RequireString<
+    A,
+    Traversal<S, Compose<T, DisallowTypeChange<string>>, string>
+  >
+  words(): RequireString<
+    A,
+    Traversal<S, Compose<T, DisallowTypeChange<string>>, string>
+  >
 
   // Iso · Getter => Getter
   compose<A2>(optic: Getter<A, A2>): Getter<S, A2>
@@ -255,7 +293,18 @@ export interface Lens<S, T extends HKT, A> {
     g: (a: A) => a is U
   ) => Prism<S, Compose<T, F>, U>
   guard<U extends A>(g: (a: A) => a is U): Prism<S, Compose<T, Choice<A, U>>, U>
-  index(i: number): Prism<S, Compose<T, ElemUnion<A>>, ElemType<A>>
+  index(
+    i: number
+  ): IfElse<
+    Eq<A, string>,
+    Prism<S, Compose<T, DisallowTypeChange<string>>, string>,
+    Prism<S, Compose<T, ElemUnion<A>>, ElemType<A>>
+  >
+  head(): IfElse<
+    Eq<A, string>,
+    Prism<S, Compose<T, DisallowTypeChange<string>>, string>,
+    Prism<S, Compose<T, ElemUnion<A>>, ElemType<A>>
+  >
   find(
     predicate: (item: ElemType<A>) => boolean
   ): Prism<S, Compose<T, ElemUnion<A>>, ElemType<A>>
@@ -266,6 +315,14 @@ export interface Lens<S, T extends HKT, A> {
     optic: Traversal<A, T2, A2>
   ): Traversal<S, Compose<T, T2>, A2>
   elems(): Traversal<S, Compose<T, Elems>, ElemType<A>>
+  chars(): RequireString<
+    A,
+    Traversal<S, Compose<T, DisallowTypeChange<string>>, string>
+  >
+  words(): RequireString<
+    A,
+    Traversal<S, Compose<T, DisallowTypeChange<string>>, string>
+  >
 
   // Lens · Getter => Getter
   compose<A2>(optic: Getter<A, A2>): Getter<S, A2>
@@ -340,7 +397,18 @@ export interface Prism<S, T extends HKT, A> {
     g: (a: A) => a is U
   ) => Prism<S, Compose<T, F>, U>
   guard<U extends A>(g: (a: A) => a is U): Prism<S, Compose<T, Choice<A, U>>, U>
-  index(i: number): Prism<S, Compose<T, ElemUnion<A>>, ElemType<A>>
+  index(
+    i: number
+  ): IfElse<
+    Eq<A, string>,
+    Prism<S, Compose<T, DisallowTypeChange<string>>, string>,
+    Prism<S, Compose<T, ElemUnion<A>>, ElemType<A>>
+  >
+  head(): IfElse<
+    Eq<A, string>,
+    Prism<S, Compose<T, DisallowTypeChange<string>>, string>,
+    Prism<S, Compose<T, ElemUnion<A>>, ElemType<A>>
+  >
   find(
     predicate: (item: ElemType<A>) => boolean
   ): Prism<S, Compose<T, ElemUnion<A>>, ElemType<A>>
@@ -351,6 +419,14 @@ export interface Prism<S, T extends HKT, A> {
     optic: Traversal<A, T2, A2>
   ): Traversal<S, Compose<T, T2>, A2>
   elems(): Traversal<S, Compose<T, Elems>, ElemType<A>>
+  chars(): RequireString<
+    A,
+    Traversal<S, Compose<T, DisallowTypeChange<string>>, string>
+  >
+  words(): RequireString<
+    A,
+    Traversal<S, Compose<T, DisallowTypeChange<string>>, string>
+  >
 
   // Prism · Getter => AffineFold
   compose<A2>(optic: Getter<A, A2>): AffineFold<S, A2>
@@ -433,7 +509,18 @@ export interface Traversal<S, T extends HKT, A> {
   guard<U extends A>(
     g: (a: A) => a is U
   ): Traversal<S, Compose<T, Choice<A, U>>, U>
-  index(i: number): Traversal<S, Compose<T, ElemUnion<A>>, ElemType<A>>
+  index(
+    i: number
+  ): IfElse<
+    Eq<A, string>,
+    Traversal<S, Compose<T, DisallowTypeChange<string>>, string>,
+    Traversal<S, Compose<T, ElemUnion<A>>, ElemType<A>>
+  >
+  head(): IfElse<
+    Eq<A, string>,
+    Traversal<S, Compose<T, DisallowTypeChange<string>>, string>,
+    Traversal<S, Compose<T, ElemUnion<A>>, ElemType<A>>
+  >
   find(
     predicate: (item: ElemType<A>) => boolean
   ): Traversal<S, Compose<T, ElemUnion<A>>, ElemType<A>>
@@ -444,6 +531,14 @@ export interface Traversal<S, T extends HKT, A> {
     optic: Traversal<A, T2, A2>
   ): Traversal<S, Compose<T, T2>, A2>
   elems(): Traversal<S, Compose<T, Elems>, ElemType<A>>
+  chars(): RequireString<
+    A,
+    Traversal<S, Compose<T, DisallowTypeChange<string>>, string>
+  >
+  words(): RequireString<
+    A,
+    Traversal<S, Compose<T, DisallowTypeChange<string>>, string>
+  >
 
   // Traversal · Getter => Fold
   compose<A2>(optic: Getter<A, A2>): Fold<S, A2>
@@ -503,13 +598,22 @@ export interface Getter<S, A> {
     g: (a: A) => a is U
   ) => AffineFold<S, U>
   guard<U extends A>(g: (a: A) => a is U): AffineFold<S, U>
-  index(i: number): AffineFold<S, ElemType<A>>
+  index(
+    i: number
+  ): IfElse<Eq<A, string>, AffineFold<S, string>, AffineFold<S, ElemType<A>>>
+  head(): IfElse<
+    Eq<A, string>,
+    AffineFold<S, string>,
+    AffineFold<S, ElemType<A>>
+  >
   find(predicate: (item: ElemType<A>) => boolean): AffineFold<S, ElemType<A>>
   when(predicate: (item: A) => boolean): AffineFold<S, A>
 
   // Getter · Traversal => Fold
   compose<T2 extends HKT, A2>(optic: Traversal<A, T2, A2>): Fold<S, A2>
   elems(): Fold<S, ElemType<A>>
+  chars(): RequireString<A, Fold<S, string>>
+  words(): RequireString<A, Fold<S, string>>
 
   // Getter · Getter => Getter
   compose<A2>(optic: Getter<A, A2>): Getter<S, A2>
@@ -569,13 +673,22 @@ export interface AffineFold<S, A> {
     g: (a: A) => a is U
   ) => AffineFold<S, U>
   guard<U extends A>(g: (a: A) => a is U): AffineFold<S, U>
-  index(i: number): AffineFold<S, ElemType<A>>
+  index(
+    i: number
+  ): IfElse<Eq<A, string>, AffineFold<S, string>, AffineFold<S, ElemType<A>>>
+  head(): IfElse<
+    Eq<A, string>,
+    AffineFold<S, string>,
+    AffineFold<S, ElemType<A>>
+  >
   find(predicate: (item: ElemType<A>) => boolean): AffineFold<S, ElemType<A>>
   when(predicate: (item: A) => boolean): AffineFold<S, A>
 
   // AffineFold · Traversal => Fold
   compose<T2 extends HKT, A2>(optic: Traversal<A, T2, A2>): Fold<S, A2>
   elems(): Fold<S, ElemType<A>>
+  chars(): RequireString<A, Fold<S, string>>
+  words(): RequireString<A, Fold<S, string>>
 
   // AffineFold · Getter => AffineFold
   compose<A2>(optic: Getter<A, A2>): AffineFold<S, A2>
@@ -633,13 +746,16 @@ export interface Fold<S, A> {
   optional(): Fold<S, Exclude<A, undefined>>
   guard_<F extends HKT>(): <U extends A>(g: (a: A) => a is U) => Fold<S, U>
   guard<U extends A>(g: (a: A) => a is U): Fold<S, U>
-  index(i: number): Fold<S, ElemType<A>>
+  index(i: number): IfElse<Eq<A, string>, Fold<S, string>, Fold<S, ElemType<A>>>
+  head(): IfElse<Eq<A, string>, Fold<S, string>, Fold<S, ElemType<A>>>
   find(predicate: (item: ElemType<A>) => boolean): Fold<S, ElemType<A>>
   when(predicate: (item: A) => boolean): Fold<S, A>
 
   // Fold · Traversal => Fold
   compose<T2 extends HKT, A2>(optic: Traversal<A, T2, A2>): Fold<S, A2>
   elems(): Fold<S, ElemType<A>>
+  chars(): RequireString<A, Fold<S, string>>
+  words(): RequireString<A, Fold<S, string>>
 
   // Fold · Getter => Fold
   compose<A2>(optic: Getter<A, A2>): Fold<S, A2>
