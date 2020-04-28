@@ -236,6 +236,22 @@ const filter = (predicate: (item: any) => boolean): any =>
     }
   )
 
+const prependTo = lens(
+  (source: any[]) => undefined,
+  ([value, source]: [any, any[]]) => {
+    if (value === undefined) return source
+    return [value, ...source]
+  }
+)
+
+const appendTo = lens(
+  (source: any[]) => undefined,
+  ([value, source]: [any, any[]]) => {
+    if (value === undefined) return source
+    return [...source, value]
+  }
+)
+
 const chars = compose(
   iso(
     s => s.split(''),
@@ -394,6 +410,20 @@ export class Optic {
     return new Optic(
       compositionType[this._tag]['Lens'],
       compose(this._ref, filter(predicate))
+    )
+  }
+
+  prependTo(): any {
+    return new Optic(
+      compositionType[this._tag]['Lens'],
+      compose(this._ref, prependTo)
+    )
+  }
+
+  appendTo(): any {
+    return new Optic(
+      compositionType[this._tag]['Lens'],
+      compose(this._ref, appendTo)
     )
   }
 

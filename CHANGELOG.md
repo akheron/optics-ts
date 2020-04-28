@@ -6,6 +6,7 @@
   - Change `.index()` to also work on strings
   - Add `.head()` as an alias to `.index(0)`
   - Add string optics: `.chars()`, `.words()`
+  - Add `.prependTo()` and `.appendTo`()
 
 ## 1.0.0
 

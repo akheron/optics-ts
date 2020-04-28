@@ -107,6 +107,14 @@ const lens = (composition: Composition) => `\
   filter(
     predicate: (item: ElemType<A>) => boolean
   ): ${composition('Union<A>', 'A')}
+  prependTo(): ${composition(
+    'ElemUnion<A, undefined>',
+    'ElemType<A> | undefined'
+  )}
+  appendTo(): ${composition(
+    'ElemUnion<A, undefined>',
+    'ElemType<A> | undefined'
+  )}
 `
 
 const prism = (composition: Composition) => `\

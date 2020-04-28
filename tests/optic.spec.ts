@@ -886,6 +886,39 @@ describe('traversal/when', () => {
   })
 })
 
+describe('prependTo & appendTo', () => {
+  const prepend = O.optic_<Source>().prependTo()
+  const append = O.optic_<Source>().appendTo()
+
+  type Source = string[]
+  const source = ['foo', 'bar']
+
+  it('read', () => {
+    const result1: string | undefined = O.get(prepend)(source)
+    expect(result1).toEqual(undefined)
+    const result2: string | undefined = O.get(append)(source)
+    expect(result2).toEqual(undefined)
+  })
+  it('write - monomorphic', () => {
+    const result1: Source = O.set(prepend)('abc')(source)
+    expect(result1).toEqual(['abc', 'foo', 'bar'])
+    const result2: Source = O.set(prepend)(undefined)(source)
+    expect(result2).toEqual(['foo', 'bar'])
+    const result3: Source = O.set(append)('abc')(source)
+    expect(result3).toEqual(['foo', 'bar', 'abc'])
+    const result4: Source = O.set(append)('abc')(source)
+    expect(result4).toEqual(['foo', 'bar', 'abc'])
+  })
+
+  type Target = (string | number)[]
+  it('write - polymorphic', () => {
+    const result1: Target = O.set(prepend)(42)(source)
+    expect(result1).toEqual([42, 'foo', 'bar'])
+    const result2: Target = O.set(append)(42)(source)
+    expect(result2).toEqual(['foo', 'bar', 42])
+  })
+})
+
 describe('strings', () => {
   describe('chars', () => {
     const traversal = O.optic<string>().chars()

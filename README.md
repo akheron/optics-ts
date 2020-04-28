@@ -602,6 +602,21 @@ O.set(monoLens)({ quux: null })(data)
 // ==> DisallowedTypeChange
 ```
 
+#### `prependTo(): Lens<S, _, ElemType<A> | undefined>`
+
+#### `appendTo(): Lens<S, _, ElemType<A> | undefined>`
+
+Only works on arrays.
+
+Create a lens that focuses on the part _before the first element_ or
+_after the last element_ of the focus array. When written through,
+prepends or appends the value to the array. When read through, returns
+undefined (as there's nothing before or after the array).
+
+If `undefined` is written, the array is not changed. When an element of
+a different type `B` is written, the resulting array will have the type
+`Array<A | B>`.
+
 ### Prisms
 
 Prisms have the type `Prism<S, T, A>`. In the following, we omit the
