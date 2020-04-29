@@ -211,8 +211,8 @@ const composeFunction = (optic: OpticType, composee: OpticType) => {
     ? ['S, A', `optic1: ${optic}<S, A>`]
     : ['S, T extends HKT, A', `optic1: ${optic}<S, T, A>`]
   const [typeSig2, optic2] = isReadOnly(composee)
-    ? ['A2', `optic2: ${composee}<S, A>`]
-    : ['T2 extends HKT, A2', `optic2: ${composee}<S, T2, A2>`]
+    ? ['A2', `optic2: ${composee}<A, A2>`]
+    : ['T2 extends HKT, A2', `optic2: ${composee}<A, T2, A2>`]
   const composition = makeComposition(optic, composee)
 
   return `compose<${typeSig1}, ${typeSig2}>(${optic1}, ${optic2}): ${composition(
