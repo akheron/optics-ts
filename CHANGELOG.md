@@ -6,7 +6,8 @@
   - Change `.index()` to also work on strings
   - Add `.head()` as an alias to `.index(0)`
   - Add string optics: `.chars()`, `.words()`
-  - Add `.prependTo()` and `.appendTo`()
+  - Add `Setter` optic class
+  - Add setters `.prependTo()` and `.appendTo()`
 - **Fixes**
   - Top level `compose()` signatures were totally screwed up
 

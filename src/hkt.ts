@@ -31,8 +31,8 @@ export interface Elems extends HKT {
   0: Array<this[1]>
 }
 
-export interface ElemUnion<A, E = never> extends HKT {
-  0: Array<ElemType<A> | Exclude<this[1], E>>
+export interface ElemUnion<A> extends HKT {
+  0: Array<ElemType<A> | this[1]>
 }
 
 export interface Prop<S, K extends keyof S> extends HKT {

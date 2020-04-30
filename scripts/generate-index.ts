@@ -49,14 +49,14 @@ type Composition = (typeOp: string, resultType: string) => string
 const makeComposition = (
   optic: OpticType,
   composee: OpticType
-): Composition => {
+): Composition | undefined => {
   const composition = compositionType[optic][composee]
+  if (composition === undefined) return undefined
   if (isReadOnly(composition)) {
     return (_, resultType) => `${composition}<S, ${resultType}>`
-  } else {
-    return (typeOp, resultType) =>
-      `${composition}<S, Compose<T, ${typeOp}>, ${resultType}>`
   }
+  return (typeOp, resultType) =>
+    `${composition}<S, Compose<T, ${typeOp}>, ${resultType}>`
 }
 
 const composeMethod = (composee: OpticType, composition: Composition) =>
@@ -107,14 +107,6 @@ const lens = (composition: Composition) => `\
   filter(
     predicate: (item: ElemType<A>) => boolean
   ): ${composition('Union<A>', 'A')}
-  prependTo(): ${composition(
-    'ElemUnion<A, undefined>',
-    'ElemType<A> | undefined'
-  )}
-  appendTo(): ${composition(
-    'ElemUnion<A, undefined>',
-    'ElemType<A> | undefined'
-  )}
 `
 
 const prism = (composition: Composition) => `\
@@ -157,6 +149,11 @@ const affineFold = () => ``
 
 const fold = () => ``
 
+const setter = (composition: Composition) => `\
+  prependTo(): ${composition('ElemUnion<A>', 'ElemType<A>')}
+  appendTo(): ${composition('ElemUnion<A>', 'ElemType<A>')}
+`
+
 const opticNames: OpticType[] = [
   'Equivalence',
   'Iso',
@@ -166,6 +163,7 @@ const opticNames: OpticType[] = [
   'Getter',
   'AffineFold',
   'Fold',
+  'Setter',
 ]
 
 const methodGeneratorMap: Record<
@@ -180,6 +178,7 @@ const methodGeneratorMap: Record<
   Getter: getter,
   AffineFold: affineFold,
   Fold: fold,
+  Setter: setter,
 }
 
 const generateOpticInterface = (optic: OpticType) => {
@@ -191,6 +190,8 @@ export interface ${optic}${typeSig} {
 ${opticNames
   .map(composee => {
     const composition = makeComposition(optic, composee)
+    if (composition === undefined) return ''
+
     const opticMethods = methodGeneratorMap[composee]
     return (
       opticHeader(optic, composee) +
@@ -206,7 +207,7 @@ ${opticNames
 const generateOpticInterfaces = () =>
   opticNames.map(optic => generateOpticInterface(optic)).join('\n')
 
-const composeFunction = (optic: OpticType, composee: OpticType) => {
+const composeFunction = (optic: OpticType, composee: OpticType): string => {
   const [typeSig1, optic1] = isReadOnly(optic)
     ? ['S, A', `optic1: ${optic}<S, A>`]
     : ['S, T extends HKT, A', `optic1: ${optic}<S, T, A>`]
@@ -214,35 +215,30 @@ const composeFunction = (optic: OpticType, composee: OpticType) => {
     ? ['A2', `optic2: ${composee}<A, A2>`]
     : ['T2 extends HKT, A2', `optic2: ${composee}<A, T2, A2>`]
   const composition = makeComposition(optic, composee)
-
-  return `compose<${typeSig1}, ${typeSig2}>(${optic1}, ${optic2}): ${composition(
+  if (composition === undefined) return ''
+  return `\
+// ${optic} · ${composee} => ${compositionType[optic][composee]}
+export function compose<${typeSig1}, ${typeSig2}>(${optic1}, ${optic2}): ${composition(
     'T2',
     'A2'
-  )}`
+  )}
+`
 }
 
 const generateComposeSignatures = () =>
   opticNames
     .map(optic =>
-      opticNames
-        .map(
-          composee => `\
-// ${optic} · ${composee} => ${compositionType[optic][composee]}
-export function ${composeFunction(optic, composee)}`
-        )
-        .join('\n')
+      opticNames.map(composee => composeFunction(optic, composee)).join('')
     )
-    .join('\n')
+    .join('')
 
 const composeImpl = `\
 export function compose(optic1: any, optic2: any) {
   return optic1.compose(optic2)
-}
-`
+}`
 
 const generateComposeFn = () => `
-${generateComposeSignatures()}
-${composeImpl}
+${generateComposeSignatures()}${composeImpl}
 `
 
 const topLevelFunctions = `\
@@ -290,6 +286,7 @@ export function set<S, T extends HKT, A>(
     | Lens<S, T, A>
     | Prism<S, T, A>
     | Traversal<S, T, A>
+    | Setter<S, T, A>
 ): <B>(value: B) => (source: S) => Simplify<S, Apply<T, B>> {
   return value => source => I.set((optic as any)._ref, value, source)
 }

@@ -280,8 +280,11 @@ export type OpticType =
   | 'Getter'
   | 'AffineFold'
   | 'Fold'
+  | 'Setter'
 
-type CompositionType = { [T in OpticType]: { [U in OpticType]: OpticType } }
+type CompositionType = {
+  [T in OpticType]: { [U in OpticType]: OpticType | undefined }
+}
 
 export const compositionType: CompositionType = {
   Equivalence: {
@@ -293,6 +296,7 @@ export const compositionType: CompositionType = {
     Getter: 'Getter',
     AffineFold: 'AffineFold',
     Fold: 'Fold',
+    Setter: 'Setter',
   },
   Iso: {
     Equivalence: 'Iso',
@@ -303,6 +307,7 @@ export const compositionType: CompositionType = {
     Getter: 'Getter',
     AffineFold: 'AffineFold',
     Fold: 'Fold',
+    Setter: 'Setter',
   },
   Lens: {
     Equivalence: 'Lens',
@@ -313,6 +318,7 @@ export const compositionType: CompositionType = {
     Getter: 'Getter',
     AffineFold: 'AffineFold',
     Fold: 'Fold',
+    Setter: 'Setter',
   },
   Prism: {
     Equivalence: 'Prism',
@@ -323,6 +329,7 @@ export const compositionType: CompositionType = {
     Getter: 'AffineFold',
     AffineFold: 'AffineFold',
     Fold: 'Fold',
+    Setter: 'Setter',
   },
   Traversal: {
     Equivalence: 'Traversal',
@@ -333,6 +340,7 @@ export const compositionType: CompositionType = {
     Getter: 'Fold',
     AffineFold: 'Fold',
     Fold: 'Fold',
+    Setter: 'Setter',
   },
   Getter: {
     Equivalence: 'Getter',
@@ -343,6 +351,7 @@ export const compositionType: CompositionType = {
     Getter: 'Getter',
     AffineFold: 'AffineFold',
     Fold: 'Fold',
+    Setter: undefined,
   },
   AffineFold: {
     Equivalence: 'AffineFold',
@@ -353,6 +362,7 @@ export const compositionType: CompositionType = {
     Getter: 'AffineFold',
     AffineFold: 'AffineFold',
     Fold: 'Fold',
+    Setter: undefined,
   },
   Fold: {
     Equivalence: 'Fold',
@@ -363,6 +373,18 @@ export const compositionType: CompositionType = {
     Getter: 'Fold',
     AffineFold: 'Fold',
     Fold: 'Fold',
+    Setter: undefined,
+  },
+  Setter: {
+    Equivalence: undefined,
+    Iso: undefined,
+    Lens: undefined,
+    Prism: undefined,
+    Traversal: undefined,
+    Getter: undefined,
+    AffineFold: undefined,
+    Fold: undefined,
+    Setter: undefined,
   },
 }
 
@@ -371,63 +393,49 @@ export class Optic {
 
   compose(other: Optic): Optic {
     return new Optic(
-      compositionType[this._tag][other._tag],
+      compositionType[this._tag][other._tag]!,
       compose(this._ref, other._ref)
     )
   }
 
   iso(there: (x: any) => any, back: (x: any) => any): Optic {
     return new Optic(
-      compositionType[this._tag]['Iso'],
+      compositionType[this._tag]['Iso']!,
       compose(this._ref, iso(there, back))
     )
   }
 
   prop(key: string): Optic {
     return new Optic(
-      compositionType[this._tag]['Lens'],
+      compositionType[this._tag]['Lens']!,
       compose(this._ref, prop(key))
     )
   }
 
   path(keys: string[]): Optic {
     return new Optic(
-      compositionType[this._tag]['Lens'],
+      compositionType[this._tag]['Lens']!,
       keys.reduce((ref, key) => compose(ref, prop(key)), this._ref)
     )
   }
 
   pick(keys: string[]): Optic {
     return new Optic(
-      compositionType[this._tag]['Lens'],
+      compositionType[this._tag]['Lens']!,
       compose(this._ref, pick(keys))
     )
   }
 
   filter(predicate: (item: any) => boolean): any {
     return new Optic(
-      compositionType[this._tag]['Lens'],
+      compositionType[this._tag]['Lens']!,
       compose(this._ref, filter(predicate))
-    )
-  }
-
-  prependTo(): any {
-    return new Optic(
-      compositionType[this._tag]['Lens'],
-      compose(this._ref, prependTo)
-    )
-  }
-
-  appendTo(): any {
-    return new Optic(
-      compositionType[this._tag]['Lens'],
-      compose(this._ref, appendTo)
     )
   }
 
   optional(): Optic {
     return new Optic(
-      compositionType[this._tag]['Prism'],
+      compositionType[this._tag]['Prism']!,
       compose(this._ref, optional)
     )
   }
@@ -438,65 +446,73 @@ export class Optic {
 
   guard(fn: Function): Optic {
     return new Optic(
-      compositionType[this._tag]['Prism'],
+      compositionType[this._tag]['Prism']!,
       compose(this._ref, guard(fn as any))
     )
   }
 
   index(i: number): Optic {
     return new Optic(
-      compositionType[this._tag]['Prism'],
+      compositionType[this._tag]['Prism']!,
       compose(this._ref, index(i))
     )
   }
 
   head(): Optic {
     return new Optic(
-      compositionType[this._tag]['Prism'],
+      compositionType[this._tag]['Prism']!,
       compose(this._ref, index(0))
     )
   }
 
   find(predicate: (item: any) => boolean): Optic {
     return new Optic(
-      compositionType[this._tag]['Prism'],
+      compositionType[this._tag]['Prism']!,
       compose(this._ref, find(predicate))
     )
   }
 
   elems(): Optic {
     return new Optic(
-      compositionType[this._tag]['Traversal'],
+      compositionType[this._tag]['Traversal']!,
       compose(this._ref, elems)
     )
   }
 
   to(fn: Function): Optic {
     return new Optic(
-      compositionType[this._tag]['Getter'],
+      compositionType[this._tag]['Getter']!,
       compose(this._ref, to(fn))
     )
   }
 
   when(predicate: (elem: any) => boolean): Optic {
     return new Optic(
-      compositionType[this._tag]['Prism'],
+      compositionType[this._tag]['Prism']!,
       compose(this._ref, when(predicate))
     )
   }
 
   chars(): Optic {
     return new Optic(
-      compositionType[this._tag]['Traversal'],
+      compositionType[this._tag]['Traversal']!,
       compose(this._ref, chars)
     )
   }
 
   words(): Optic {
     return new Optic(
-      compositionType[this._tag]['Traversal'],
+      compositionType[this._tag]['Traversal']!,
       compose(this._ref, words)
     )
+  }
+
+  prependTo(): any {
+    return new Optic('Setter', compose(this._ref, prependTo))
+  }
+
+  appendTo(): any {
+    return new Optic('Setter', compose(this._ref, appendTo))
   }
 }
 

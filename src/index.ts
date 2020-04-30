@@ -77,16 +77,6 @@ export interface Equivalence<S, T extends HKT, A> {
   filter(
     predicate: (item: ElemType<A>) => boolean
   ): Lens<S, Compose<T, Union<A>>, A>
-  prependTo(): Lens<
-    S,
-    Compose<T, ElemUnion<A, undefined>>,
-    ElemType<A> | undefined
-  >
-  appendTo(): Lens<
-    S,
-    Compose<T, ElemUnion<A, undefined>>,
-    ElemType<A> | undefined
-  >
 
   // Equivalence · Prism => Prism
   compose<T2 extends HKT, A2>(
@@ -137,6 +127,13 @@ export interface Equivalence<S, T extends HKT, A> {
 
   // Equivalence · Fold => Fold
   compose<A2>(optic: Fold<A, A2>): Fold<S, A2>
+
+  // Equivalence · Setter => Setter
+  compose<T2 extends HKT, A2>(
+    optic: Setter<A, T2, A2>
+  ): Setter<S, Compose<T, T2>, A2>
+  prependTo(): Setter<S, Compose<T, ElemUnion<A>>, ElemType<A>>
+  appendTo(): Setter<S, Compose<T, ElemUnion<A>>, ElemType<A>>
 }
 
 export interface Iso<S, T extends HKT, A> {
@@ -189,16 +186,6 @@ export interface Iso<S, T extends HKT, A> {
   filter(
     predicate: (item: ElemType<A>) => boolean
   ): Lens<S, Compose<T, Union<A>>, A>
-  prependTo(): Lens<
-    S,
-    Compose<T, ElemUnion<A, undefined>>,
-    ElemType<A> | undefined
-  >
-  appendTo(): Lens<
-    S,
-    Compose<T, ElemUnion<A, undefined>>,
-    ElemType<A> | undefined
-  >
 
   // Iso · Prism => Prism
   compose<T2 extends HKT, A2>(
@@ -249,6 +236,13 @@ export interface Iso<S, T extends HKT, A> {
 
   // Iso · Fold => Fold
   compose<A2>(optic: Fold<A, A2>): Fold<S, A2>
+
+  // Iso · Setter => Setter
+  compose<T2 extends HKT, A2>(
+    optic: Setter<A, T2, A2>
+  ): Setter<S, Compose<T, T2>, A2>
+  prependTo(): Setter<S, Compose<T, ElemUnion<A>>, ElemType<A>>
+  appendTo(): Setter<S, Compose<T, ElemUnion<A>>, ElemType<A>>
 }
 
 export interface Lens<S, T extends HKT, A> {
@@ -303,16 +297,6 @@ export interface Lens<S, T extends HKT, A> {
   filter(
     predicate: (item: ElemType<A>) => boolean
   ): Lens<S, Compose<T, Union<A>>, A>
-  prependTo(): Lens<
-    S,
-    Compose<T, ElemUnion<A, undefined>>,
-    ElemType<A> | undefined
-  >
-  appendTo(): Lens<
-    S,
-    Compose<T, ElemUnion<A, undefined>>,
-    ElemType<A> | undefined
-  >
 
   // Lens · Prism => Prism
   compose<T2 extends HKT, A2>(
@@ -363,6 +347,13 @@ export interface Lens<S, T extends HKT, A> {
 
   // Lens · Fold => Fold
   compose<A2>(optic: Fold<A, A2>): Fold<S, A2>
+
+  // Lens · Setter => Setter
+  compose<T2 extends HKT, A2>(
+    optic: Setter<A, T2, A2>
+  ): Setter<S, Compose<T, T2>, A2>
+  prependTo(): Setter<S, Compose<T, ElemUnion<A>>, ElemType<A>>
+  appendTo(): Setter<S, Compose<T, ElemUnion<A>>, ElemType<A>>
 }
 
 export interface Prism<S, T extends HKT, A> {
@@ -417,16 +408,6 @@ export interface Prism<S, T extends HKT, A> {
   filter(
     predicate: (item: ElemType<A>) => boolean
   ): Prism<S, Compose<T, Union<A>>, A>
-  prependTo(): Prism<
-    S,
-    Compose<T, ElemUnion<A, undefined>>,
-    ElemType<A> | undefined
-  >
-  appendTo(): Prism<
-    S,
-    Compose<T, ElemUnion<A, undefined>>,
-    ElemType<A> | undefined
-  >
 
   // Prism · Prism => Prism
   compose<T2 extends HKT, A2>(
@@ -477,6 +458,13 @@ export interface Prism<S, T extends HKT, A> {
 
   // Prism · Fold => Fold
   compose<A2>(optic: Fold<A, A2>): Fold<S, A2>
+
+  // Prism · Setter => Setter
+  compose<T2 extends HKT, A2>(
+    optic: Setter<A, T2, A2>
+  ): Setter<S, Compose<T, T2>, A2>
+  prependTo(): Setter<S, Compose<T, ElemUnion<A>>, ElemType<A>>
+  appendTo(): Setter<S, Compose<T, ElemUnion<A>>, ElemType<A>>
 }
 
 export interface Traversal<S, T extends HKT, A> {
@@ -537,16 +525,6 @@ export interface Traversal<S, T extends HKT, A> {
   filter(
     predicate: (item: ElemType<A>) => boolean
   ): Traversal<S, Compose<T, Union<A>>, A>
-  prependTo(): Traversal<
-    S,
-    Compose<T, ElemUnion<A, undefined>>,
-    ElemType<A> | undefined
-  >
-  appendTo(): Traversal<
-    S,
-    Compose<T, ElemUnion<A, undefined>>,
-    ElemType<A> | undefined
-  >
 
   // Traversal · Prism => Traversal
   compose<T2 extends HKT, A2>(
@@ -599,6 +577,13 @@ export interface Traversal<S, T extends HKT, A> {
 
   // Traversal · Fold => Fold
   compose<A2>(optic: Fold<A, A2>): Fold<S, A2>
+
+  // Traversal · Setter => Setter
+  compose<T2 extends HKT, A2>(
+    optic: Setter<A, T2, A2>
+  ): Setter<S, Compose<T, T2>, A2>
+  prependTo(): Setter<S, Compose<T, ElemUnion<A>>, ElemType<A>>
+  appendTo(): Setter<S, Compose<T, ElemUnion<A>>, ElemType<A>>
 }
 
 export interface Getter<S, A> {
@@ -640,8 +625,6 @@ export interface Getter<S, A> {
   path<K1 extends keyof A>(path: [K1]): Getter<S, A[K1]>
   pick<K extends keyof A>(keys: K[]): Getter<S, Pick<A, K>>
   filter(predicate: (item: ElemType<A>) => boolean): Getter<S, A>
-  prependTo(): Getter<S, ElemType<A> | undefined>
-  appendTo(): Getter<S, ElemType<A> | undefined>
 
   // Getter · Prism => AffineFold
   compose<T2 extends HKT, A2>(optic: Prism<A, T2, A2>): AffineFold<S, A2>
@@ -717,8 +700,6 @@ export interface AffineFold<S, A> {
   path<K1 extends keyof A>(path: [K1]): AffineFold<S, A[K1]>
   pick<K extends keyof A>(keys: K[]): AffineFold<S, Pick<A, K>>
   filter(predicate: (item: ElemType<A>) => boolean): AffineFold<S, A>
-  prependTo(): AffineFold<S, ElemType<A> | undefined>
-  appendTo(): AffineFold<S, ElemType<A> | undefined>
 
   // AffineFold · Prism => AffineFold
   compose<T2 extends HKT, A2>(optic: Prism<A, T2, A2>): AffineFold<S, A2>
@@ -794,8 +775,6 @@ export interface Fold<S, A> {
   path<K1 extends keyof A>(path: [K1]): Fold<S, A[K1]>
   pick<K extends keyof A>(keys: K[]): Fold<S, Pick<A, K>>
   filter(predicate: (item: ElemType<A>) => boolean): Fold<S, A>
-  prependTo(): Fold<S, ElemType<A> | undefined>
-  appendTo(): Fold<S, ElemType<A> | undefined>
 
   // Fold · Prism => Fold
   compose<T2 extends HKT, A2>(optic: Prism<A, T2, A2>): Fold<S, A2>
@@ -822,6 +801,10 @@ export interface Fold<S, A> {
 
   // Fold · Fold => Fold
   compose<A2>(optic: Fold<A, A2>): Fold<S, A2>
+}
+
+export interface Setter<S, T extends HKT, A> {
+  _tag: 'Setter'
 }
 
 // Equivalence · Equivalence => Equivalence
@@ -864,6 +847,11 @@ export function compose<S, T extends HKT, A, A2>(
   optic1: Equivalence<S, T, A>,
   optic2: Fold<A, A2>
 ): Fold<S, A2>
+// Equivalence · Setter => Setter
+export function compose<S, T extends HKT, A, T2 extends HKT, A2>(
+  optic1: Equivalence<S, T, A>,
+  optic2: Setter<A, T2, A2>
+): Setter<S, Compose<T, T2>, A2>
 // Iso · Equivalence => Iso
 export function compose<S, T extends HKT, A, T2 extends HKT, A2>(
   optic1: Iso<S, T, A>,
@@ -904,6 +892,11 @@ export function compose<S, T extends HKT, A, A2>(
   optic1: Iso<S, T, A>,
   optic2: Fold<A, A2>
 ): Fold<S, A2>
+// Iso · Setter => Setter
+export function compose<S, T extends HKT, A, T2 extends HKT, A2>(
+  optic1: Iso<S, T, A>,
+  optic2: Setter<A, T2, A2>
+): Setter<S, Compose<T, T2>, A2>
 // Lens · Equivalence => Lens
 export function compose<S, T extends HKT, A, T2 extends HKT, A2>(
   optic1: Lens<S, T, A>,
@@ -944,6 +937,11 @@ export function compose<S, T extends HKT, A, A2>(
   optic1: Lens<S, T, A>,
   optic2: Fold<A, A2>
 ): Fold<S, A2>
+// Lens · Setter => Setter
+export function compose<S, T extends HKT, A, T2 extends HKT, A2>(
+  optic1: Lens<S, T, A>,
+  optic2: Setter<A, T2, A2>
+): Setter<S, Compose<T, T2>, A2>
 // Prism · Equivalence => Prism
 export function compose<S, T extends HKT, A, T2 extends HKT, A2>(
   optic1: Prism<S, T, A>,
@@ -984,6 +982,11 @@ export function compose<S, T extends HKT, A, A2>(
   optic1: Prism<S, T, A>,
   optic2: Fold<A, A2>
 ): Fold<S, A2>
+// Prism · Setter => Setter
+export function compose<S, T extends HKT, A, T2 extends HKT, A2>(
+  optic1: Prism<S, T, A>,
+  optic2: Setter<A, T2, A2>
+): Setter<S, Compose<T, T2>, A2>
 // Traversal · Equivalence => Traversal
 export function compose<S, T extends HKT, A, T2 extends HKT, A2>(
   optic1: Traversal<S, T, A>,
@@ -1024,6 +1027,11 @@ export function compose<S, T extends HKT, A, A2>(
   optic1: Traversal<S, T, A>,
   optic2: Fold<A, A2>
 ): Fold<S, A2>
+// Traversal · Setter => Setter
+export function compose<S, T extends HKT, A, T2 extends HKT, A2>(
+  optic1: Traversal<S, T, A>,
+  optic2: Setter<A, T2, A2>
+): Setter<S, Compose<T, T2>, A2>
 // Getter · Equivalence => Getter
 export function compose<S, A, T2 extends HKT, A2>(
   optic1: Getter<S, A>,
@@ -1196,6 +1204,7 @@ export function set<S, T extends HKT, A>(
     | Lens<S, T, A>
     | Prism<S, T, A>
     | Traversal<S, T, A>
+    | Setter<S, T, A>
 ): <B>(value: B) => (source: S) => Simplify<S, Apply<T, B>> {
   return value => source => I.set((optic as any)._ref, value, source)
 }

@@ -15,7 +15,7 @@ TypeScript:
   No `any`, ever.
 
 `optics-ts` supports equivalences, isomorphisms, lenses, prisms,
-traversals, getters, affine folds and folds.
+traversals, getters, affine folds, folds and setters.
 
 <!-- START doctoc generated TOC please keep comment here to allow auto update -->
 <!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
@@ -370,10 +370,11 @@ writing through a non-polymorphic (monomorphic) optic.
 ### Types of optics
 
 The supported optic classes are Equivalence, Iso (isomorphism), Lens,
-Prism, Traversal, Getter, AffineFold and Fold.
+Prism, Traversal, Getter, AffineFold, Fold and Setter.
 
 Equivalence, Iso, Lens, Prism and Traversal are read-write, i.e. you can
 read and write through them. Getter, AffineFold and Fold are read-only.
+Setter is write-only.
 
 Equivalence, Iso, Lens and Getter have one focus, i.e. you can
 always read and write through them (Getter doesn't support writing).
@@ -382,8 +383,9 @@ value and writing may have no effect if there's no focus. Traversal and
 Fold have zero or more focuses, meaning that reading yields zero or more
 values, and writing modifies zero or more values.
 
-Any optic can be composed with another optic. The type of the resulting
-optic can be determined from this diagram:
+Any read-write and read-only optic can be composed with another
+read-write and read-only optic. The type of the resulting optic can be
+determined from this diagram:
 
 ```
 Equivalence -> Iso -> Lens ---> Prism ------> Traversal
@@ -398,6 +400,9 @@ that you get by following the arrows starting from both A and B.
 For example, composing a Getter with a Traversal yields a Fold.
 Composing an Iso with a Prism yields a Prism.
 
+Setter is special. You can only compose writable optics with setters.
+Setters cannot be further composed with any other optic.
+
 The naming of the optic classes is taken from
 [Glassery](http://oleg.fi/gists/posts/2017-04-18-glassery.html) by Oleg
 Grenrus.
@@ -405,9 +410,9 @@ Grenrus.
 ### Method chaining
 
 Optics are composed with method chaining. This means that each optic
-type has all the methods documented below, regardless of the type of the
-optic that the method creates. The only difference is the return type,
-which is determined by the composition rules above.
+type has most of the methods documented below, regardless of the type of
+the optic that the method creates. The only difference is the return
+type, which is determined by the composition rules above.
 
 For example, assume we have a variable `myLens` that holds a `Lens`, and
 call `.optional()` on it:
@@ -419,9 +424,16 @@ const newOptic = myLens.optional()
 `.optional()` creates a prism, so `newOptic` will be a composition of
 lens and prism, i.e. a prism.
 
+Which methods each optic type has depends on the composition rules
+presented in [Typef of optic](#types-of-optics). For example, the
+`.prop()` method creates a lens, so a getter has that method because you
+can compose a getter and a lens. On the other hand, the `.appendTo()`
+method, which creates a setter, is not available in a getter, because
+getters cannot be composed with setters.
+
 ### Type parameters
 
-All read-write optics have 3 type parameters: `<S, T, A>`, and all
+All writable optics have 3 type parameters: `<S, T, A>`, and all
 read-only optics have 2 type parameters: `<S, A>`:
 
 - `S` is the source on which the optic operates
@@ -439,7 +451,7 @@ The read-only optics don't need `T` because you cannot write through
 them.
 
 In the following, we leave the exact definition of `T` for each optic
-out for clarity, writing just `_` in its place. It's usually clear fom
+out for clarity, writing just `_` in its place. It's usually clear from
 how the optic works what will come out if you put a different type in.
 
 In the documentation of functions that can be used to write through an
@@ -602,21 +614,6 @@ O.set(monoLens)({ quux: null })(data)
 // ==> DisallowedTypeChange
 ```
 
-#### `prependTo(): Lens<S, _, ElemType<A> | undefined>`
-
-#### `appendTo(): Lens<S, _, ElemType<A> | undefined>`
-
-Only works on arrays.
-
-Create a lens that focuses on the part _before the first element_ or
-_after the last element_ of the focus array. When written through,
-prepends or appends the value to the array. When read through, returns
-undefined (as there's nothing before or after the array).
-
-If `undefined` is written, the array is not changed. When an element of
-a different type `B` is written, the resulting array will have the type
-`Array<A | B>`.
-
 ### Prisms
 
 Prisms have the type `Prism<S, T, A>`. In the following, we omit the
@@ -693,11 +690,35 @@ Create a traversal that focuses on all the elements of the array.
 
 ### Getters
 
-Getters have the type `Getter<S, A>`.
+Getters are read-only optics with a single focus. You can think of them
+like one-way isomorphisms or read-only lenses.
+
+Getters have the type `Getter<S, A>`. See [Type
+parameters](#type-parameters) for the meanings of type parameters.
 
 #### `to<B>(f: (a: A) => B): Getter<S, B>`
 
 Create a getter that applies the function `f` to its focus.
+
+### Setters
+
+Setters have the type `Setter<S, T, A>`. In the following, we
+omit the exact definition of `T` for clarity, and use `_` instead. See
+[Type parameters](#type-parameters) for the meanings of type
+parameters.
+
+#### `prependTo(): Setter<S, _, ElemType<A>>`
+
+#### `appendTo(): Setter<S, _, ElemType<A>>`
+
+Only works on arrays.
+
+Create a setter that focuses on the part _before the first element_ or
+_after the last element_ of the focus array. When written through,
+prepends or appends the value to the array.
+
+When an element of a different type `B` is written, the resulting array
+will have the type `Array<A | B>`.
 
 ### Composing
 

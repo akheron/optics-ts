@@ -893,21 +893,11 @@ describe('prependTo & appendTo', () => {
   type Source = string[]
   const source = ['foo', 'bar']
 
-  it('read', () => {
-    const result1: string | undefined = O.get(prepend)(source)
-    expect(result1).toEqual(undefined)
-    const result2: string | undefined = O.get(append)(source)
-    expect(result2).toEqual(undefined)
-  })
   it('write - monomorphic', () => {
     const result1: Source = O.set(prepend)('abc')(source)
     expect(result1).toEqual(['abc', 'foo', 'bar'])
-    const result2: Source = O.set(prepend)(undefined)(source)
-    expect(result2).toEqual(['foo', 'bar'])
-    const result3: Source = O.set(append)('abc')(source)
-    expect(result3).toEqual(['foo', 'bar', 'abc'])
-    const result4: Source = O.set(append)('abc')(source)
-    expect(result4).toEqual(['foo', 'bar', 'abc'])
+    const result2: Source = O.set(append)('abc')(source)
+    expect(result2).toEqual(['foo', 'bar', 'abc'])
   })
 
   type Target = (string | number)[]
