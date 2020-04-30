@@ -68,10 +68,14 @@ type Profunctor = any
 
 type OpticFn = (P: Profunctor, optic: OpticFn) => any
 
-const compose = (optic1: OpticFn, optic2: OpticFn): OpticFn => (
-  P: Profunctor,
-  optic: OpticFn
-) => optic1(P, optic2(P, optic))
+function compose(optic1: OpticFn, optic2: OpticFn, optic3?: OpticFn): OpticFn {
+  switch (arguments.length) {
+    case 2:
+      return (P, optic) => optic1(P, optic2(P, optic))
+    default:
+      return (P, optic) => optic1(P, optic2(P, optic3!(P, optic)))
+  }
+}
 
 const eq = (_P: any, optic: any) => optic
 
@@ -189,26 +193,24 @@ const guard = <A, U extends A>(fn: (a: A) => a is U) =>
 
 const find = (predicate: (item: any) => boolean): any =>
   compose(
-    compose(
-      lens(
-        (source: any[]) => {
-          const index = source.findIndex(predicate)
-          if (index === -1) {
-            return [noMatch, -1]
-          }
-          return [source[index], index]
-        },
-        ([[value, index], source]: [[any, number], any[]]) => {
-          if (value === noMatch || index === -1) {
-            return source
-          }
-          const result = source.slice()
-          result[index] = value
-          return result
+    lens(
+      (source: any[]) => {
+        const index = source.findIndex(predicate)
+        if (index === -1) {
+          return [noMatch, -1]
         }
-      ),
-      index(0)
+        return [source[index], index]
+      },
+      ([[value, index], source]: [[any, number], any[]]) => {
+        if (value === noMatch || index === -1) {
+          return source
+        }
+        const result = source.slice()
+        result[index] = value
+        return result
+      }
     ),
+    index(0),
     mustMatch
   )
 
@@ -259,13 +261,11 @@ const chars = compose(
 )
 
 const words = compose(
-  compose(
-    iso(
-      s => s.split(/\b/),
-      a => a.join('')
-    ),
-    elems
+  iso(
+    s => s.split(/\b/),
+    a => a.join('')
   ),
+  elems,
   when(s => !/\s+/.test(s))
 )
 
