@@ -64,213 +64,6 @@ const profunctorConst = (monoid: any) => ({
 
 /////////////////////////////////////////////////////////////////////////////
 
-type Profunctor = any
-
-type OpticFn = (P: Profunctor, optic: OpticFn) => any
-
-function compose(optic1: OpticFn, optic2: OpticFn, optic3?: OpticFn): OpticFn {
-  switch (arguments.length) {
-    case 2:
-      return (P, optic) => optic1(P, optic2(P, optic))
-    default:
-      return (P, optic) => optic1(P, optic2(P, optic3!(P, optic)))
-  }
-}
-
-const eq = (_P: any, optic: any) => optic
-
-const iso = (there: (x: any) => any, back: (x: any) => any) => (
-  P: any,
-  optic: any
-): Optic => P.dimap(there, back, optic)
-
-const lens = (view: (x: any) => any, update: (x: any) => any): OpticFn => (
-  P: Profunctor,
-  optic: OpticFn
-): any => P.dimap((x: any) => [view(x), x], update, P.first(optic))
-
-const prism = (match: (x: any) => any, build: (x: any) => any) => (
-  P: any,
-  optic: any
-): any => P.dimap(match, (x: any) => either(id, build, x), P.right(optic))
-
-export const elems: any = (P: any, optic: any) =>
-  P.dimap(id, id, P.wander(optic))
-
-export const to: any = (fn: (a: any) => any) => (P: any, optic: any) =>
-  P.dimap(fn, id, optic)
-
-export const when = (pred: (x: any) => boolean) => (P: any, optic: any): any =>
-  P.dimap(
-    (x: any) => (pred(x) ? Right(x) : Left(x)),
-    (x: any) => either(id, id, x),
-    P.right(optic)
-  )
-
-/////////////////////////////////////////////////////////////////////////////
-
-export const modify = (optic: any, fn: (x: any) => any, source: any): any =>
-  optic(profunctorFn, fn)(source)
-
-export const set = (optic: any, value: any, source: any): any =>
-  optic(profunctorFn, () => value)(source)
-
-export const get = (optic: any, source: any): any =>
-  optic(profunctorConst({}), id)(source)
-
-export const preview = (optic: any, source: any): any =>
-  optic(profunctorConst(monoidFirst), id)(source)
-
-export const collect = (optic: any, source: any): any =>
-  optic(profunctorConst(monoidArray), (x: any) => [x])(source)
-
-/////////////////////////////////////////////////////////////////////////////
-
-const prop = (key: string): OpticFn =>
-  lens(
-    (source: any) => source[key],
-    ([value, source]: [any, any]) => ({ ...source, [key]: value })
-  )
-
-const pick = (keys: string[]) =>
-  lens(
-    (source: any) => {
-      const value: any = {}
-      for (const key of keys) {
-        value[key] = source[key]
-      }
-      return value
-    },
-    ([value, source]: [any, any]) => {
-      const result = { ...source }
-      for (const key of keys) {
-        delete result[key]
-      }
-      return Object.assign(result, value)
-    }
-  )
-
-const noMatch: unique symbol = Symbol('__no_match__')
-
-const mustMatch = prism(
-  (source: any) => (source === noMatch ? Left(source) : Right(source)),
-  id
-)
-
-const index = (i: number): OpticFn =>
-  compose(
-    lens(
-      (source: any[]) => (0 <= i && i < source.length ? source[i] : noMatch),
-      ([value, source]: [any, any[] | string]) => {
-        if (value === noMatch) {
-          return source
-        }
-        if (typeof source === 'string') {
-          if (i === 0) {
-            return value + source.substring(1)
-          }
-          if (i === source.length) {
-            return source.substring(0, i - 1) + value
-          }
-          return source.substring(0, i) + value + source.substring(i + 1)
-        } else {
-          const result = source.slice()
-          result[i] = value
-          return result
-        }
-      }
-    ),
-    mustMatch
-  )
-
-const optional = prism(
-  (source: any) => (source === undefined ? Left(undefined) : Right(source)),
-  id
-)
-
-const guard = <A, U extends A>(fn: (a: A) => a is U) =>
-  prism((source: A) => (fn(source) ? Right(source) : Left(source)), id)
-
-const find = (predicate: (item: any) => boolean): any =>
-  compose(
-    lens(
-      (source: any[]) => {
-        const index = source.findIndex(predicate)
-        if (index === -1) {
-          return [noMatch, -1]
-        }
-        return [source[index], index]
-      },
-      ([[value, index], source]: [[any, number], any[]]) => {
-        if (value === noMatch || index === -1) {
-          return source
-        }
-        const result = source.slice()
-        result[index] = value
-        return result
-      }
-    ),
-    index(0),
-    mustMatch
-  )
-
-const filter = (predicate: (item: any) => boolean): any =>
-  lens(
-    (source: any[]) => {
-      const indexes: any[] = source
-        .map((item, index) => (predicate(item) ? index : null))
-        .filter(index => index != null)
-      return indexes.map(index => source[index])
-    },
-    ([values, source]: [any[], any[]]) => {
-      const indexes: any[] = source
-        .map((item, index) => (predicate(item) ? index : null))
-        .filter(index => index != null)
-      const result = source.slice()
-      let j = 0
-      for (const index of indexes) {
-        result[index] = values[j]
-        j++
-      }
-      return result
-    }
-  )
-
-const prependTo = lens(
-  (source: any[]) => undefined,
-  ([value, source]: [any, any[]]) => {
-    if (value === undefined) return source
-    return [value, ...source]
-  }
-)
-
-const appendTo = lens(
-  (source: any[]) => undefined,
-  ([value, source]: [any, any[]]) => {
-    if (value === undefined) return source
-    return [...source, value]
-  }
-)
-
-const chars = compose(
-  iso(
-    s => s.split(''),
-    a => a.join('')
-  ),
-  elems
-)
-
-const words = compose(
-  iso(
-    s => s.split(/\b/),
-    a => a.join('')
-  ),
-  elems,
-  when(s => !/\s+/.test(s))
-)
-
-/////////////////////////////////////////////////////////////////////////////
-
 export type OpticType =
   | 'Equivalence'
   | 'Iso'
@@ -388,56 +181,257 @@ export const compositionType: CompositionType = {
   },
 }
 
+/////////////////////////////////////////////////////////////////////////////
+
+type Profunctor = any
+
+interface OpticFn {
+  _tag: OpticType
+  (P: Profunctor, optic: OpticFn): any
+}
+
+const withTag = (
+  tag: OpticType,
+  optic: (P: Profunctor, optic: OpticFn) => any
+): OpticFn => {
+  ;(optic as any)._tag = tag
+  return optic as any
+}
+
+function compose(optic1: OpticFn, optic2: OpticFn, optic3?: OpticFn): OpticFn {
+  switch (arguments.length) {
+    case 2: {
+      const tag = compositionType[optic1._tag][optic2._tag]!
+      return withTag(tag, (P, optic) => optic1(P, optic2(P, optic)))
+    }
+    default: {
+      const tag1 = compositionType[optic1._tag][optic2._tag]!
+      const tag = compositionType[tag1][optic3!._tag]!
+      return withTag(tag, (P, optic) => optic1(P, optic2(P, optic3!(P, optic))))
+    }
+  }
+}
+
+const eq = withTag('Equivalence', (_P: any, optic: any) => optic)
+
+const iso = (there: (x: any) => any, back: (x: any) => any) =>
+  withTag('Iso', (P: any, optic: any): Optic => P.dimap(there, back, optic))
+
+const lens = (view: (x: any) => any, update: (x: any) => any): OpticFn =>
+  withTag('Lens', (P: Profunctor, optic: OpticFn): any =>
+    P.dimap((x: any) => [view(x), x], update, P.first(optic))
+  )
+
+const prism = (match: (x: any) => any, build: (x: any) => any) =>
+  withTag('Prism', (P: any, optic: any): any =>
+    P.dimap(match, (x: any) => either(id, build, x), P.right(optic))
+  )
+
+const elems: any = withTag('Traversal', (P: any, optic: any) =>
+  P.dimap(id, id, P.wander(optic))
+)
+
+const to: any = (fn: (a: any) => any) =>
+  withTag('Getter', (P: any, optic: any) => P.dimap(fn, id, optic))
+
+/////////////////////////////////////////////////////////////////////////////
+
+export const modify = (optic: any, fn: (x: any) => any, source: any): any =>
+  optic(profunctorFn, fn)(source)
+
+export const set = (optic: any, value: any, source: any): any =>
+  optic(profunctorFn, () => value)(source)
+
+export const get = (optic: any, source: any): any =>
+  optic(profunctorConst({}), id)(source)
+
+export const preview = (optic: any, source: any): any =>
+  optic(profunctorConst(monoidFirst), id)(source)
+
+export const collect = (optic: any, source: any): any =>
+  optic(profunctorConst(monoidArray), (x: any) => [x])(source)
+
+/////////////////////////////////////////////////////////////////////////////
+
+const prop = (key: string): OpticFn =>
+  lens(
+    (source: any) => source[key],
+    ([value, source]: [any, any]) => ({ ...source, [key]: value })
+  )
+
+const pick = (keys: string[]) =>
+  lens(
+    (source: any) => {
+      const value: any = {}
+      for (const key of keys) {
+        value[key] = source[key]
+      }
+      return value
+    },
+    ([value, source]: [any, any]) => {
+      const result = { ...source }
+      for (const key of keys) {
+        delete result[key]
+      }
+      return Object.assign(result, value)
+    }
+  )
+
+const when = (pred: (x: any) => boolean) =>
+  prism((x: any) => (pred(x) ? Right(x) : Left(x)), id)
+
+const noMatch: unique symbol = Symbol('__no_match__')
+
+const mustMatch = when((source: any) => source !== noMatch)
+
+const index = (i: number): OpticFn =>
+  compose(
+    lens(
+      (source: any[]) => (0 <= i && i < source.length ? source[i] : noMatch),
+      ([value, source]: [any, any[] | string]) => {
+        if (value === noMatch) {
+          return source
+        }
+        if (typeof source === 'string') {
+          if (i === 0) {
+            return value + source.substring(1)
+          }
+          if (i === source.length) {
+            return source.substring(0, i - 1) + value
+          }
+          return source.substring(0, i) + value + source.substring(i + 1)
+        } else {
+          const result = source.slice()
+          result[i] = value
+          return result
+        }
+      }
+    ),
+    mustMatch
+  )
+
+const optional = prism(
+  (source: any) => (source === undefined ? Left(undefined) : Right(source)),
+  id
+)
+
+const guard = <A, U extends A>(fn: (a: A) => a is U) =>
+  prism((source: A) => (fn(source) ? Right(source) : Left(source)), id)
+
+const find = (predicate: (item: any) => boolean): any =>
+  compose(
+    lens(
+      (source: any[]) => {
+        const index = source.findIndex(predicate)
+        if (index === -1) {
+          return [noMatch, -1]
+        }
+        return [source[index], index]
+      },
+      ([[value, index], source]: [[any, number], any[]]) => {
+        if (value === noMatch || index === -1) {
+          return source
+        }
+        const result = source.slice()
+        result[index] = value
+        return result
+      }
+    ),
+    index(0),
+    mustMatch
+  )
+
+const filter = (predicate: (item: any) => boolean): any =>
+  lens(
+    (source: any[]) => {
+      const indexes: any[] = source
+        .map((item, index) => (predicate(item) ? index : null))
+        .filter(index => index != null)
+      return indexes.map(index => source[index])
+    },
+    ([values, source]: [any[], any[]]) => {
+      const indexes: any[] = source
+        .map((item, index) => (predicate(item) ? index : null))
+        .filter(index => index != null)
+      const result = source.slice()
+      let j = 0
+      for (const index of indexes) {
+        result[index] = values[j]
+        j++
+      }
+      return result
+    }
+  )
+
+const prependTo = lens(
+  (source: any[]) => undefined,
+  ([value, source]: [any, any[]]) => {
+    if (value === undefined) return source
+    return [value, ...source]
+  }
+)
+
+const appendTo = lens(
+  (source: any[]) => undefined,
+  ([value, source]: [any, any[]]) => {
+    if (value === undefined) return source
+    return [...source, value]
+  }
+)
+
+const chars = compose(
+  iso(
+    s => s.split(''),
+    a => a.join('')
+  ),
+  elems
+)
+
+const words = compose(
+  iso(
+    s => s.split(/\b/),
+    a => a.join('')
+  ),
+  elems,
+  when(s => !/\s+/.test(s))
+)
+
+/////////////////////////////////////////////////////////////////////////////
+
 export class Optic {
-  constructor(public _tag: OpticType, public _ref: OpticFn) {}
+  _tag: OpticType
+  constructor(public _ref: OpticFn) {
+    this._tag = _ref._tag
+  }
 
   compose(other: Optic): Optic {
-    return new Optic(
-      compositionType[this._tag][other._tag]!,
-      compose(this._ref, other._ref)
-    )
+    return new Optic(compose(this._ref, other._ref))
   }
 
   iso(there: (x: any) => any, back: (x: any) => any): Optic {
-    return new Optic(
-      compositionType[this._tag]['Iso']!,
-      compose(this._ref, iso(there, back))
-    )
+    return new Optic(compose(this._ref, iso(there, back)))
   }
 
   prop(key: string): Optic {
-    return new Optic(
-      compositionType[this._tag]['Lens']!,
-      compose(this._ref, prop(key))
-    )
+    return new Optic(compose(this._ref, prop(key)))
   }
 
   path(keys: string[]): Optic {
     return new Optic(
-      compositionType[this._tag]['Lens']!,
       keys.reduce((ref, key) => compose(ref, prop(key)), this._ref)
     )
   }
 
   pick(keys: string[]): Optic {
-    return new Optic(
-      compositionType[this._tag]['Lens']!,
-      compose(this._ref, pick(keys))
-    )
+    return new Optic(compose(this._ref, pick(keys)))
   }
 
   filter(predicate: (item: any) => boolean): any {
-    return new Optic(
-      compositionType[this._tag]['Lens']!,
-      compose(this._ref, filter(predicate))
-    )
+    return new Optic(compose(this._ref, filter(predicate)))
   }
 
   optional(): Optic {
-    return new Optic(
-      compositionType[this._tag]['Prism']!,
-      compose(this._ref, optional)
-    )
+    return new Optic(compose(this._ref, optional))
   }
 
   guard_() {
@@ -445,75 +439,48 @@ export class Optic {
   }
 
   guard(fn: Function): Optic {
-    return new Optic(
-      compositionType[this._tag]['Prism']!,
-      compose(this._ref, guard(fn as any))
-    )
+    return new Optic(compose(this._ref, guard(fn as any)))
   }
 
   index(i: number): Optic {
-    return new Optic(
-      compositionType[this._tag]['Prism']!,
-      compose(this._ref, index(i))
-    )
+    return new Optic(compose(this._ref, index(i)))
   }
 
   head(): Optic {
-    return new Optic(
-      compositionType[this._tag]['Prism']!,
-      compose(this._ref, index(0))
-    )
+    return new Optic(compose(this._ref, index(0)))
   }
 
   find(predicate: (item: any) => boolean): Optic {
-    return new Optic(
-      compositionType[this._tag]['Prism']!,
-      compose(this._ref, find(predicate))
-    )
+    return new Optic(compose(this._ref, find(predicate)))
   }
 
   elems(): Optic {
-    return new Optic(
-      compositionType[this._tag]['Traversal']!,
-      compose(this._ref, elems)
-    )
+    return new Optic(compose(this._ref, elems))
   }
 
   to(fn: Function): Optic {
-    return new Optic(
-      compositionType[this._tag]['Getter']!,
-      compose(this._ref, to(fn))
-    )
+    return new Optic(compose(this._ref, to(fn)))
   }
 
   when(predicate: (elem: any) => boolean): Optic {
-    return new Optic(
-      compositionType[this._tag]['Prism']!,
-      compose(this._ref, when(predicate))
-    )
+    return new Optic(compose(this._ref, when(predicate)))
   }
 
   chars(): Optic {
-    return new Optic(
-      compositionType[this._tag]['Traversal']!,
-      compose(this._ref, chars)
-    )
+    return new Optic(compose(this._ref, chars))
   }
 
   words(): Optic {
-    return new Optic(
-      compositionType[this._tag]['Traversal']!,
-      compose(this._ref, words)
-    )
+    return new Optic(compose(this._ref, words))
   }
 
   prependTo(): any {
-    return new Optic('Setter', compose(this._ref, prependTo))
+    return new Optic(compose(this._ref, prependTo))
   }
 
   appendTo(): any {
-    return new Optic('Setter', compose(this._ref, appendTo))
+    return new Optic(compose(this._ref, appendTo))
   }
 }
 
-export const optic = new Optic('Equivalence', eq)
+export const optic = new Optic(eq)
