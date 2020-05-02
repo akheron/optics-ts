@@ -14,9 +14,6 @@ TypeScript:
 - **Type-safe**: The compiler will type check all operations you do.
   No `any`, ever.
 
-`optics-ts` supports equivalences, isomorphisms, lenses, prisms,
-traversals, getters, affine folds, folds and setters.
-
 <!-- START doctoc generated TOC please keep comment here to allow auto update -->
 <!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
 
@@ -241,6 +238,40 @@ Notice how above we used `.guard(...).prop(...)`, composing a prism with
 a lens. This yields a prism, so we used `preview()` to read through it.
 See [Types of optics](#types-of-optics) for the rules of composition.
 
+### Removable optics
+
+Some optics are removable. This means that they focus on an element of a
+container (e.g. an array), and you can remove the element from the
+container.
+
+`.index()` is a removable prism. It focuses on an index of an array, and
+lets you also remove that index:
+
+```typescript
+interface User {
+  name: string
+}
+
+const secondUser = O.optic<Users>().index(1)
+
+const threeUsers: User[] = [
+  { name: 'Max' },
+  { name: 'Betty' },
+  { name: 'Alice' },
+]
+O.remove(secondUser)(threeUsers)
+// ==> [{ name: 'Max' }, { name: 'Alice' }]
+```
+
+If the optic doesn't match, removing has no effect:
+
+```typescript
+const oneUser: User[] = [{ name: 'Max' }]
+
+O.remove(secondUser)(oneUser)
+// ==> [{ name: 'Max' }]
+```
+
 ### Traversal
 
 The next optic type is the traversal. While lenses have 1 focus and
@@ -400,10 +431,22 @@ that you get by following the arrows starting from both A and B.
 For example, composing a Getter with a Traversal yields a Fold.
 Composing an Iso with a Prism yields a Prism.
 
+```
+Setter
+```
+
 Setter is special. You can only compose writable optics with setters.
 Setters cannot be further composed with any other optic.
 
-The naming of the optic classes is taken from
+```
+RemovablePrism
+```
+
+RemovablePrism behaves like a regular prism, but it can be removed from
+its containing container. When composed with other optics, composes like
+a regular Prism.
+
+The naming of the optic classes was inspired by
 [Glassery](http://oleg.fi/gists/posts/2017-04-18-glassery.html) by Oleg
 Grenrus.
 
@@ -512,6 +555,10 @@ focuses modified by mapping them through the function `f`.
 Write a constant value through an `Equivalence`, `Iso`, `Lens`, `Prism`
 or `Traversal`. Returns an updated copy of `source` with all focuses
 replaced by `value`.
+
+#### `remove<S, T, A>(optic: Optic<S, T, A>) => (source: S) => S`
+
+Remove the focus of a `RemovablePrism` from its containing container.
 
 #### `compose<S, A1, A2><optic1: Optic<S, _, A1>, optic2: Optic<A1, _, A2>): Optic<S, _, A2>`
 
@@ -638,9 +685,9 @@ Create a prism that focuses on the subtype of `A` that matches the type
 guard `g`. When written to, uses the higher-kinded type `F` to construct
 the output type.
 
-#### `index(i: number): Prism<S, _, ElemType<A>>`
+#### `index(i: number): RemovablePrism<S, _, ElemType<A>>`
 
-Only works on arrays and strings.
+Only works on arrays and strings. Removable.
 
 Create a prism that focuses on the element type of the array `A`, or on
 a substring of length 1 if `A` is `string`.

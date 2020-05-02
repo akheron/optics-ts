@@ -8,6 +8,9 @@
   - Add string optics: `.chars()`, `.words()`
   - Add `Setter` optic class
   - Add setters `.prependTo()` and `.appendTo()`
+  - Add `RemovablePrism` optic class
+  - Add top-level `remove()`
+  - Change `.index()` to be removable
 - **Fixes**
   - Top level `compose()` signatures were totally screwed up
 

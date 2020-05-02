@@ -69,6 +69,7 @@ export type OpticType =
   | 'Iso'
   | 'Lens'
   | 'Prism'
+  | 'RemovablePrism'
   | 'Traversal'
   | 'Getter'
   | 'AffineFold'
@@ -85,6 +86,7 @@ export const compositionType: CompositionType = {
     Iso: 'Iso',
     Lens: 'Lens',
     Prism: 'Prism',
+    RemovablePrism: 'RemovablePrism',
     Traversal: 'Traversal',
     Getter: 'Getter',
     AffineFold: 'AffineFold',
@@ -96,6 +98,7 @@ export const compositionType: CompositionType = {
     Iso: 'Iso',
     Lens: 'Lens',
     Prism: 'Prism',
+    RemovablePrism: 'RemovablePrism',
     Traversal: 'Traversal',
     Getter: 'Getter',
     AffineFold: 'AffineFold',
@@ -107,6 +110,7 @@ export const compositionType: CompositionType = {
     Iso: 'Lens',
     Lens: 'Lens',
     Prism: 'Prism',
+    RemovablePrism: 'RemovablePrism',
     Traversal: 'Traversal',
     Getter: 'Getter',
     AffineFold: 'AffineFold',
@@ -118,6 +122,19 @@ export const compositionType: CompositionType = {
     Iso: 'Prism',
     Lens: 'Prism',
     Prism: 'Prism',
+    RemovablePrism: 'RemovablePrism',
+    Traversal: 'Traversal',
+    Getter: 'AffineFold',
+    AffineFold: 'AffineFold',
+    Fold: 'Fold',
+    Setter: 'Setter',
+  },
+  RemovablePrism: {
+    Equivalence: 'Prism',
+    Iso: 'Prism',
+    Lens: 'Prism',
+    Prism: 'Prism',
+    RemovablePrism: 'RemovablePrism',
     Traversal: 'Traversal',
     Getter: 'AffineFold',
     AffineFold: 'AffineFold',
@@ -129,6 +146,7 @@ export const compositionType: CompositionType = {
     Iso: 'Traversal',
     Lens: 'Traversal',
     Prism: 'Traversal',
+    RemovablePrism: 'Traversal',
     Traversal: 'Traversal',
     Getter: 'Fold',
     AffineFold: 'Fold',
@@ -140,6 +158,7 @@ export const compositionType: CompositionType = {
     Iso: 'Getter',
     Lens: 'Getter',
     Prism: 'AffineFold',
+    RemovablePrism: 'AffineFold',
     Traversal: 'Fold',
     Getter: 'Getter',
     AffineFold: 'AffineFold',
@@ -151,6 +170,7 @@ export const compositionType: CompositionType = {
     Iso: 'AffineFold',
     Lens: 'AffineFold',
     Prism: 'AffineFold',
+    RemovablePrism: 'AffineFold',
     Traversal: 'Fold',
     Getter: 'AffineFold',
     AffineFold: 'AffineFold',
@@ -162,6 +182,7 @@ export const compositionType: CompositionType = {
     Iso: 'Fold',
     Lens: 'Fold',
     Prism: 'Fold',
+    RemovablePrism: 'Fold',
     Traversal: 'Fold',
     Getter: 'Fold',
     AffineFold: 'Fold',
@@ -173,6 +194,7 @@ export const compositionType: CompositionType = {
     Iso: undefined,
     Lens: undefined,
     Prism: undefined,
+    RemovablePrism: undefined,
     Traversal: undefined,
     Getter: undefined,
     AffineFold: undefined,
@@ -242,6 +264,9 @@ export const modify = (optic: any, fn: (x: any) => any, source: any): any =>
 export const set = (optic: any, value: any, source: any): any =>
   optic(profunctorFn, () => value)(source)
 
+export const remove = (optic: any, source: any): any =>
+  set(optic, removeMe, source)
+
 export const get = (optic: any, source: any): any =>
   optic(profunctorConst({}), id)(source)
 
@@ -284,30 +309,44 @@ const noMatch: unique symbol = Symbol('__no_match__')
 
 const mustMatch = when((source: any) => source !== noMatch)
 
+const removeMe: unique symbol = Symbol('__remove_me__')
+
 const index = (i: number): OpticFn =>
-  compose(
-    lens(
-      (source: any[]) => (0 <= i && i < source.length ? source[i] : noMatch),
-      ([value, source]: [any, any[] | string]) => {
-        if (value === noMatch) {
-          return source
-        }
-        if (typeof source === 'string') {
-          if (i === 0) {
-            return value + source.substring(1)
+  withTag(
+    'RemovablePrism',
+    compose(
+      lens(
+        (source: any[]) => (0 <= i && i < source.length ? source[i] : noMatch),
+        ([value, source]: [any, any[] | string]) => {
+          if (value === noMatch) {
+            return source
           }
-          if (i === source.length) {
-            return source.substring(0, i - 1) + value
+
+          if (value === removeMe) {
+            if (typeof source === 'string') {
+              return source.substring(0, i) + source.substring(i + 1)
+            } else {
+              return [...source.slice(0, i), ...source.slice(i + 1)]
+            }
           }
-          return source.substring(0, i) + value + source.substring(i + 1)
-        } else {
-          const result = source.slice()
-          result[i] = value
-          return result
+
+          if (typeof source === 'string') {
+            if (i === 0) {
+              return value + source.substring(1)
+            }
+            if (i === source.length) {
+              return source.substring(0, i - 1) + value
+            }
+            return source.substring(0, i) + value + source.substring(i + 1)
+          } else {
+            const result = source.slice()
+            result[i] = value
+            return result
+          }
         }
-      }
-    ),
-    mustMatch
+      ),
+      mustMatch
+    )
   )
 
 const optional = prism(
