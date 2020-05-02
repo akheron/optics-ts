@@ -234,9 +234,9 @@ function compose(optic1: OpticFn, optic2: OpticFn, optic3?: OpticFn): OpticFn {
   }
 }
 
-const eq = withTag('Equivalence', (_P: any, optic: any) => optic)
+const eq: OpticFn = withTag('Equivalence', (_P: any, optic: any) => optic)
 
-const iso = (there: (x: any) => any, back: (x: any) => any) =>
+const iso = (there: (x: any) => any, back: (x: any) => any): OpticFn =>
   withTag('Iso', (P: any, optic: any): Optic => P.dimap(there, back, optic))
 
 const lens = (view: (x: any) => any, update: (x: any) => any): OpticFn =>
@@ -244,16 +244,17 @@ const lens = (view: (x: any) => any, update: (x: any) => any): OpticFn =>
     P.dimap((x: any) => [view(x), x], update, P.first(optic))
   )
 
-const prism = (match: (x: any) => any, build: (x: any) => any) =>
+const prism = (match: (x: any) => any, build: (x: any) => any): OpticFn =>
   withTag('Prism', (P: any, optic: any): any =>
     P.dimap(match, (x: any) => either(id, build, x), P.right(optic))
   )
 
-const elems: any = withTag('Traversal', (P: any, optic: any) =>
-  P.dimap(id, id, P.wander(optic))
+const elems = withTag(
+  'Traversal',
+  (P: any, optic: any): OpticFn => P.dimap(id, id, P.wander(optic))
 )
 
-const to: any = (fn: (a: any) => any) =>
+const to = (fn: (a: any) => any): OpticFn =>
   withTag('Getter', (P: any, optic: any) => P.dimap(fn, id, optic))
 
 /////////////////////////////////////////////////////////////////////////////
@@ -284,7 +285,7 @@ const prop = (key: string): OpticFn =>
     ([value, source]: [any, any]) => ({ ...source, [key]: value })
   )
 
-const pick = (keys: string[]) =>
+const pick = (keys: string[]): OpticFn =>
   lens(
     (source: any) => {
       const value: any = {}
@@ -302,7 +303,7 @@ const pick = (keys: string[]) =>
     }
   )
 
-const when = (pred: (x: any) => boolean) =>
+const when = (pred: (x: any) => boolean): OpticFn =>
   prism((x: any) => (pred(x) ? Right(x) : Left(x)), id)
 
 const noMatch: unique symbol = Symbol('__no_match__')
@@ -349,15 +350,15 @@ const index = (i: number): OpticFn =>
     )
   )
 
-const optional = prism(
+const optional: OpticFn = prism(
   (source: any) => (source === undefined ? Left(undefined) : Right(source)),
   id
 )
 
-const guard = <A, U extends A>(fn: (a: A) => a is U) =>
+const guard = <A, U extends A>(fn: (a: A) => a is U): OpticFn =>
   prism((source: A) => (fn(source) ? Right(source) : Left(source)), id)
 
-const find = (predicate: (item: any) => boolean): any =>
+const find = (predicate: (item: any) => boolean): OpticFn =>
   compose(
     lens(
       (source: any[]) => {
@@ -380,7 +381,7 @@ const find = (predicate: (item: any) => boolean): any =>
     mustMatch
   )
 
-const filter = (predicate: (item: any) => boolean): any =>
+const filter = (predicate: (item: any) => boolean): OpticFn =>
   lens(
     (source: any[]) => {
       const indexes: any[] = source
@@ -402,7 +403,7 @@ const filter = (predicate: (item: any) => boolean): any =>
     }
   )
 
-const prependTo = lens(
+const prependTo: OpticFn = lens(
   (source: any[]) => undefined,
   ([value, source]: [any, any[]]) => {
     if (value === undefined) return source
@@ -410,7 +411,7 @@ const prependTo = lens(
   }
 )
 
-const appendTo = lens(
+const appendTo: OpticFn = lens(
   (source: any[]) => undefined,
   ([value, source]: [any, any[]]) => {
     if (value === undefined) return source
@@ -418,7 +419,7 @@ const appendTo = lens(
   }
 )
 
-const chars = compose(
+const chars: OpticFn = compose(
   iso(
     s => s.split(''),
     a => a.join('')
@@ -426,7 +427,7 @@ const chars = compose(
   elems
 )
 
-const words = compose(
+const words: OpticFn = compose(
   iso(
     s => s.split(/\b/),
     a => a.join('')
@@ -465,7 +466,7 @@ export class Optic {
     return new Optic(compose(this._ref, pick(keys)))
   }
 
-  filter(predicate: (item: any) => boolean): any {
+  filter(predicate: (item: any) => boolean): Optic {
     return new Optic(compose(this._ref, filter(predicate)))
   }
 
@@ -497,7 +498,7 @@ export class Optic {
     return new Optic(compose(this._ref, elems))
   }
 
-  to(fn: Function): Optic {
+  to(fn: (a: any) => any): Optic {
     return new Optic(compose(this._ref, to(fn)))
   }
 
@@ -513,11 +514,11 @@ export class Optic {
     return new Optic(compose(this._ref, words))
   }
 
-  prependTo(): any {
+  prependTo(): Optic {
     return new Optic(compose(this._ref, prependTo))
   }
 
-  appendTo(): any {
+  appendTo(): Optic {
     return new Optic(compose(this._ref, appendTo))
   }
 }
