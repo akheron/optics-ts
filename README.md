@@ -48,6 +48,7 @@ TypeScript:
     - [`prop<K extends keyof A>(key: K): Lens<S, _, A[K]>`](#propk-extends-keyof-akey-k-lenss-_-ak)
     - [`path<K1, K2, ...>(keys: [K1, K2, ...]): Lens<S, _, A[K1][K2]...>`](#pathk1-k2-keys-k1-k2--lenss-_-ak1k2)
     - [`pick<K extends keyof A>(keys: K[]): Lens<S, _, Pick<A, K>>`](#pickk-extends-keyof-akeys-k-lenss-_-picka-k)
+    - [`valueOr<B>(defaultValue: B): Lens<S, _, Exclude<A, undefined> | B>`](#valueorbdefaultvalue-b-lenss-_-excludea-undefined--b)
   - [Prisms](#prisms)
     - [`optional(): Prism<S, _, Exclude<A, undefined>>`](#optional-prisms-_-excludea-undefined)
     - [`guard<U extends A>(g: (a: A) => a is U): Prism<S, _, U>`](#guardu-extends-ag-a-a--a-is-u-prisms-_-u)
@@ -665,6 +666,14 @@ const monoLens = O.optic<typeof data>().compose(lens)
 O.set(monoLens)({ quux: null })(data)
 // ==> DisallowedTypeChange
 ```
+
+#### `valueOr<B>(defaultValue: B): Lens<S, _, Exclude<A, undefined> | B>`
+
+Create a lens that, when read through, returns `defaultValue` when the
+focused value is `undefined`. If the focus is not `undefined`, the focus
+is returned unchanged.
+
+Fully polymorphic in the write direction.
 
 ### Prisms
 

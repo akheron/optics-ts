@@ -107,6 +107,7 @@ const lens = (composition: Composition) => `\
   filter(
     predicate: (item: ElemType<A>) => boolean
   ): ${composition('Union<A>', 'A')}
+  valueOr<B>(defaultValue: B): ${composition('Id', 'Exclude<A, undefined> | B')}
 `
 
 const prism = (composition: Composition) => `\

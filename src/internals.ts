@@ -403,6 +403,12 @@ const filter = (predicate: (item: any) => boolean): OpticFn =>
     }
   )
 
+const valueOr = (defaultValue: any): OpticFn =>
+  lens(
+    (source: any) => (source === undefined ? defaultValue : source),
+    ([value, source]: [any, any]) => value
+  )
+
 const prependTo: OpticFn = lens(
   (source: any[]) => undefined,
   ([value, source]: [any, any[]]) => {
@@ -468,6 +474,10 @@ export class Optic {
 
   filter(predicate: (item: any) => boolean): Optic {
     return new Optic(compose(this._ref, filter(predicate)))
+  }
+
+  valueOr(defaultValue: any): Optic {
+    return new Optic(compose(this._ref, valueOr(defaultValue)))
   }
 
   optional(): Optic {

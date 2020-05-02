@@ -77,6 +77,9 @@ export interface Equivalence<S, T extends HKT, A> {
   filter(
     predicate: (item: ElemType<A>) => boolean
   ): Lens<S, Compose<T, Union<A>>, A>
+  valueOr<B>(
+    defaultValue: B
+  ): Lens<S, Compose<T, Id>, Exclude<A, undefined> | B>
 
   // Equivalence · Prism => Prism
   compose<T2 extends HKT, A2>(
@@ -191,6 +194,9 @@ export interface Iso<S, T extends HKT, A> {
   filter(
     predicate: (item: ElemType<A>) => boolean
   ): Lens<S, Compose<T, Union<A>>, A>
+  valueOr<B>(
+    defaultValue: B
+  ): Lens<S, Compose<T, Id>, Exclude<A, undefined> | B>
 
   // Iso · Prism => Prism
   compose<T2 extends HKT, A2>(
@@ -307,6 +313,9 @@ export interface Lens<S, T extends HKT, A> {
   filter(
     predicate: (item: ElemType<A>) => boolean
   ): Lens<S, Compose<T, Union<A>>, A>
+  valueOr<B>(
+    defaultValue: B
+  ): Lens<S, Compose<T, Id>, Exclude<A, undefined> | B>
 
   // Lens · Prism => Prism
   compose<T2 extends HKT, A2>(
@@ -423,6 +432,9 @@ export interface Prism<S, T extends HKT, A> {
   filter(
     predicate: (item: ElemType<A>) => boolean
   ): Prism<S, Compose<T, Union<A>>, A>
+  valueOr<B>(
+    defaultValue: B
+  ): Prism<S, Compose<T, Id>, Exclude<A, undefined> | B>
 
   // Prism · Prism => Prism
   compose<T2 extends HKT, A2>(
@@ -539,6 +551,9 @@ export interface RemovablePrism<S, T extends HKT, A> {
   filter(
     predicate: (item: ElemType<A>) => boolean
   ): Prism<S, Compose<T, Union<A>>, A>
+  valueOr<B>(
+    defaultValue: B
+  ): Prism<S, Compose<T, Id>, Exclude<A, undefined> | B>
 
   // RemovablePrism · Prism => Prism
   compose<T2 extends HKT, A2>(
@@ -661,6 +676,9 @@ export interface Traversal<S, T extends HKT, A> {
   filter(
     predicate: (item: ElemType<A>) => boolean
   ): Traversal<S, Compose<T, Union<A>>, A>
+  valueOr<B>(
+    defaultValue: B
+  ): Traversal<S, Compose<T, Id>, Exclude<A, undefined> | B>
 
   // Traversal · Prism => Traversal
   compose<T2 extends HKT, A2>(
@@ -766,6 +784,7 @@ export interface Getter<S, A> {
   path<K1 extends keyof A>(path: [K1]): Getter<S, A[K1]>
   pick<K extends keyof A>(keys: K[]): Getter<S, Pick<A, K>>
   filter(predicate: (item: ElemType<A>) => boolean): Getter<S, A>
+  valueOr<B>(defaultValue: B): Getter<S, Exclude<A, undefined> | B>
 
   // Getter · Prism => AffineFold
   compose<T2 extends HKT, A2>(optic: Prism<A, T2, A2>): AffineFold<S, A2>
@@ -846,6 +865,7 @@ export interface AffineFold<S, A> {
   path<K1 extends keyof A>(path: [K1]): AffineFold<S, A[K1]>
   pick<K extends keyof A>(keys: K[]): AffineFold<S, Pick<A, K>>
   filter(predicate: (item: ElemType<A>) => boolean): AffineFold<S, A>
+  valueOr<B>(defaultValue: B): AffineFold<S, Exclude<A, undefined> | B>
 
   // AffineFold · Prism => AffineFold
   compose<T2 extends HKT, A2>(optic: Prism<A, T2, A2>): AffineFold<S, A2>
@@ -926,6 +946,7 @@ export interface Fold<S, A> {
   path<K1 extends keyof A>(path: [K1]): Fold<S, A[K1]>
   pick<K extends keyof A>(keys: K[]): Fold<S, Pick<A, K>>
   filter(predicate: (item: ElemType<A>) => boolean): Fold<S, A>
+  valueOr<B>(defaultValue: B): Fold<S, Exclude<A, undefined> | B>
 
   // Fold · Prism => Fold
   compose<T2 extends HKT, A2>(optic: Prism<A, T2, A2>): Fold<S, A2>

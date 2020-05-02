@@ -11,6 +11,7 @@
   - Add `RemovablePrism` optic class
   - Add top-level `remove()`
   - Change `.index()` to be removable
+  - Add `.valueOr()`
 - **Fixes**
   - Top level `compose()` signatures were totally screwed up
 
