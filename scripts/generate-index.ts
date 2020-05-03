@@ -40,11 +40,18 @@ export type OpticFor_<S> = Equivalence<S, Id, S>
 const isReadOnly = (optic: OpticType): boolean =>
   optic === 'Getter' || optic === 'AffineFold' || optic === 'Fold'
 
+const hasRemovableOptics = (optic: OpticType): boolean =>
+  optic === 'Prism' || optic === 'Traversal'
+
 const opticHeader = (optic: OpticType, composee: OpticType) => `\
   // ${optic} · ${composee} => ${compositionType[optic][composee]}
 `
 
-type Composition = (typeOp: string, resultType: string) => string
+type Composition = (
+  typeOp: string,
+  resultType: string,
+  options?: { removable: boolean }
+) => string
 
 const makeComposition = (
   optic: OpticType,
@@ -52,11 +59,15 @@ const makeComposition = (
 ): Composition | undefined => {
   const composition = compositionType[optic][composee]
   if (composition === undefined) return undefined
+
+  const type = (removable: boolean): string =>
+    removable ? `Removable${composition}` : composition
+
   if (isReadOnly(composition)) {
-    return (_, resultType) => `${composition}<S, ${resultType}>`
+    return (_, resultType) => `${type(false)}<S, ${resultType}>`
   }
-  return (typeOp, resultType) =>
-    `${composition}<S, Compose<T, ${typeOp}>, ${resultType}>`
+  return (typeOp, resultType, options = { removable: false }) =>
+    `${type(options.removable)}<S, Compose<T, ${typeOp}>, ${resultType}>`
 }
 
 const composeMethod = (composee: OpticType, composition: Composition) =>
@@ -120,17 +131,16 @@ const prism = (composition: Composition) => `\
     predicate: (item: ElemType<A>) => boolean
   ): ${composition('ElemUnion<A>', 'ElemType<A>')}
   when(predicate: (item: A) => boolean): ${composition('Union<A>', 'A')}
-`
-
-const removablePrism = (composition: Composition) => `\
   index(i: number): IfElse<Eq<A, string>, ${composition(
     'DisallowTypeChange<string>',
-    'string'
-  )}, ${composition('ElemUnion<A>', 'ElemType<A>')}>
+    'string',
+    { removable: true }
+  )}, ${composition('ElemUnion<A>', 'ElemType<A>', { removable: true })}>
   head(): IfElse<Eq<A, string>, ${composition(
     'DisallowTypeChange<string>',
-    'string'
-  )}, ${composition('ElemUnion<A>', 'ElemType<A>')}>
+    'string',
+    { removable: true }
+  )}, ${composition('ElemUnion<A>', 'ElemType<A>', { removable: true })}>
 `
 
 const traversal = (composition: Composition) => `\
@@ -163,7 +173,6 @@ const opticNames: OpticType[] = [
   'Iso',
   'Lens',
   'Prism',
-  'RemovablePrism',
   'Traversal',
   'Getter',
   'AffineFold',
@@ -179,7 +188,6 @@ const methodGeneratorMap: Record<
   Iso: iso,
   Lens: lens,
   Prism: prism,
-  RemovablePrism: removablePrism,
   Traversal: traversal,
   Getter: getter,
   AffineFold: affineFold,
@@ -189,9 +197,11 @@ const methodGeneratorMap: Record<
 
 const generateOpticInterface = (optic: OpticType) => {
   const typeSig = isReadOnly(optic) ? '<S, A>' : '<S, T extends HKT, A>'
+  const removable = hasRemovableOptics(optic) ? '_removable: boolean' : ''
   return `\
 export interface ${optic}${typeSig} {
   _tag: '${optic}'
+  ${removable}
 
 ${opticNames
   .map(composee => {
@@ -210,8 +220,28 @@ ${opticNames
 `
 }
 
+const staticOpticInterfaces = `\
+export interface RemovablePrism<S, T extends HKT, A> extends Prism<S, T, A> {
+  _removable: true
+}
+
+export interface NonRemovablePrism<S, T extends HKT, A> extends Prism<S, T, A> {
+  _removable: false
+}
+
+export interface RemovableTraversal<S, T extends HKT, A> extends Traversal<S, T, A> {
+  _removable: true
+}
+
+export interface NonRemovableTraversal<S, T extends HKT, A> extends Traversal<S, T, A> {
+  _removable: false
+}
+`
+
 const generateOpticInterfaces = () =>
-  opticNames.map(optic => generateOpticInterface(optic)).join('\n')
+  opticNames.map(optic => generateOpticInterface(optic)).join('\n') +
+  '\n' +
+  staticOpticInterfaces
 
 const composeFunction = (optic: OpticType, composee: OpticType): string => {
   const [typeSig1, optic1] = isReadOnly(optic)
@@ -263,13 +293,13 @@ export function get<S, A>(
 }
 
 export function preview<S, A>(
-  optic: Prism<S, any, A> | RemovablePrism<S, any, A> | Traversal<S, any, A> | AffineFold<S, A> | Fold<S, A>
+  optic: Prism<S, any, A> | Traversal<S, any, A> | AffineFold<S, A> | Fold<S, A>
 ): (source: S) => A | undefined {
   return source => I.preview((optic as any)._ref, source)
 }
 
 export function collect<S, A>(
-  optic: Prism<S, any, A> | RemovablePrism<S, any, A> | Traversal<S, any, A> | Fold<S, A>
+  optic: Prism<S, any, A> | Traversal<S, any, A> | Fold<S, A>
 ): (source: S) => A[] {
   return source => I.collect((optic as any)._ref, source)
 }
@@ -280,7 +310,6 @@ export function modify<S, T extends HKT, A>(
     | Iso<S, T, A>
     | Lens<S, T, A>
     | Prism<S, T, A>
-    | RemovablePrism<S, T, A>
     | Traversal<S, T, A>
 ): <B>(f: (a: A) => B) => (source: S) => Simplify<S, Apply<T, B>> {
   return f => source => I.modify((optic as any)._ref, f, source)
@@ -292,7 +321,6 @@ export function set<S, T extends HKT, A>(
     | Iso<S, T, A>
     | Lens<S, T, A>
     | Prism<S, T, A>
-    | RemovablePrism<S, T, A>
     | Traversal<S, T, A>
     | Setter<S, T, A>
 ): <B>(value: B) => (source: S) => Simplify<S, Apply<T, B>> {
@@ -300,7 +328,7 @@ export function set<S, T extends HKT, A>(
 }
 
 export function remove<S>(
-  optic: RemovablePrism<S, any, any>
+  optic: RemovablePrism<S, any, any> | RemovableTraversal<S, any, any>
 ): (source: S) => S {
   return source => I.remove((optic as any)._ref, source)
 }

@@ -94,11 +94,6 @@ export interface Equivalence<S, T extends HKT, A> {
     predicate: (item: ElemType<A>) => boolean
   ): Prism<S, Compose<T, ElemUnion<A>>, ElemType<A>>
   when(predicate: (item: A) => boolean): Prism<S, Compose<T, Union<A>>, A>
-
-  // Equivalence · RemovablePrism => RemovablePrism
-  compose<T2 extends HKT, A2>(
-    optic: RemovablePrism<A, T2, A2>
-  ): RemovablePrism<S, Compose<T, T2>, A2>
   index(
     i: number
   ): IfElse<
@@ -211,11 +206,6 @@ export interface Iso<S, T extends HKT, A> {
     predicate: (item: ElemType<A>) => boolean
   ): Prism<S, Compose<T, ElemUnion<A>>, ElemType<A>>
   when(predicate: (item: A) => boolean): Prism<S, Compose<T, Union<A>>, A>
-
-  // Iso · RemovablePrism => RemovablePrism
-  compose<T2 extends HKT, A2>(
-    optic: RemovablePrism<A, T2, A2>
-  ): RemovablePrism<S, Compose<T, T2>, A2>
   index(
     i: number
   ): IfElse<
@@ -330,11 +320,6 @@ export interface Lens<S, T extends HKT, A> {
     predicate: (item: ElemType<A>) => boolean
   ): Prism<S, Compose<T, ElemUnion<A>>, ElemType<A>>
   when(predicate: (item: A) => boolean): Prism<S, Compose<T, Union<A>>, A>
-
-  // Lens · RemovablePrism => RemovablePrism
-  compose<T2 extends HKT, A2>(
-    optic: RemovablePrism<A, T2, A2>
-  ): RemovablePrism<S, Compose<T, T2>, A2>
   index(
     i: number
   ): IfElse<
@@ -382,6 +367,7 @@ export interface Lens<S, T extends HKT, A> {
 
 export interface Prism<S, T extends HKT, A> {
   _tag: 'Prism'
+  _removable: boolean
 
   // Prism · Equivalence => Prism
   compose<T2 extends HKT, A2>(
@@ -449,11 +435,6 @@ export interface Prism<S, T extends HKT, A> {
     predicate: (item: ElemType<A>) => boolean
   ): Prism<S, Compose<T, ElemUnion<A>>, ElemType<A>>
   when(predicate: (item: A) => boolean): Prism<S, Compose<T, Union<A>>, A>
-
-  // Prism · RemovablePrism => RemovablePrism
-  compose<T2 extends HKT, A2>(
-    optic: RemovablePrism<A, T2, A2>
-  ): RemovablePrism<S, Compose<T, T2>, A2>
   index(
     i: number
   ): IfElse<
@@ -499,127 +480,9 @@ export interface Prism<S, T extends HKT, A> {
   appendTo(): Setter<S, Compose<T, ElemUnion<A>>, ElemType<A>>
 }
 
-export interface RemovablePrism<S, T extends HKT, A> {
-  _tag: 'RemovablePrism'
-
-  // RemovablePrism · Equivalence => Prism
-  compose<T2 extends HKT, A2>(
-    optic: Equivalence<A, T2, A2>
-  ): Prism<S, Compose<T, T2>, A2>
-
-  // RemovablePrism · Iso => Prism
-  compose<T2 extends HKT, A2>(
-    optic: Iso<A, T2, A2>
-  ): Prism<S, Compose<T, T2>, A2>
-  iso<U>(
-    there: (a: A) => U,
-    back: (u: U) => A
-  ): Prism<S, Compose<T, Adapt<A, U>>, U>
-
-  // RemovablePrism · Lens => Prism
-  compose<T2 extends HKT, A2>(
-    optic: Lens<A, T2, A2>
-  ): Prism<S, Compose<T, T2>, A2>
-  prop<K extends keyof A>(key: K): Prism<S, Compose<T, Prop<A, K>>, A[K]>
-  path<
-    K1 extends keyof A,
-    K2 extends keyof A[K1],
-    K3 extends keyof A[K1][K2],
-    K4 extends keyof A[K1][K2][K3],
-    K5 extends keyof A[K1][K2][K3][K4]
-  >(
-    path: [K1, K2, K3, K4, K5]
-  ): Prism<S, Compose<T, Path5<A, K1, K2, K3, K4, K5>>, A[K1][K2][K3][K4][K5]>
-  path<
-    K1 extends keyof A,
-    K2 extends keyof A[K1],
-    K3 extends keyof A[K1][K2],
-    K4 extends keyof A[K1][K2][K3]
-  >(
-    path: [K1, K2, K3, K4]
-  ): Prism<S, Compose<T, Path4<A, K1, K2, K3, K4>>, A[K1][K2][K3][K4]>
-  path<K1 extends keyof A, K2 extends keyof A[K1], K3 extends keyof A[K1][K2]>(
-    path: [K1, K2, K3]
-  ): Prism<S, Compose<T, Path3<A, K1, K2, K3>>, A[K1][K2][K3]>
-  path<K1 extends keyof A, K2 extends keyof A[K1]>(
-    path: [K1, K2]
-  ): Prism<S, Compose<T, Path2<A, K1, K2>>, A[K1][K2]>
-  path<K1 extends keyof A>(path: [K1]): Prism<S, Compose<T, Prop<A, K1>>, A[K1]>
-  pick<K extends keyof A>(
-    keys: K[]
-  ): Prism<S, Compose<T, Plant<A, K>>, Pick<A, K>>
-  filter(
-    predicate: (item: ElemType<A>) => boolean
-  ): Prism<S, Compose<T, Union<A>>, A>
-  valueOr<B>(
-    defaultValue: B
-  ): Prism<S, Compose<T, Id>, Exclude<A, undefined> | B>
-
-  // RemovablePrism · Prism => Prism
-  compose<T2 extends HKT, A2>(
-    optic: Prism<A, T2, A2>
-  ): Prism<S, Compose<T, T2>, A2>
-  optional(): Prism<S, Compose<T, Optional>, Exclude<A, undefined>>
-  guard_<F extends HKT>(): <U extends A>(
-    g: (a: A) => a is U
-  ) => Prism<S, Compose<T, F>, U>
-  guard<U extends A>(g: (a: A) => a is U): Prism<S, Compose<T, Choice<A, U>>, U>
-  find(
-    predicate: (item: ElemType<A>) => boolean
-  ): Prism<S, Compose<T, ElemUnion<A>>, ElemType<A>>
-  when(predicate: (item: A) => boolean): Prism<S, Compose<T, Union<A>>, A>
-
-  // RemovablePrism · RemovablePrism => RemovablePrism
-  compose<T2 extends HKT, A2>(
-    optic: RemovablePrism<A, T2, A2>
-  ): RemovablePrism<S, Compose<T, T2>, A2>
-  index(
-    i: number
-  ): IfElse<
-    Eq<A, string>,
-    RemovablePrism<S, Compose<T, DisallowTypeChange<string>>, string>,
-    RemovablePrism<S, Compose<T, ElemUnion<A>>, ElemType<A>>
-  >
-  head(): IfElse<
-    Eq<A, string>,
-    RemovablePrism<S, Compose<T, DisallowTypeChange<string>>, string>,
-    RemovablePrism<S, Compose<T, ElemUnion<A>>, ElemType<A>>
-  >
-
-  // RemovablePrism · Traversal => Traversal
-  compose<T2 extends HKT, A2>(
-    optic: Traversal<A, T2, A2>
-  ): Traversal<S, Compose<T, T2>, A2>
-  elems(): Traversal<S, Compose<T, Elems>, ElemType<A>>
-  chars(): RequireString<
-    A,
-    Traversal<S, Compose<T, DisallowTypeChange<string>>, string>
-  >
-  words(): RequireString<
-    A,
-    Traversal<S, Compose<T, DisallowTypeChange<string>>, string>
-  >
-
-  // RemovablePrism · Getter => AffineFold
-  compose<A2>(optic: Getter<A, A2>): AffineFold<S, A2>
-  to<B>(f: (a: A) => B): AffineFold<S, B>
-
-  // RemovablePrism · AffineFold => AffineFold
-  compose<A2>(optic: AffineFold<A, A2>): AffineFold<S, A2>
-
-  // RemovablePrism · Fold => Fold
-  compose<A2>(optic: Fold<A, A2>): Fold<S, A2>
-
-  // RemovablePrism · Setter => Setter
-  compose<T2 extends HKT, A2>(
-    optic: Setter<A, T2, A2>
-  ): Setter<S, Compose<T, T2>, A2>
-  prependTo(): Setter<S, Compose<T, ElemUnion<A>>, ElemType<A>>
-  appendTo(): Setter<S, Compose<T, ElemUnion<A>>, ElemType<A>>
-}
-
 export interface Traversal<S, T extends HKT, A> {
   _tag: 'Traversal'
+  _removable: boolean
 
   // Traversal · Equivalence => Traversal
   compose<T2 extends HKT, A2>(
@@ -695,22 +558,17 @@ export interface Traversal<S, T extends HKT, A> {
     predicate: (item: ElemType<A>) => boolean
   ): Traversal<S, Compose<T, ElemUnion<A>>, ElemType<A>>
   when(predicate: (item: A) => boolean): Traversal<S, Compose<T, Union<A>>, A>
-
-  // Traversal · RemovablePrism => Traversal
-  compose<T2 extends HKT, A2>(
-    optic: RemovablePrism<A, T2, A2>
-  ): Traversal<S, Compose<T, T2>, A2>
   index(
     i: number
   ): IfElse<
     Eq<A, string>,
-    Traversal<S, Compose<T, DisallowTypeChange<string>>, string>,
-    Traversal<S, Compose<T, ElemUnion<A>>, ElemType<A>>
+    RemovableTraversal<S, Compose<T, DisallowTypeChange<string>>, string>,
+    RemovableTraversal<S, Compose<T, ElemUnion<A>>, ElemType<A>>
   >
   head(): IfElse<
     Eq<A, string>,
-    Traversal<S, Compose<T, DisallowTypeChange<string>>, string>,
-    Traversal<S, Compose<T, ElemUnion<A>>, ElemType<A>>
+    RemovableTraversal<S, Compose<T, DisallowTypeChange<string>>, string>,
+    RemovableTraversal<S, Compose<T, ElemUnion<A>>, ElemType<A>>
   >
 
   // Traversal · Traversal => Traversal
@@ -795,11 +653,6 @@ export interface Getter<S, A> {
   guard<U extends A>(g: (a: A) => a is U): AffineFold<S, U>
   find(predicate: (item: ElemType<A>) => boolean): AffineFold<S, ElemType<A>>
   when(predicate: (item: A) => boolean): AffineFold<S, A>
-
-  // Getter · RemovablePrism => AffineFold
-  compose<T2 extends HKT, A2>(
-    optic: RemovablePrism<A, T2, A2>
-  ): AffineFold<S, A2>
   index(
     i: number
   ): IfElse<Eq<A, string>, AffineFold<S, string>, AffineFold<S, ElemType<A>>>
@@ -876,11 +729,6 @@ export interface AffineFold<S, A> {
   guard<U extends A>(g: (a: A) => a is U): AffineFold<S, U>
   find(predicate: (item: ElemType<A>) => boolean): AffineFold<S, ElemType<A>>
   when(predicate: (item: A) => boolean): AffineFold<S, A>
-
-  // AffineFold · RemovablePrism => AffineFold
-  compose<T2 extends HKT, A2>(
-    optic: RemovablePrism<A, T2, A2>
-  ): AffineFold<S, A2>
   index(
     i: number
   ): IfElse<Eq<A, string>, AffineFold<S, string>, AffineFold<S, ElemType<A>>>
@@ -955,9 +803,6 @@ export interface Fold<S, A> {
   guard<U extends A>(g: (a: A) => a is U): Fold<S, U>
   find(predicate: (item: ElemType<A>) => boolean): Fold<S, ElemType<A>>
   when(predicate: (item: A) => boolean): Fold<S, A>
-
-  // Fold · RemovablePrism => Fold
-  compose<T2 extends HKT, A2>(optic: RemovablePrism<A, T2, A2>): Fold<S, A2>
   index(i: number): IfElse<Eq<A, string>, Fold<S, string>, Fold<S, ElemType<A>>>
   head(): IfElse<Eq<A, string>, Fold<S, string>, Fold<S, ElemType<A>>>
 
@@ -982,6 +827,24 @@ export interface Setter<S, T extends HKT, A> {
   _tag: 'Setter'
 }
 
+export interface RemovablePrism<S, T extends HKT, A> extends Prism<S, T, A> {
+  _removable: true
+}
+
+export interface NonRemovablePrism<S, T extends HKT, A> extends Prism<S, T, A> {
+  _removable: false
+}
+
+export interface RemovableTraversal<S, T extends HKT, A>
+  extends Traversal<S, T, A> {
+  _removable: true
+}
+
+export interface NonRemovableTraversal<S, T extends HKT, A>
+  extends Traversal<S, T, A> {
+  _removable: false
+}
+
 // Equivalence · Equivalence => Equivalence
 export function compose<S, T extends HKT, A, T2 extends HKT, A2>(
   optic1: Equivalence<S, T, A>,
@@ -1002,11 +865,6 @@ export function compose<S, T extends HKT, A, T2 extends HKT, A2>(
   optic1: Equivalence<S, T, A>,
   optic2: Prism<A, T2, A2>
 ): Prism<S, Compose<T, T2>, A2>
-// Equivalence · RemovablePrism => RemovablePrism
-export function compose<S, T extends HKT, A, T2 extends HKT, A2>(
-  optic1: Equivalence<S, T, A>,
-  optic2: RemovablePrism<A, T2, A2>
-): RemovablePrism<S, Compose<T, T2>, A2>
 // Equivalence · Traversal => Traversal
 export function compose<S, T extends HKT, A, T2 extends HKT, A2>(
   optic1: Equivalence<S, T, A>,
@@ -1052,11 +910,6 @@ export function compose<S, T extends HKT, A, T2 extends HKT, A2>(
   optic1: Iso<S, T, A>,
   optic2: Prism<A, T2, A2>
 ): Prism<S, Compose<T, T2>, A2>
-// Iso · RemovablePrism => RemovablePrism
-export function compose<S, T extends HKT, A, T2 extends HKT, A2>(
-  optic1: Iso<S, T, A>,
-  optic2: RemovablePrism<A, T2, A2>
-): RemovablePrism<S, Compose<T, T2>, A2>
 // Iso · Traversal => Traversal
 export function compose<S, T extends HKT, A, T2 extends HKT, A2>(
   optic1: Iso<S, T, A>,
@@ -1102,11 +955,6 @@ export function compose<S, T extends HKT, A, T2 extends HKT, A2>(
   optic1: Lens<S, T, A>,
   optic2: Prism<A, T2, A2>
 ): Prism<S, Compose<T, T2>, A2>
-// Lens · RemovablePrism => RemovablePrism
-export function compose<S, T extends HKT, A, T2 extends HKT, A2>(
-  optic1: Lens<S, T, A>,
-  optic2: RemovablePrism<A, T2, A2>
-): RemovablePrism<S, Compose<T, T2>, A2>
 // Lens · Traversal => Traversal
 export function compose<S, T extends HKT, A, T2 extends HKT, A2>(
   optic1: Lens<S, T, A>,
@@ -1152,11 +1000,6 @@ export function compose<S, T extends HKT, A, T2 extends HKT, A2>(
   optic1: Prism<S, T, A>,
   optic2: Prism<A, T2, A2>
 ): Prism<S, Compose<T, T2>, A2>
-// Prism · RemovablePrism => RemovablePrism
-export function compose<S, T extends HKT, A, T2 extends HKT, A2>(
-  optic1: Prism<S, T, A>,
-  optic2: RemovablePrism<A, T2, A2>
-): RemovablePrism<S, Compose<T, T2>, A2>
 // Prism · Traversal => Traversal
 export function compose<S, T extends HKT, A, T2 extends HKT, A2>(
   optic1: Prism<S, T, A>,
@@ -1182,56 +1025,6 @@ export function compose<S, T extends HKT, A, T2 extends HKT, A2>(
   optic1: Prism<S, T, A>,
   optic2: Setter<A, T2, A2>
 ): Setter<S, Compose<T, T2>, A2>
-// RemovablePrism · Equivalence => Prism
-export function compose<S, T extends HKT, A, T2 extends HKT, A2>(
-  optic1: RemovablePrism<S, T, A>,
-  optic2: Equivalence<A, T2, A2>
-): Prism<S, Compose<T, T2>, A2>
-// RemovablePrism · Iso => Prism
-export function compose<S, T extends HKT, A, T2 extends HKT, A2>(
-  optic1: RemovablePrism<S, T, A>,
-  optic2: Iso<A, T2, A2>
-): Prism<S, Compose<T, T2>, A2>
-// RemovablePrism · Lens => Prism
-export function compose<S, T extends HKT, A, T2 extends HKT, A2>(
-  optic1: RemovablePrism<S, T, A>,
-  optic2: Lens<A, T2, A2>
-): Prism<S, Compose<T, T2>, A2>
-// RemovablePrism · Prism => Prism
-export function compose<S, T extends HKT, A, T2 extends HKT, A2>(
-  optic1: RemovablePrism<S, T, A>,
-  optic2: Prism<A, T2, A2>
-): Prism<S, Compose<T, T2>, A2>
-// RemovablePrism · RemovablePrism => RemovablePrism
-export function compose<S, T extends HKT, A, T2 extends HKT, A2>(
-  optic1: RemovablePrism<S, T, A>,
-  optic2: RemovablePrism<A, T2, A2>
-): RemovablePrism<S, Compose<T, T2>, A2>
-// RemovablePrism · Traversal => Traversal
-export function compose<S, T extends HKT, A, T2 extends HKT, A2>(
-  optic1: RemovablePrism<S, T, A>,
-  optic2: Traversal<A, T2, A2>
-): Traversal<S, Compose<T, T2>, A2>
-// RemovablePrism · Getter => AffineFold
-export function compose<S, T extends HKT, A, A2>(
-  optic1: RemovablePrism<S, T, A>,
-  optic2: Getter<A, A2>
-): AffineFold<S, A2>
-// RemovablePrism · AffineFold => AffineFold
-export function compose<S, T extends HKT, A, A2>(
-  optic1: RemovablePrism<S, T, A>,
-  optic2: AffineFold<A, A2>
-): AffineFold<S, A2>
-// RemovablePrism · Fold => Fold
-export function compose<S, T extends HKT, A, A2>(
-  optic1: RemovablePrism<S, T, A>,
-  optic2: Fold<A, A2>
-): Fold<S, A2>
-// RemovablePrism · Setter => Setter
-export function compose<S, T extends HKT, A, T2 extends HKT, A2>(
-  optic1: RemovablePrism<S, T, A>,
-  optic2: Setter<A, T2, A2>
-): Setter<S, Compose<T, T2>, A2>
 // Traversal · Equivalence => Traversal
 export function compose<S, T extends HKT, A, T2 extends HKT, A2>(
   optic1: Traversal<S, T, A>,
@@ -1251,11 +1044,6 @@ export function compose<S, T extends HKT, A, T2 extends HKT, A2>(
 export function compose<S, T extends HKT, A, T2 extends HKT, A2>(
   optic1: Traversal<S, T, A>,
   optic2: Prism<A, T2, A2>
-): Traversal<S, Compose<T, T2>, A2>
-// Traversal · RemovablePrism => Traversal
-export function compose<S, T extends HKT, A, T2 extends HKT, A2>(
-  optic1: Traversal<S, T, A>,
-  optic2: RemovablePrism<A, T2, A2>
 ): Traversal<S, Compose<T, T2>, A2>
 // Traversal · Traversal => Traversal
 export function compose<S, T extends HKT, A, T2 extends HKT, A2>(
@@ -1302,11 +1090,6 @@ export function compose<S, A, T2 extends HKT, A2>(
   optic1: Getter<S, A>,
   optic2: Prism<A, T2, A2>
 ): AffineFold<S, A2>
-// Getter · RemovablePrism => AffineFold
-export function compose<S, A, T2 extends HKT, A2>(
-  optic1: Getter<S, A>,
-  optic2: RemovablePrism<A, T2, A2>
-): AffineFold<S, A2>
 // Getter · Traversal => Fold
 export function compose<S, A, T2 extends HKT, A2>(
   optic1: Getter<S, A>,
@@ -1347,11 +1130,6 @@ export function compose<S, A, T2 extends HKT, A2>(
   optic1: AffineFold<S, A>,
   optic2: Prism<A, T2, A2>
 ): AffineFold<S, A2>
-// AffineFold · RemovablePrism => AffineFold
-export function compose<S, A, T2 extends HKT, A2>(
-  optic1: AffineFold<S, A>,
-  optic2: RemovablePrism<A, T2, A2>
-): AffineFold<S, A2>
 // AffineFold · Traversal => Fold
 export function compose<S, A, T2 extends HKT, A2>(
   optic1: AffineFold<S, A>,
@@ -1391,11 +1169,6 @@ export function compose<S, A, T2 extends HKT, A2>(
 export function compose<S, A, T2 extends HKT, A2>(
   optic1: Fold<S, A>,
   optic2: Prism<A, T2, A2>
-): Fold<S, A2>
-// Fold · RemovablePrism => Fold
-export function compose<S, A, T2 extends HKT, A2>(
-  optic1: Fold<S, A>,
-  optic2: RemovablePrism<A, T2, A2>
 ): Fold<S, A2>
 // Fold · Traversal => Fold
 export function compose<S, A, T2 extends HKT, A2>(
@@ -1440,22 +1213,13 @@ export function get<S, A>(
 }
 
 export function preview<S, A>(
-  optic:
-    | Prism<S, any, A>
-    | RemovablePrism<S, any, A>
-    | Traversal<S, any, A>
-    | AffineFold<S, A>
-    | Fold<S, A>
+  optic: Prism<S, any, A> | Traversal<S, any, A> | AffineFold<S, A> | Fold<S, A>
 ): (source: S) => A | undefined {
   return source => I.preview((optic as any)._ref, source)
 }
 
 export function collect<S, A>(
-  optic:
-    | Prism<S, any, A>
-    | RemovablePrism<S, any, A>
-    | Traversal<S, any, A>
-    | Fold<S, A>
+  optic: Prism<S, any, A> | Traversal<S, any, A> | Fold<S, A>
 ): (source: S) => A[] {
   return source => I.collect((optic as any)._ref, source)
 }
@@ -1466,7 +1230,6 @@ export function modify<S, T extends HKT, A>(
     | Iso<S, T, A>
     | Lens<S, T, A>
     | Prism<S, T, A>
-    | RemovablePrism<S, T, A>
     | Traversal<S, T, A>
 ): <B>(f: (a: A) => B) => (source: S) => Simplify<S, Apply<T, B>> {
   return f => source => I.modify((optic as any)._ref, f, source)
@@ -1478,7 +1241,6 @@ export function set<S, T extends HKT, A>(
     | Iso<S, T, A>
     | Lens<S, T, A>
     | Prism<S, T, A>
-    | RemovablePrism<S, T, A>
     | Traversal<S, T, A>
     | Setter<S, T, A>
 ): <B>(value: B) => (source: S) => Simplify<S, Apply<T, B>> {
@@ -1486,7 +1248,7 @@ export function set<S, T extends HKT, A>(
 }
 
 export function remove<S>(
-  optic: RemovablePrism<S, any, any>
+  optic: RemovablePrism<S, any, any> | RemovableTraversal<S, any, any>
 ): (source: S) => S {
   return source => I.remove((optic as any)._ref, source)
 }

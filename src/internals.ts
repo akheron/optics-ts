@@ -69,7 +69,6 @@ export type OpticType =
   | 'Iso'
   | 'Lens'
   | 'Prism'
-  | 'RemovablePrism'
   | 'Traversal'
   | 'Getter'
   | 'AffineFold'
@@ -86,7 +85,6 @@ export const compositionType: CompositionType = {
     Iso: 'Iso',
     Lens: 'Lens',
     Prism: 'Prism',
-    RemovablePrism: 'RemovablePrism',
     Traversal: 'Traversal',
     Getter: 'Getter',
     AffineFold: 'AffineFold',
@@ -98,7 +96,6 @@ export const compositionType: CompositionType = {
     Iso: 'Iso',
     Lens: 'Lens',
     Prism: 'Prism',
-    RemovablePrism: 'RemovablePrism',
     Traversal: 'Traversal',
     Getter: 'Getter',
     AffineFold: 'AffineFold',
@@ -110,7 +107,6 @@ export const compositionType: CompositionType = {
     Iso: 'Lens',
     Lens: 'Lens',
     Prism: 'Prism',
-    RemovablePrism: 'RemovablePrism',
     Traversal: 'Traversal',
     Getter: 'Getter',
     AffineFold: 'AffineFold',
@@ -122,19 +118,6 @@ export const compositionType: CompositionType = {
     Iso: 'Prism',
     Lens: 'Prism',
     Prism: 'Prism',
-    RemovablePrism: 'RemovablePrism',
-    Traversal: 'Traversal',
-    Getter: 'AffineFold',
-    AffineFold: 'AffineFold',
-    Fold: 'Fold',
-    Setter: 'Setter',
-  },
-  RemovablePrism: {
-    Equivalence: 'Prism',
-    Iso: 'Prism',
-    Lens: 'Prism',
-    Prism: 'Prism',
-    RemovablePrism: 'RemovablePrism',
     Traversal: 'Traversal',
     Getter: 'AffineFold',
     AffineFold: 'AffineFold',
@@ -146,7 +129,6 @@ export const compositionType: CompositionType = {
     Iso: 'Traversal',
     Lens: 'Traversal',
     Prism: 'Traversal',
-    RemovablePrism: 'Traversal',
     Traversal: 'Traversal',
     Getter: 'Fold',
     AffineFold: 'Fold',
@@ -158,7 +140,6 @@ export const compositionType: CompositionType = {
     Iso: 'Getter',
     Lens: 'Getter',
     Prism: 'AffineFold',
-    RemovablePrism: 'AffineFold',
     Traversal: 'Fold',
     Getter: 'Getter',
     AffineFold: 'AffineFold',
@@ -170,7 +151,6 @@ export const compositionType: CompositionType = {
     Iso: 'AffineFold',
     Lens: 'AffineFold',
     Prism: 'AffineFold',
-    RemovablePrism: 'AffineFold',
     Traversal: 'Fold',
     Getter: 'AffineFold',
     AffineFold: 'AffineFold',
@@ -182,7 +162,6 @@ export const compositionType: CompositionType = {
     Iso: 'Fold',
     Lens: 'Fold',
     Prism: 'Fold',
-    RemovablePrism: 'Fold',
     Traversal: 'Fold',
     Getter: 'Fold',
     AffineFold: 'Fold',
@@ -194,7 +173,6 @@ export const compositionType: CompositionType = {
     Iso: undefined,
     Lens: undefined,
     Prism: undefined,
-    RemovablePrism: undefined,
     Traversal: undefined,
     Getter: undefined,
     AffineFold: undefined,
@@ -209,6 +187,7 @@ type Profunctor = any
 
 interface OpticFn {
   _tag: OpticType
+  _removable: boolean
   (P: Profunctor, optic: OpticFn): any
 }
 
@@ -217,19 +196,31 @@ const withTag = (
   optic: (P: Profunctor, optic: OpticFn) => any
 ): OpticFn => {
   ;(optic as any)._tag = tag
+  ;(optic as any)._removable = false
   return optic as any
+}
+
+const removable = (optic: OpticFn): OpticFn => {
+  optic._removable = true
+  return optic
 }
 
 function compose(optic1: OpticFn, optic2: OpticFn, optic3?: OpticFn): OpticFn {
   switch (arguments.length) {
     case 2: {
-      const tag = compositionType[optic1._tag][optic2._tag]!
-      return withTag(tag, (P, optic) => optic1(P, optic2(P, optic)))
+      const next = (P: Profunctor, optic: OpticFn) =>
+        optic1(P, optic2(P, optic))
+      ;(next as any)._tag = compositionType[optic1._tag][optic2._tag]!
+      ;(next as any)._removable = optic2._removable || false
+      return next as OpticFn
     }
     default: {
       const tag1 = compositionType[optic1._tag][optic2._tag]!
-      const tag = compositionType[tag1][optic3!._tag]!
-      return withTag(tag, (P, optic) => optic1(P, optic2(P, optic3!(P, optic))))
+      const next = (P: Profunctor, optic: OpticFn) =>
+        optic1(P, optic2(P, optic3!(P, optic)))
+      ;(next as any)._tag = compositionType[tag1][optic3!._tag]!
+      ;(next as any)._removable = optic3!._removable || false
+      return next as OpticFn
     }
   }
 }
@@ -313,8 +304,7 @@ const mustMatch = when((source: any) => source !== noMatch)
 const removeMe: unique symbol = Symbol('__remove_me__')
 
 const index = (i: number): OpticFn =>
-  withTag(
-    'RemovablePrism',
+  removable(
     compose(
       lens(
         (source: any[]) => (0 <= i && i < source.length ? source[i] : noMatch),
@@ -377,8 +367,7 @@ const find = (predicate: (item: any) => boolean): OpticFn =>
         return result
       }
     ),
-    index(0),
-    mustMatch
+    index(0)
   )
 
 const filter = (predicate: (item: any) => boolean): OpticFn =>
@@ -445,9 +434,14 @@ const words: OpticFn = compose(
 /////////////////////////////////////////////////////////////////////////////
 
 export class Optic {
-  _tag: OpticType
-  constructor(public _ref: OpticFn) {
-    this._tag = _ref._tag
+  constructor(public _ref: OpticFn) {}
+
+  get _tag(): OpticType {
+    return this._ref._tag
+  }
+
+  get _removable(): boolean {
+    return this._ref._removable
   }
 
   compose(other: Optic): Optic {
