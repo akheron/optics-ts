@@ -197,7 +197,9 @@ const methodGeneratorMap: Record<
 
 const generateOpticInterface = (optic: OpticType) => {
   const typeSig = isReadOnly(optic) ? '<S, A>' : '<S, T extends HKT, A>'
-  const removable = hasRemovableOptics(optic) ? '_removable: boolean' : ''
+  const removable = hasRemovableOptics(optic)
+    ? '_removable?: true | undefined'
+    : ''
   return `\
 export interface ${optic}${typeSig} {
   _tag: '${optic}'
@@ -226,7 +228,7 @@ export interface RemovablePrism<S, T extends HKT, A> extends Prism<S, T, A> {
 }
 
 export interface NonRemovablePrism<S, T extends HKT, A> extends Prism<S, T, A> {
-  _removable: false
+  _removable: undefined
 }
 
 export interface RemovableTraversal<S, T extends HKT, A> extends Traversal<S, T, A> {
@@ -234,7 +236,7 @@ export interface RemovableTraversal<S, T extends HKT, A> extends Traversal<S, T,
 }
 
 export interface NonRemovableTraversal<S, T extends HKT, A> extends Traversal<S, T, A> {
-  _removable: false
+  _removable: undefined
 }
 `
 

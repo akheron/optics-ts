@@ -367,7 +367,7 @@ export interface Lens<S, T extends HKT, A> {
 
 export interface Prism<S, T extends HKT, A> {
   _tag: 'Prism'
-  _removable: boolean
+  _removable?: true | undefined
 
   // Prism · Equivalence => Prism
   compose<T2 extends HKT, A2>(
@@ -482,7 +482,7 @@ export interface Prism<S, T extends HKT, A> {
 
 export interface Traversal<S, T extends HKT, A> {
   _tag: 'Traversal'
-  _removable: boolean
+  _removable?: true | undefined
 
   // Traversal · Equivalence => Traversal
   compose<T2 extends HKT, A2>(
@@ -832,7 +832,7 @@ export interface RemovablePrism<S, T extends HKT, A> extends Prism<S, T, A> {
 }
 
 export interface NonRemovablePrism<S, T extends HKT, A> extends Prism<S, T, A> {
-  _removable: false
+  _removable: undefined
 }
 
 export interface RemovableTraversal<S, T extends HKT, A>
@@ -842,7 +842,7 @@ export interface RemovableTraversal<S, T extends HKT, A>
 
 export interface NonRemovableTraversal<S, T extends HKT, A>
   extends Traversal<S, T, A> {
-  _removable: false
+  _removable: undefined
 }
 
 // Equivalence · Equivalence => Equivalence

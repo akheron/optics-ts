@@ -187,7 +187,7 @@ type Profunctor = any
 
 interface OpticFn {
   _tag: OpticType
-  _removable: boolean
+  _removable?: true | undefined
   (P: Profunctor, optic: OpticFn): any
 }
 
@@ -195,9 +195,9 @@ const withTag = (
   tag: OpticType,
   optic: (P: Profunctor, optic: OpticFn) => any
 ): OpticFn => {
-  ;(optic as any)._tag = tag
-  ;(optic as any)._removable = false
-  return optic as any
+  const result = optic as OpticFn
+  result._tag = tag
+  return result
 }
 
 const removable = (optic: OpticFn): OpticFn => {
@@ -440,7 +440,7 @@ export class Optic {
     return this._ref._tag
   }
 
-  get _removable(): boolean {
+  get _removable(): true | undefined {
     return this._ref._removable
   }
 
