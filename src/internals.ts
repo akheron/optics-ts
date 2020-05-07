@@ -303,7 +303,7 @@ const mustMatch = when((source: any) => source !== noMatch)
 
 const removeMe: unique symbol = Symbol('__remove_me__')
 
-const index = (i: number): OpticFn =>
+const at = (i: number): OpticFn =>
   removable(
     compose(
       lens(
@@ -367,7 +367,7 @@ const find = (predicate: (item: any) => boolean): OpticFn =>
         return result
       }
     ),
-    index(0)
+    at(0),
   )
 
 const filter = (predicate: (item: any) => boolean): OpticFn =>
@@ -486,12 +486,16 @@ export class Optic {
     return new Optic(compose(this._ref, guard(fn as any)))
   }
 
-  index(i: number): Optic {
-    return new Optic(compose(this._ref, index(i)))
+  at(i: number): Optic {
+    return new Optic(compose(this._ref, at(i)))
   }
 
   head(): Optic {
-    return new Optic(compose(this._ref, index(0)))
+    return new Optic(compose(this._ref, at(0)))
+  }
+
+  index(i: number): Optic {
+    return new Optic(compose(this._ref, at(i)))
   }
 
   find(predicate: (item: any) => boolean): Optic {

@@ -211,12 +211,12 @@ describe('lens/pick', () => {
   })
 })
 
-describe('index (on array)', () => {
+describe('at (on array)', () => {
   type Source = string[]
   const source1: Source = ['foo', 'bar', 'baz', 'quux']
   const source2: Source = ['foo']
 
-  const prism = O.optic_<Source>().index(1)
+  const prism = O.optic_<Source>().at(1)
   type Focus = string | undefined
 
   it('preview defined', () => {
@@ -266,12 +266,12 @@ describe('index (on array)', () => {
   })
 })
 
-describe('index (on string)', () => {
+describe('at (on string)', () => {
   type Source = string
   const source1: Source = 'foobarbaz'
   const source2: Source = 'foo'
 
-  const prism = O.optic_<string>().index(3)
+  const prism = O.optic_<string>().at(3)
   type Focus = string | undefined
 
   it('preview defined', () => {

@@ -53,8 +53,9 @@ TypeScript:
     - [`optional(): Prism<S, _, Exclude<A, undefined>>`](#optional-prisms-_-excludea-undefined)
     - [`guard<U extends A>(g: (a: A) => a is U): Prism<S, _, U>`](#guardu-extends-ag-a-a--a-is-u-prisms-_-u)
     - [`guard_<F extends HKT>(): <U extends A>(g: (a: A) => a is U) => Prism<S, T · F, U>`](#guard_f-extends-hkt-u-extends-ag-a-a--a-is-u--prisms-t-%C2%B7-f-u)
-    - [`index(i: number): RemovablePrism<S, _, ElemType<A>>`](#indexi-number-removableprisms-_-elemtypea)
+    - [`at(i: number): RemovablePrism<S, _, ElemType<A>>`](#ati-number-removableprisms-_-elemtypea)
     - [`head(): Prism<S, _, ElemType<A>>`](#head-prisms-_-elemtypea)
+    - [`index(i: number): RemovablePrism<S, _, ElemType<A>>`](#indexi-number-removableprisms-_-elemtypea)
     - [`find(p: (e: ElemType<A>) => boolean): Prism<S, _, ElemType<A>>`](#findp-e-elemtypea--boolean-prisms-_-elemtypea)
     - [`when(f: (a: A) => boolean): Prism<S, _, A>`](#whenf-a-a--boolean-prisms-_-a)
   - [Traversals](#traversals)
@@ -250,7 +251,7 @@ Some optics are removable. This means that they focus on an element of a
 container (e.g. an array), and you can remove the element from the
 container.
 
-`.index()` is a removable prism. It focuses on an index of an array, and
+`.at()` is a removable prism. It focuses on an index of an array, and
 lets you also remove that index:
 
 ```typescript
@@ -258,7 +259,7 @@ interface User {
   name: string
 }
 
-const secondUser = O.optic<Users>().index(1)
+const secondUser = O.optic<Users>().at(1)
 
 const threeUsers: User[] = [
   { name: 'Max' },
@@ -615,7 +616,7 @@ Create a lens that focuses on the property `K` of `A`.
 
 **Note:** `prop()` only works for string properties, even though
 TypeScript's type system also allows array's numeric indices when using
-`keyof`. Use the `index()` prism to focus on an array element at a given
+`keyof`. Use the `.at()` prism to focus on an array element at a given
 index.
 
 #### `path<K1, K2, ...>(keys: [K1, K2, ...]): Lens<S, _, A[K1][K2]...>`
@@ -699,7 +700,7 @@ Create a prism that focuses on the subtype of `A` that matches the type
 guard `g`. When written to, uses the higher-kinded type `F` to construct
 the output type.
 
-#### `index(i: number): RemovablePrism<S, _, ElemType<A>>`
+#### `at(i: number): RemovablePrism<S, _, ElemType<A>>`
 
 Only works on arrays and strings. Removable.
 
@@ -714,15 +715,19 @@ written string can be something else than 1.
 
 #### `head(): Prism<S, _, ElemType<A>>`
 
-Short for `index(0)`.
+Short for `at(0)`.
+
+#### `index(i: number): RemovablePrism<S, _, ElemType<A>>`
+
+**Deprecated**. Alias for `.at()`.
 
 #### `find(p: (e: ElemType<A>) => boolean): Prism<S, _, ElemType<A>>`
 
 Only works on array types. `ElemType<A>` is the element type of the
 array type `A`.
 
-Like `.index()`, but the index to be focused on is determined by
-finding the first element that matches the given predicate.
+Like `.at()`, but the index to be focused on is determined by finding
+the first element that matches the given predicate.
 
 When a different type `B` is written through this optic, the resulting
 array will have the type `Array<A | B>`.

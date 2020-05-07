@@ -131,12 +131,18 @@ const prism = (composition: Composition) => `\
     predicate: (item: ElemType<A>) => boolean
   ): ${composition('ElemUnion<A>', 'ElemType<A>')}
   when(predicate: (item: A) => boolean): ${composition('Union<A>', 'A')}
-  index(i: number): IfElse<Eq<A, string>, ${composition(
+  at(i: number): IfElse<Eq<A, string>, ${composition(
     'DisallowTypeChange<string>',
     'string',
     { removable: true }
   )}, ${composition('ElemUnion<A>', 'ElemType<A>', { removable: true })}>
   head(): IfElse<Eq<A, string>, ${composition(
+    'DisallowTypeChange<string>',
+    'string',
+    { removable: true }
+  )}, ${composition('ElemUnion<A>', 'ElemType<A>', { removable: true })}>
+  // Deprecated, use .at()
+  index(i: number): IfElse<Eq<A, string>, ${composition(
     'DisallowTypeChange<string>',
     'string',
     { removable: true }

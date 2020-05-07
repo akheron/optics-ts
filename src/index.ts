@@ -94,7 +94,7 @@ export interface Equivalence<S, T extends HKT, A> {
     predicate: (item: ElemType<A>) => boolean
   ): Prism<S, Compose<T, ElemUnion<A>>, ElemType<A>>
   when(predicate: (item: A) => boolean): Prism<S, Compose<T, Union<A>>, A>
-  index(
+  at(
     i: number
   ): IfElse<
     Eq<A, string>,
@@ -102,6 +102,14 @@ export interface Equivalence<S, T extends HKT, A> {
     RemovablePrism<S, Compose<T, ElemUnion<A>>, ElemType<A>>
   >
   head(): IfElse<
+    Eq<A, string>,
+    RemovablePrism<S, Compose<T, DisallowTypeChange<string>>, string>,
+    RemovablePrism<S, Compose<T, ElemUnion<A>>, ElemType<A>>
+  >
+  // Deprecated, use .at()
+  index(
+    i: number
+  ): IfElse<
     Eq<A, string>,
     RemovablePrism<S, Compose<T, DisallowTypeChange<string>>, string>,
     RemovablePrism<S, Compose<T, ElemUnion<A>>, ElemType<A>>
@@ -206,7 +214,7 @@ export interface Iso<S, T extends HKT, A> {
     predicate: (item: ElemType<A>) => boolean
   ): Prism<S, Compose<T, ElemUnion<A>>, ElemType<A>>
   when(predicate: (item: A) => boolean): Prism<S, Compose<T, Union<A>>, A>
-  index(
+  at(
     i: number
   ): IfElse<
     Eq<A, string>,
@@ -214,6 +222,14 @@ export interface Iso<S, T extends HKT, A> {
     RemovablePrism<S, Compose<T, ElemUnion<A>>, ElemType<A>>
   >
   head(): IfElse<
+    Eq<A, string>,
+    RemovablePrism<S, Compose<T, DisallowTypeChange<string>>, string>,
+    RemovablePrism<S, Compose<T, ElemUnion<A>>, ElemType<A>>
+  >
+  // Deprecated, use .at()
+  index(
+    i: number
+  ): IfElse<
     Eq<A, string>,
     RemovablePrism<S, Compose<T, DisallowTypeChange<string>>, string>,
     RemovablePrism<S, Compose<T, ElemUnion<A>>, ElemType<A>>
@@ -320,7 +336,7 @@ export interface Lens<S, T extends HKT, A> {
     predicate: (item: ElemType<A>) => boolean
   ): Prism<S, Compose<T, ElemUnion<A>>, ElemType<A>>
   when(predicate: (item: A) => boolean): Prism<S, Compose<T, Union<A>>, A>
-  index(
+  at(
     i: number
   ): IfElse<
     Eq<A, string>,
@@ -328,6 +344,14 @@ export interface Lens<S, T extends HKT, A> {
     RemovablePrism<S, Compose<T, ElemUnion<A>>, ElemType<A>>
   >
   head(): IfElse<
+    Eq<A, string>,
+    RemovablePrism<S, Compose<T, DisallowTypeChange<string>>, string>,
+    RemovablePrism<S, Compose<T, ElemUnion<A>>, ElemType<A>>
+  >
+  // Deprecated, use .at()
+  index(
+    i: number
+  ): IfElse<
     Eq<A, string>,
     RemovablePrism<S, Compose<T, DisallowTypeChange<string>>, string>,
     RemovablePrism<S, Compose<T, ElemUnion<A>>, ElemType<A>>
@@ -435,7 +459,7 @@ export interface Prism<S, T extends HKT, A> {
     predicate: (item: ElemType<A>) => boolean
   ): Prism<S, Compose<T, ElemUnion<A>>, ElemType<A>>
   when(predicate: (item: A) => boolean): Prism<S, Compose<T, Union<A>>, A>
-  index(
+  at(
     i: number
   ): IfElse<
     Eq<A, string>,
@@ -443,6 +467,14 @@ export interface Prism<S, T extends HKT, A> {
     RemovablePrism<S, Compose<T, ElemUnion<A>>, ElemType<A>>
   >
   head(): IfElse<
+    Eq<A, string>,
+    RemovablePrism<S, Compose<T, DisallowTypeChange<string>>, string>,
+    RemovablePrism<S, Compose<T, ElemUnion<A>>, ElemType<A>>
+  >
+  // Deprecated, use .at()
+  index(
+    i: number
+  ): IfElse<
     Eq<A, string>,
     RemovablePrism<S, Compose<T, DisallowTypeChange<string>>, string>,
     RemovablePrism<S, Compose<T, ElemUnion<A>>, ElemType<A>>
@@ -558,7 +590,7 @@ export interface Traversal<S, T extends HKT, A> {
     predicate: (item: ElemType<A>) => boolean
   ): Traversal<S, Compose<T, ElemUnion<A>>, ElemType<A>>
   when(predicate: (item: A) => boolean): Traversal<S, Compose<T, Union<A>>, A>
-  index(
+  at(
     i: number
   ): IfElse<
     Eq<A, string>,
@@ -566,6 +598,14 @@ export interface Traversal<S, T extends HKT, A> {
     RemovableTraversal<S, Compose<T, ElemUnion<A>>, ElemType<A>>
   >
   head(): IfElse<
+    Eq<A, string>,
+    RemovableTraversal<S, Compose<T, DisallowTypeChange<string>>, string>,
+    RemovableTraversal<S, Compose<T, ElemUnion<A>>, ElemType<A>>
+  >
+  // Deprecated, use .at()
+  index(
+    i: number
+  ): IfElse<
     Eq<A, string>,
     RemovableTraversal<S, Compose<T, DisallowTypeChange<string>>, string>,
     RemovableTraversal<S, Compose<T, ElemUnion<A>>, ElemType<A>>
@@ -653,7 +693,7 @@ export interface Getter<S, A> {
   guard<U extends A>(g: (a: A) => a is U): AffineFold<S, U>
   find(predicate: (item: ElemType<A>) => boolean): AffineFold<S, ElemType<A>>
   when(predicate: (item: A) => boolean): AffineFold<S, A>
-  index(
+  at(
     i: number
   ): IfElse<Eq<A, string>, AffineFold<S, string>, AffineFold<S, ElemType<A>>>
   head(): IfElse<
@@ -661,6 +701,10 @@ export interface Getter<S, A> {
     AffineFold<S, string>,
     AffineFold<S, ElemType<A>>
   >
+  // Deprecated, use .at()
+  index(
+    i: number
+  ): IfElse<Eq<A, string>, AffineFold<S, string>, AffineFold<S, ElemType<A>>>
 
   // Getter · Traversal => Fold
   compose<T2 extends HKT, A2>(optic: Traversal<A, T2, A2>): Fold<S, A2>
@@ -729,7 +773,7 @@ export interface AffineFold<S, A> {
   guard<U extends A>(g: (a: A) => a is U): AffineFold<S, U>
   find(predicate: (item: ElemType<A>) => boolean): AffineFold<S, ElemType<A>>
   when(predicate: (item: A) => boolean): AffineFold<S, A>
-  index(
+  at(
     i: number
   ): IfElse<Eq<A, string>, AffineFold<S, string>, AffineFold<S, ElemType<A>>>
   head(): IfElse<
@@ -737,6 +781,10 @@ export interface AffineFold<S, A> {
     AffineFold<S, string>,
     AffineFold<S, ElemType<A>>
   >
+  // Deprecated, use .at()
+  index(
+    i: number
+  ): IfElse<Eq<A, string>, AffineFold<S, string>, AffineFold<S, ElemType<A>>>
 
   // AffineFold · Traversal => Fold
   compose<T2 extends HKT, A2>(optic: Traversal<A, T2, A2>): Fold<S, A2>
@@ -803,8 +851,10 @@ export interface Fold<S, A> {
   guard<U extends A>(g: (a: A) => a is U): Fold<S, U>
   find(predicate: (item: ElemType<A>) => boolean): Fold<S, ElemType<A>>
   when(predicate: (item: A) => boolean): Fold<S, A>
-  index(i: number): IfElse<Eq<A, string>, Fold<S, string>, Fold<S, ElemType<A>>>
+  at(i: number): IfElse<Eq<A, string>, Fold<S, string>, Fold<S, ElemType<A>>>
   head(): IfElse<Eq<A, string>, Fold<S, string>, Fold<S, ElemType<A>>>
+  // Deprecated, use .at()
+  index(i: number): IfElse<Eq<A, string>, Fold<S, string>, Fold<S, ElemType<A>>>
 
   // Fold · Traversal => Fold
   compose<T2 extends HKT, A2>(optic: Traversal<A, T2, A2>): Fold<S, A2>

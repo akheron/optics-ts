@@ -1,5 +1,12 @@
 # Changelog
 
+## 1.2.0 (unreleased)
+
+- **New features**
+  - Add `.at()`
+- **Deprecations**
+  - Deprecate `.index()` in favor of `.at()`
+
 ## 1.1.0
 
 - **New features**
