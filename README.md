@@ -490,25 +490,26 @@ read-only optics have 2 type parameters: `<S, A>`:
 
 - `A` is the type of the focus or focuses
 
-- `T` is a "higher-kinded type" or a "partially applied type operator"
-  that yields the output type when applied to some type `B`.
+- `T` is a type that encodes how the output type is constructed with
+  polymorphic writes, as well as info about the optic's removability
 
 Conceptually, when you write a value of type `B`, the output type will
-be `S` with `A` replaced by `B` at the focus(es) of the optic. `T` is
-the mechanism that transforms `B` to the output type. This construct
-makes it possible for the optics to be polymorphic on the type level.
-The read-only optics don't need `T` because you cannot write through
-them.
+be `S` with `A` replaced by `B` at the focus(es) of the optic. `T`
+contains a mechanism that transforms `B` to the output type. This
+construct makes it possible for the optics to be polymorphic on the type
+level. The read-only optics don't need `T` because you cannot write
+through them or remove their focus.
 
 In the following, we leave the exact definition of `T` for each optic
 out for clarity, writing just `_` in its place. It's usually clear from
-how the optic works what will come out if you put a different type in.
+how the optic works what will come out if you write a value of a
+different type.
 
 In the documentation of functions that can be used to write through an
 optic, the return type is denoted by `T<B>`. While not valid TypeScript
 syntax (because `T` is a type parameter instead of a concrete type),
 this captures the meaning quite well: `B` is applied to the
-higher-kinded type `T`, yielding the output type.
+"higher-kinded" type `T`, yielding the output type.
 
 Interested readers can refer to [hkt.ts](src/hkt.ts) to see how the
 higher-kinded types / partially applied type operators are actually
@@ -723,8 +724,8 @@ Short for `at(0)`.
 
 #### `find(p: (e: ElemType<A>) => boolean): Prism<S, _, ElemType<A>>`
 
-Only works on array types. `ElemType<A>` is the element type of the
-array type `A`.
+Only works on array types. Removable. `ElemType<A>` is the element type
+of the array type `A`.
 
 Like `.at()`, but the index to be focused on is determined by finding
 the first element that matches the given predicate.
