@@ -117,7 +117,7 @@ export interface Equivalence<S, T extends OpticParams, A> {
   ): Prism<S, NextParams<T, Choice<A, U>>, U>
   find(
     predicate: (item: ElemType<A>) => boolean
-  ): Prism<S, NextParams<T, ElemUnion<A>>, ElemType<A>>
+  ): Prism<S, NextParams<T, ElemUnion<A>, true>, ElemType<A>>
   when(predicate: (item: A) => boolean): Prism<S, NextParams<T, Union<A>>, A>
   at(
     i: number
@@ -244,7 +244,7 @@ export interface Iso<S, T extends OpticParams, A> {
   ): Prism<S, NextParams<T, Choice<A, U>>, U>
   find(
     predicate: (item: ElemType<A>) => boolean
-  ): Prism<S, NextParams<T, ElemUnion<A>>, ElemType<A>>
+  ): Prism<S, NextParams<T, ElemUnion<A>, true>, ElemType<A>>
   when(predicate: (item: A) => boolean): Prism<S, NextParams<T, Union<A>>, A>
   at(
     i: number
@@ -371,7 +371,7 @@ export interface Lens<S, T extends OpticParams, A> {
   ): Prism<S, NextParams<T, Choice<A, U>>, U>
   find(
     predicate: (item: ElemType<A>) => boolean
-  ): Prism<S, NextParams<T, ElemUnion<A>>, ElemType<A>>
+  ): Prism<S, NextParams<T, ElemUnion<A>, true>, ElemType<A>>
   when(predicate: (item: A) => boolean): Prism<S, NextParams<T, Union<A>>, A>
   at(
     i: number
@@ -502,7 +502,7 @@ export interface Prism<S, T extends OpticParams, A> {
   ): Prism<S, NextParams<T, Choice<A, U>>, U>
   find(
     predicate: (item: ElemType<A>) => boolean
-  ): Prism<S, NextParams<T, ElemUnion<A>>, ElemType<A>>
+  ): Prism<S, NextParams<T, ElemUnion<A>, true>, ElemType<A>>
   when(predicate: (item: A) => boolean): Prism<S, NextParams<T, Union<A>>, A>
   at(
     i: number
@@ -633,7 +633,7 @@ export interface Traversal<S, T extends OpticParams, A> {
   ): Traversal<S, NextParams<T, Choice<A, U>>, U>
   find(
     predicate: (item: ElemType<A>) => boolean
-  ): Traversal<S, NextParams<T, ElemUnion<A>>, ElemType<A>>
+  ): Traversal<S, NextParams<T, ElemUnion<A>, true>, ElemType<A>>
   when(
     predicate: (item: A) => boolean
   ): Traversal<S, NextParams<T, Union<A>>, A>

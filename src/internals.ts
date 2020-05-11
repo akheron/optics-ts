@@ -348,26 +348,38 @@ const optional: OpticFn = prism(
 const guard = <A, U extends A>(fn: (a: A) => a is U): OpticFn =>
   prism((source: A) => (fn(source) ? Right(source) : Left(source)), id)
 
+// Like at(0), but the zero'th index must always be defined
+const fst = lens(
+  value => value[0],
+  ([value, source]) => [value, source[1]]
+)
+
 const find = (predicate: (item: any) => boolean): OpticFn =>
-  compose(
-    lens(
-      (source: any[]) => {
-        const index = source.findIndex(predicate)
-        if (index === -1) {
-          return [noMatch, -1]
+  removable(
+    compose(
+      lens(
+        source => {
+          const index = source.findIndex(predicate)
+          if (index === -1) {
+            return [noMatch, -1]
+          }
+          return [source[index], index]
+        },
+        ([[value, index], source]) => {
+          if (value === noMatch) {
+            return source
+          }
+          if (value === removeMe) {
+            return [...source.slice(0, index), ...source.slice(index + 1)]
+          }
+          const result = source.slice()
+          result[index] = value
+          return result
         }
-        return [source[index], index]
-      },
-      ([[value, index], source]: [[any, number], any[]]) => {
-        if (value === noMatch || index === -1) {
-          return source
-        }
-        const result = source.slice()
-        result[index] = value
-        return result
-      }
-    ),
-    at(0),
+      ),
+      fst,
+      mustMatch
+    )
   )
 
 const filter = (predicate: (item: any) => boolean): OpticFn =>

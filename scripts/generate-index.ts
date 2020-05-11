@@ -163,7 +163,7 @@ const prism = (composition: Composition) => `\
   )}
   find(
     predicate: (item: ElemType<A>) => boolean
-  ): ${composition.optic('ElemUnion<A>', 'ElemType<A>')}
+  ): ${composition.optic('ElemUnion<A>', 'ElemType<A>', true)}
   when(predicate: (item: A) => boolean): ${composition.optic('Union<A>', 'A')}
   at(i: number): IfElse<Eq<A, string>, ${composition.optic(
     'DisallowTypeChange<string>',

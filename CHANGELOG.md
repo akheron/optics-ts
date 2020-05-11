@@ -4,6 +4,7 @@
 
 - **New features**
   - Add `.at()`
+  - Make `.find()` removable
 - **Deprecations**
   - Deprecate `.index()` in favor of `.at()`
 
