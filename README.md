@@ -20,6 +20,7 @@ TypeScript:
 ## Table of Contents
 
 - [Installation](#installation)
+- [Requirements](#requirements)
 - [Tutorial](#tutorial)
   - [Lens](#lens)
   - [Prism](#prism)
