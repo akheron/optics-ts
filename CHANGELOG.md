@@ -7,6 +7,8 @@
   - Make `.find()` removable
 - **Deprecations**
   - Deprecate `.index()` in favor of `.at()`
+- **Documentation**
+  - `strictNullChecks` compiler option is required (#5)
 
 ## 1.1.0
 
