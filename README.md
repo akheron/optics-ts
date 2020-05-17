@@ -90,10 +90,10 @@ yarn add optics-ts
 ## Requirements
 
 `optics-ts` requires the [`strictNullChecks` compiler
-option](https://www.typescriptlang.org/tsconfig#strictNullChecks) to be
-enabled in your project.
+option](https://www.typescriptlang.org/tsconfig#strictNullChecks).
 
-I strongly recommend enabling all strict options in `tsconfig.json`:
+I strongly recommend enabling all strict options in your project's
+`tsconfig.json`:
 
 ```
 {
@@ -104,7 +104,7 @@ I strongly recommend enabling all strict options in `tsconfig.json`:
 ```
 
 If this is not possible for your project, enable only the
-`strictNullChecks` in `tsconfig.json`:
+`strictNullChecks` option:
 
 ```
 {
