@@ -156,20 +156,20 @@ const data: Data = {
   other: 'stuff',
 }
 
-O.get(lens)(data)
+O.get(bar)(data)
 // => 42
 ```
 
 Use `set()` or `modify()` to write the focused value through the lens:
 
 ```typescript
-O.set(lens)(99)(data)
+O.set(bar)(99)(data)
 // => {
 //   foo: { bar: 99 },
 //   other: 'stuff'
 // }
 
-O.modify(lens)(x => x * 100)(data)
+O.modify(bar)(x => x * 100)(data)
 // => {
 //   foo: { bar: 4200 },
 //   other: 'stuff'
