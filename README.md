@@ -287,7 +287,7 @@ interface User {
   name: string
 }
 
-const secondUser = O.optic<Users>().at(1)
+const secondUser = O.optic<User[]>().at(1)
 
 const threeUsers: User[] = [
   { name: 'Max' },
