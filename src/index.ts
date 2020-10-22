@@ -45,20 +45,6 @@ export type NextComposeParams<
 export type OpticFor<S> = Equivalence<S, Params<DisallowTypeChange<S>>, S>
 export type OpticFor_<S> = Equivalence<S, Params<Id>, S>
 
-export type MatchPath<Obj,Path> =
-//Null check
-  Obj extends null | undefined ? Obj :
-    //Path empty check
-    Path extends (undefined | null | '' ) ? Obj :
-      //Path in Obj keys return it -- we are done
-      Path extends keyof Obj ? Obj[Path] :
-        //Otherwise split string on `.`
-        Path extends `${infer P}.${infer Rest}` ?
-          //if P is in Obj recurse
-          P extends keyof Obj ?  MatchPath<Obj[P], Rest>
-            : never : never;
-
-
 type MatchLensPath<S, K, A, T extends OpticParams> =
     K extends keyof A ? Lens<S, NextParams<T, Prop<A, K>>, A[K]> :
       K extends `${infer P}.${infer Rest}` ?
