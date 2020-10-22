@@ -148,6 +148,12 @@ const bar = foo.prop('bar')
 const bar = O.optic<Data>().path(['foo', 'bar'])
 ```
 
+Or
+```typescript
+const bar = O.optic<Data>().prop('foo.bar')
+```
+
+
 Use `get()` to read a value through the lens:
 
 ```typescript
