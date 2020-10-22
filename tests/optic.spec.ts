@@ -140,6 +140,19 @@ describe('lens/path', () => {
     })
   })
 })
+describe('lens/path/prop', () => {
+  type Source = { foo: { bar: { baz: string } }; xyzzy: number }
+  const source: Source = { foo: { bar: { baz: 'quux' } }, xyzzy: 42 }
+
+  const lens = O.optic_<Source>().prop('foo.bar.baz')
+  type Focus = string
+
+  it('get', () => {
+    const result: Focus = O.get(lens)(source)
+    expect(result).toEqual('quux')
+  })
+
+})
 
 describe('lens/pick', () => {
   type Source = {

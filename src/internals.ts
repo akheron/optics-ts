@@ -17,12 +17,12 @@ const Right = <T>(value: T): Right<T> => ({
 const either = <E, T, U>(
   mapLeft: (value: E) => U,
   mapRight: (value: T) => U,
-  e: Either<E, T>
+  e: Either<E, T>,
 ): U => (e._tag === 'Left' ? mapLeft(e.value) : mapRight(e.value))
 
 const profunctorFn = {
   dimap: (f: (x: any) => any, g: (x: any) => any, fn: (x: any) => any) => (
-    x: any
+    x: any,
   ) => g(fn(f(x))),
   first: (f: (x: any) => any) => ([x, y]: [any, any]) => [f(x), y],
   right: (f: (x: any) => any) => (e: Either<any, any>): Either<any, any> =>
@@ -54,7 +54,7 @@ const monoidArray = {
 
 const profunctorConst = (monoid: any) => ({
   dimap: (f: (x: any) => any, _g: (x: any) => any, toF: (x: any) => any) => (
-    x: any
+    x: any,
   ) => toF(f(x)),
   first: (toF: (x: any) => any) => ([x, _y]: [any, any]) => toF(x),
   right: (toF: (x: any) => any) => (e: Either<any, any>) =>
@@ -188,12 +188,13 @@ type Profunctor = any
 interface OpticFn {
   _tag: OpticType
   _removable?: true | undefined
+
   (P: Profunctor, optic: OpticFn): any
 }
 
 const withTag = (
   tag: OpticType,
-  optic: (P: Profunctor, optic: OpticFn) => any
+  optic: (P: Profunctor, optic: OpticFn) => any,
 ): OpticFn => {
   const result = optic as OpticFn
   result._tag = tag
@@ -232,17 +233,17 @@ const iso = (there: (x: any) => any, back: (x: any) => any): OpticFn =>
 
 const lens = (view: (x: any) => any, update: (x: any) => any): OpticFn =>
   withTag('Lens', (P: Profunctor, optic: OpticFn): any =>
-    P.dimap((x: any) => [view(x), x], update, P.first(optic))
+    P.dimap((x: any) => [view(x), x], update, P.first(optic)),
   )
 
 const prism = (match: (x: any) => any, build: (x: any) => any): OpticFn =>
   withTag('Prism', (P: any, optic: any): any =>
-    P.dimap(match, (x: any) => either(id, build, x), P.right(optic))
+    P.dimap(match, (x: any) => either(id, build, x), P.right(optic)),
   )
 
 const elems = withTag(
   'Traversal',
-  (P: any, optic: any): OpticFn => P.dimap(id, id, P.wander(optic))
+  (P: any, optic: any): OpticFn => P.dimap(id, id, P.wander(optic)),
 )
 
 const to = (fn: (a: any) => any): OpticFn =>
@@ -273,7 +274,7 @@ export const collect = (optic: any, source: any): any =>
 const prop = (key: string): OpticFn =>
   lens(
     (source: any) => source[key],
-    ([value, source]: [any, any]) => ({ ...source, [key]: value })
+    ([value, source]: [any, any]) => ({ ...source, [key]: value }),
   )
 
 const pick = (keys: string[]): OpticFn =>
@@ -291,7 +292,7 @@ const pick = (keys: string[]): OpticFn =>
         delete result[key]
       }
       return Object.assign(result, value)
-    }
+    },
   )
 
 const when = (pred: (x: any) => boolean): OpticFn =>
@@ -334,15 +335,15 @@ const at = (i: number): OpticFn =>
             result[i] = value
             return result
           }
-        }
+        },
       ),
-      mustMatch
-    )
+      mustMatch,
+    ),
   )
 
 const optional: OpticFn = prism(
   (source: any) => (source === undefined ? Left(undefined) : Right(source)),
-  id
+  id,
 )
 
 const guard = <A, U extends A>(fn: (a: A) => a is U): OpticFn =>
@@ -351,7 +352,7 @@ const guard = <A, U extends A>(fn: (a: A) => a is U): OpticFn =>
 // Like at(0), but the zero'th index must always be defined
 const fst = lens(
   value => value[0],
-  ([value, source]) => [value, source[1]]
+  ([value, source]) => [value, source[1]],
 )
 
 const find = (predicate: (item: any) => boolean): OpticFn =>
@@ -375,11 +376,11 @@ const find = (predicate: (item: any) => boolean): OpticFn =>
           const result = source.slice()
           result[index] = value
           return result
-        }
+        },
       ),
       fst,
-      mustMatch
-    )
+      mustMatch,
+    ),
   )
 
 const filter = (predicate: (item: any) => boolean): OpticFn =>
@@ -401,13 +402,13 @@ const filter = (predicate: (item: any) => boolean): OpticFn =>
         j++
       }
       return result
-    }
+    },
   )
 
 const valueOr = (defaultValue: any): OpticFn =>
   lens(
     (source: any) => (source === undefined ? defaultValue : source),
-    ([value, source]: [any, any]) => value
+    ([value, source]: [any, any]) => value,
   )
 
 const prependTo: OpticFn = lens(
@@ -415,7 +416,7 @@ const prependTo: OpticFn = lens(
   ([value, source]: [any, any[]]) => {
     if (value === undefined) return source
     return [value, ...source]
-  }
+  },
 )
 
 const appendTo: OpticFn = lens(
@@ -423,30 +424,31 @@ const appendTo: OpticFn = lens(
   ([value, source]: [any, any[]]) => {
     if (value === undefined) return source
     return [...source, value]
-  }
+  },
 )
 
 const chars: OpticFn = compose(
   iso(
     s => s.split(''),
-    a => a.join('')
+    a => a.join(''),
   ),
-  elems
+  elems,
 )
 
 const words: OpticFn = compose(
   iso(
     s => s.split(/\b/),
-    a => a.join('')
+    a => a.join(''),
   ),
   elems,
-  when(s => !/\s+/.test(s))
+  when(s => !/\s+/.test(s)),
 )
 
 /////////////////////////////////////////////////////////////////////////////
 
 export class Optic {
-  constructor(public _ref: OpticFn) {}
+  constructor(public _ref: OpticFn) {
+  }
 
   get _tag(): OpticType {
     return this._ref._tag
@@ -465,12 +467,17 @@ export class Optic {
   }
 
   prop(key: string): Optic {
-    return new Optic(compose(this._ref, prop(key)))
+    const parts = key.split('.')
+    if (parts.length === 1) {
+      return new Optic(compose(this._ref, prop(key)))
+    } else {
+      return this.path(parts)
+    }
   }
 
   path(keys: string[]): Optic {
     return new Optic(
-      keys.reduce((ref, key) => compose(ref, prop(key)), this._ref)
+      keys.reduce((ref, key) => compose(ref, prop(key)), this._ref),
     )
   }
 
