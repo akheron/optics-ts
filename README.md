@@ -146,11 +146,8 @@ const bar = O.optic<Data>().prop('foo').prop('bar')
 const bar = foo.prop('bar')
 // or use .path() to compose multiple prop lenses with a single call
 const bar = O.optic<Data>().path(['foo', 'bar'])
-```
-
-Or
-```typescript
-const bar = O.optic<Data>().prop('foo.bar')
+// or use path with a nested string
+const bar = O.optic<Data>().path('foo.bar')
 ```
 
 
