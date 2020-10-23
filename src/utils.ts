@@ -44,3 +44,10 @@ export type RequireString<A, B> = IfElse<
 interface ExpectedStringButGot<_T> {
   readonly _: unique symbol
 }
+export type IsEmpty<V, True, False> = V extends [] | null | undefined | '' ? True : False;
+
+export type DescendPath<A, K> = K extends keyof A ? A[K] :
+  K extends `${infer P}.${infer Rest}` ?
+    (P extends keyof A ? DescendPath<A[P], Rest> : never) :
+    K extends [infer P, ...infer Rest] ?
+      (P extends keyof A ? IsEmpty<Rest, A[P], DescendPath<A[P], Rest>> : never) : never;

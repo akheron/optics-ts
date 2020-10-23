@@ -1,7 +1,7 @@
 // This file is generated, do not edit! See ../scripts/generate-index.ts
 
 import * as I from './internals'
-import { ElemType, Eq, IfElse, RequireString, Simplify } from './utils'
+import { DescendPath, ElemType, Eq, IfElse, IsEmpty, RequireString, Simplify } from './utils'
 import {
   Adapt,
   Apply,
@@ -39,13 +39,7 @@ export type NextComposeParams<C1 extends OpticParams,
 export type OpticFor<S> = Equivalence<S, Params<DisallowTypeChange<S>>, S>
 export type OpticFor_<S> = Equivalence<S, Params<Id>, S>
 
-type IsEmpty<V, True, False> = V extends [] | null | undefined | '' ? True : False;
 
-type DescendPath<A, K> = K extends keyof A ? A[K] :
-  K extends `${infer P}.${infer Rest}` ?
-    (P extends keyof A ? DescendPath<A[P], Rest> : never) :
-    K extends [infer P, ...infer Rest] ?
-      (P extends keyof A ? IsEmpty<Rest, A[P], DescendPath<A[P], Rest>> : never) : never;
 
 //NextParams<T, Prop<A, K>>
 
