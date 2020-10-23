@@ -39,47 +39,6 @@ export interface Prop<S, K extends keyof S> extends HKT {
   0: Omit<S, K> & { [KK in K]: this[1] }
 }
 
-export interface Path2<S, K1 extends keyof S, K2 extends keyof S[K1]>
-  extends HKT {
-  0: Apply<Prop<S, K1>, Omit<S[K1], K2> & { [KK in K2]: this[1] }>
-}
-
-export interface Path3<
-  S,
-  K1 extends keyof S,
-  K2 extends keyof S[K1],
-  K3 extends keyof S[K1][K2]
-> extends HKT {
-  0: Apply<Path2<S, K1, K2>, Omit<S[K1][K2], K3> & { [KK in K3]: this[1] }>
-}
-
-export interface Path4<
-  S,
-  K1 extends keyof S,
-  K2 extends keyof S[K1],
-  K3 extends keyof S[K1][K2],
-  K4 extends keyof S[K1][K2][K3]
-> extends HKT {
-  0: Apply<
-    Path3<S, K1, K2, K3>,
-    Omit<S[K1][K2][K3], K4> & { [KK in K4]: this[1] }
-  >
-}
-
-export interface Path5<
-  S,
-  K1 extends keyof S,
-  K2 extends keyof S[K1],
-  K3 extends keyof S[K1][K2],
-  K4 extends keyof S[K1][K2][K3],
-  K5 extends keyof S[K1][K2][K3][K4]
-> extends HKT {
-  0: Apply<
-    Path4<S, K1, K2, K3, K4>,
-    Omit<S[K1][K2][K3][K4], K5> & { [KK in K5]: this[1] }
-  >
-}
-
 export interface Plant<S, K extends keyof S> extends HKT {
   0: Omit<S, K> & { [KK in keyof this[1]]: this[1][KK] }
 }
