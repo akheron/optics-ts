@@ -466,12 +466,12 @@ export class Optic {
   }
 
   prop(key: string): Optic {
-      return new Optic(compose(this._ref, prop(key)))
+    return new Optic(compose(this._ref, prop(key)))
   }
 
   path(keys: string[] | string): Optic {
-    if (typeof keys === 'string'){
-      keys = keys.split('.');
+    if (typeof keys === 'string') {
+      keys = keys.split('.')
     }
     return new Optic(
       keys.reduce((ref, key) => compose(ref, prop(key)), this._ref)
