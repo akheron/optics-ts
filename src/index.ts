@@ -38,6 +38,7 @@ export type NextComposeParams<C1 extends OpticParams,
 
 export type OpticFor<S> = Equivalence<S, Params<DisallowTypeChange<S>>, S>
 export type OpticFor_<S> = Equivalence<S, Params<Id>, S>
+
 type DescendNextParams<T extends OpticParams, A, K> = K extends keyof A ? NextParams<T, Prop<A, K>> :
   K extends `${infer P}.${infer Rest}` ?
     (P extends keyof A ? DescendNextParams<T, A[P], Rest> : never) :
