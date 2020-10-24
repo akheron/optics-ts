@@ -1,12 +1,12 @@
 interface NotAnArrayType<_T> {
-  readonly _: unique symbol
+  readonly _: unique symbol;
 }
 
 export type ElemType<A> = IfElse<
   IsOptional<A>,
   NotAnArrayType<A>,
   A extends (infer Item)[] ? Item : NotAnArrayType<A>
->
+>;
 
 // Conduct the check through return value types to work around the
 // Distributive Conditional Types feature:
@@ -15,39 +15,35 @@ export type Eq<A, B> = (() => A) extends () => B
   ? (() => B) extends () => A
     ? true
     : false
-  : false
+  : false;
 
 // A if it's equal to B, otherwise B
-export type Simplify<A, B> = Eq<A, B> extends true ? A : B
+export type Simplify<A, B> = Eq<A, B> extends true ? A : B;
 
-export type IsOptional<A> = Or<ExtendsUndefined<A>, ExtendsNull<A>>
+export type IsOptional<A> = Or<ExtendsUndefined<A>, ExtendsNull<A>>;
 
-type ExtendsUndefined<A> = Eq<A | undefined, A>
-type ExtendsNull<A> = Eq<A | null, A>
+type ExtendsUndefined<A> = Eq<A | undefined, A>;
+type ExtendsNull<A> = Eq<A | null, A>;
 
 type Or<A extends true | false, B extends true | false> = A extends true
   ? true
-  : B
+  : B;
 
 export type IfElse<
   Condition extends true | false,
   Then,
   Else
-> = Condition extends true ? Then : Else
+> = Condition extends true ? Then : Else;
 
 export type RequireString<A, B> = IfElse<
   Eq<A, string>,
   B,
   ExpectedStringButGot<A>
->
+>;
 
 interface ExpectedStringButGot<_T> {
-  readonly _: unique symbol
+  readonly _: unique symbol;
 }
-export type IsEmpty<V, True, False> = V extends [] | null | undefined | '' ? True : False;
-
-export type DescendPath<A, K> = K extends keyof A ? A[K] :
-  K extends `${infer P}.${infer Rest}` ?
-    (P extends keyof A ? DescendPath<A[P], Rest> : never) :
-    K extends [infer P, ...infer Rest] ?
-      (P extends keyof A ? IsEmpty<Rest, A[P], DescendPath<A[P], Rest>> : never) : never;
+export type IsEmpty<V, True, False> = V extends [] | null | undefined | ''
+  ? True
+  : False;

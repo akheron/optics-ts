@@ -1,9 +1,11 @@
+#!/usr/bin/env ts-node
 import { OpticType, compositionType } from '../src/internals'
 
 const header = `\
 // This file is generated, do not edit! See ../scripts/generate-index.ts
 
 import * as I from './internals'
+import { DescendPath, DescendProp } from './descend';
 import {
   ElemType,
   Eq,
@@ -21,10 +23,6 @@ import {
   Elems,
   HKT,
   Id,
-  Path2,
-  Path3,
-  Path4,
-  Path5,
   Plant,
   Prop,
   Optional,
@@ -110,42 +108,20 @@ const iso = (composition: Composition) => `\
 
 const lens = (composition: Composition) => `\
   prop<K extends keyof A>(key: K): ${composition.optic('Prop<A, K>', 'A[K]')}
-  path<
-    K1 extends keyof A,
-    K2 extends keyof A[K1],
-    K3 extends keyof A[K1][K2],
-    K4 extends keyof A[K1][K2][K3],
-    K5 extends keyof A[K1][K2][K3][K4]
-  >(
-    path: [K1, K2, K3, K4, K5]
-  ): ${composition.optic(
-    'Path5<A, K1, K2, K3, K4, K5>',
-    'A[K1][K2][K3][K4][K5]'
-  )}
-  path<
-    K1 extends keyof A,
-    K2 extends keyof A[K1],
-    K3 extends keyof A[K1][K2],
-    K4 extends keyof A[K1][K2][K3]
-  >(
-    path: [K1, K2, K3, K4]
-  ): ${composition.optic('Path4<A, K1, K2, K3, K4>', 'A[K1][K2][K3][K4]')}
-  path<K1 extends keyof A, K2 extends keyof A[K1], K3 extends keyof A[K1][K2]>(
-    path: [K1, K2, K3]
-  ): ${composition.optic('Path3<A, K1, K2, K3>', 'A[K1][K2][K3]')}
-  path<K1 extends keyof A, K2 extends keyof A[K1]>(
-    path: [K1, K2]
-  ): ${composition.optic('Path2<A, K1, K2>', 'A[K1][K2]')}
-  path<K1 extends keyof A>(path: [K1]): ${composition.optic(
-    'Prop<A, K1>',
-    'A[K1]'
-  )}
+ 
+  path<K>(path: K): ${composition.optic(
+    'DescendProp<A, K>',
+    'DescendPath<A, K>'
+  )};
+  
   pick<K extends keyof A>(
     keys: K[]
   ): ${composition.optic('Plant<A, K>', 'Pick<A, K>')}
+  
   filter(
     predicate: (item: ElemType<A>) => boolean
   ): ${composition.optic('Union<A>', 'A')}
+  
   valueOr<B>(defaultValue: B): ${composition.optic(
     'Id',
     'Exclude<A, undefined> | B'
