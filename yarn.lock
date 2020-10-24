@@ -3773,10 +3773,10 @@ typedarray-to-buffer@^3.1.5:
   dependencies:
     is-typedarray "^1.0.0"
 
-typescript@beta:
-  version "4.1.0-beta"
-  resolved "http://npm.paypal.com/artifactory/api/npm/npm-all/typescript/-/typescript-4.1.0-beta.tgz#e4d054035d253b7a37bdc077dd71706508573e69"
-  integrity sha1-5NBUA10lO3o3vcB33XFwZQhXPmk=
+typescript@next:
+  version "4.1.0-dev.20201023"
+  resolved "http://npm.paypal.com/artifactory/api/npm/npm-all/typescript/-/typescript-4.1.0-dev.20201023.tgz#f08b7a847993ce7650e9057fdbf50614c30ad5d1"
+  integrity sha1-8It6hHmTznZQ6QV/2/UGFMMK1dE=
 
 underscore@~1.8.3:
   version "1.8.3"

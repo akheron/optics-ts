@@ -64,7 +64,6 @@ export interface Equivalence<S, T extends OpticParams, A> {
   compose<T2 extends OpticParams, A2>(
     optic: Lens<A, T2, A2>
   ): Lens<S, NextComposeParams<T, T2>, A2>;
-
   prop<K extends keyof A>(key: K): Lens<S, NextParams<T, Prop<A, K>>, A[K]>;
 
   path<K>(
