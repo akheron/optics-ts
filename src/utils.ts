@@ -44,3 +44,29 @@ export type RequireString<A, B> = IfElse<
 interface ExpectedStringButGot<_T> {
   readonly _: unique symbol
 }
+
+export type Prec<N> = N extends 6
+  ? 5
+  : N extends 5
+  ? 4
+  : N extends 4
+  ? 3
+  : N extends 3
+  ? 2
+  : N extends 2
+  ? 1
+  : N extends 1
+  ? 0
+  : never
+
+export type AnyTuple<N extends number, Acc extends any[] = []> = N extends 0
+  ? Acc
+  : AnyTuple<Prec<N>, [...Acc, any]>
+
+export type Nth<A, N extends number> = A extends [
+  ...AnyTuple<N>,
+  infer U,
+  ...any[]
+]
+  ? U
+  : never

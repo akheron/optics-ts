@@ -294,6 +294,17 @@ const pick = (keys: string[]): OpticFn =>
     }
   )
 
+const nth = (n: number): OpticFn => lens(
+  value => value[n],
+  ([value, source]) => {
+    const result = source.slice()
+    result[n] = value
+    return result
+  }
+)
+
+const fst = nth(0)
+
 const when = (pred: (x: any) => boolean): OpticFn =>
   prism((x: any) => (pred(x) ? Right(x) : Left(x)), id)
 
@@ -347,12 +358,6 @@ const optional: OpticFn = prism(
 
 const guard = <A, U extends A>(fn: (a: A) => a is U): OpticFn =>
   prism((source: A) => (fn(source) ? Right(source) : Left(source)), id)
-
-// Like at(0), but the zero'th index must always be defined
-const fst = lens(
-  value => value[0],
-  ([value, source]) => [value, source[1]]
-)
 
 const find = (predicate: (item: any) => boolean): OpticFn =>
   removable(
@@ -476,6 +481,10 @@ export class Optic {
 
   pick(keys: string[]): Optic {
     return new Optic(compose(this._ref, pick(keys)))
+  }
+
+  nth(n: number): Optic {
+    return new Optic(compose(this._ref, nth(n)))
   }
 
   filter(predicate: (item: any) => boolean): Optic {
