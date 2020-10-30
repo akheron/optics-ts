@@ -29,13 +29,13 @@
     "generate-index": "ts-node ./scripts/generate-index.ts > src/index.ts && prettier --write src/index.ts"
   },
   "devDependencies": {
-    "@babel/types": "^7.9.0",
-    "@types/jest": "^25.1.4",
+    "@babel/types": "^7.12.1",
+    "@types/jest": "^26.0.15",
     "doctoc": "^1.4.0",
-    "jest": "^26.0.1",
-    "prettier": "^2.0.2",
-    "ts-jest": "^26.0.0",
-    "ts-node": "^8.8.1",
-    "typescript": "^3.8.3"
+    "jest": "^26.6.1",
+    "prettier": "^2.1.2",
+    "ts-jest": "^26.4.3",
+    "ts-node": "^9.0.0",
+    "typescript": "^4.0.5"
   }
 }
