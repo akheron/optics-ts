@@ -48,6 +48,7 @@ TypeScript:
   - [Lenses](#lenses)
     - [`prop<K extends keyof A>(key: K): Lens<S, _, A[K]>`](#propk-extends-keyof-akey-k-lenss-_-ak)
     - [`path<K1, K2, ...>(keys: [K1, K2, ...]): Lens<S, _, A[K1][K2]...>`](#pathk1-k2-keys-k1-k2--lenss-_-ak1k2)
+  - [`nth<N extends number>(n: N): Lens<S, _, Nth<A, N>>`](#nthn-extends-numbern-n-lenss-_-ntha-n)
     - [`pick<K extends keyof A>(keys: K[]): Lens<S, _, Pick<A, K>>`](#pickk-extends-keyof-akeys-k-lenss-_-picka-k)
     - [`valueOr<B>(defaultValue: B): Lens<S, _, Exclude<A, undefined> | B>`](#valueorbdefaultvalue-b-lenss-_-excludea-undefined--b)
   - [Prisms](#prisms)
