@@ -1,7 +1,7 @@
 // This file is generated, do not edit! See ../scripts/generate-index.ts
 
 import * as I from './internals'
-import { ElemType, Eq, IfElse, RequireString, Simplify } from './utils'
+import { ElemType, Eq, IfElse, Nth, RequireString, Simplify } from './utils'
 import {
   Adapt,
   Apply,
@@ -19,6 +19,7 @@ import {
   Plant,
   Prop,
   Optional,
+  SetNth,
   Union,
 } from './hkt'
 
@@ -94,6 +95,7 @@ export interface Equivalence<S, T extends OpticParams, A> {
   path<K1 extends keyof A>(
     path: [K1]
   ): Lens<S, NextParams<T, Prop<A, K1>>, A[K1]>
+  nth<N extends number>(n: N): Lens<S, NextParams<T, SetNth<A, N>>, Nth<A, N>>
   pick<K extends keyof A>(
     keys: K[]
   ): Lens<S, NextParams<T, Plant<A, K>>, Pick<A, K>>
@@ -221,6 +223,7 @@ export interface Iso<S, T extends OpticParams, A> {
   path<K1 extends keyof A>(
     path: [K1]
   ): Lens<S, NextParams<T, Prop<A, K1>>, A[K1]>
+  nth<N extends number>(n: N): Lens<S, NextParams<T, SetNth<A, N>>, Nth<A, N>>
   pick<K extends keyof A>(
     keys: K[]
   ): Lens<S, NextParams<T, Plant<A, K>>, Pick<A, K>>
@@ -348,6 +351,7 @@ export interface Lens<S, T extends OpticParams, A> {
   path<K1 extends keyof A>(
     path: [K1]
   ): Lens<S, NextParams<T, Prop<A, K1>>, A[K1]>
+  nth<N extends number>(n: N): Lens<S, NextParams<T, SetNth<A, N>>, Nth<A, N>>
   pick<K extends keyof A>(
     keys: K[]
   ): Lens<S, NextParams<T, Plant<A, K>>, Pick<A, K>>
@@ -479,6 +483,7 @@ export interface Prism<S, T extends OpticParams, A> {
   path<K1 extends keyof A>(
     path: [K1]
   ): Prism<S, NextParams<T, Prop<A, K1>>, A[K1]>
+  nth<N extends number>(n: N): Prism<S, NextParams<T, SetNth<A, N>>, Nth<A, N>>
   pick<K extends keyof A>(
     keys: K[]
   ): Prism<S, NextParams<T, Plant<A, K>>, Pick<A, K>>
@@ -610,6 +615,9 @@ export interface Traversal<S, T extends OpticParams, A> {
   path<K1 extends keyof A>(
     path: [K1]
   ): Traversal<S, NextParams<T, Prop<A, K1>>, A[K1]>
+  nth<N extends number>(
+    n: N
+  ): Traversal<S, NextParams<T, SetNth<A, N>>, Nth<A, N>>
   pick<K extends keyof A>(
     keys: K[]
   ): Traversal<S, NextParams<T, Plant<A, K>>, Pick<A, K>>
@@ -729,6 +737,7 @@ export interface Getter<S, A> {
     path: [K1, K2]
   ): Getter<S, A[K1][K2]>
   path<K1 extends keyof A>(path: [K1]): Getter<S, A[K1]>
+  nth<N extends number>(n: N): Getter<S, Nth<A, N>>
   pick<K extends keyof A>(keys: K[]): Getter<S, Pick<A, K>>
   filter(predicate: (item: ElemType<A>) => boolean): Getter<S, A>
   valueOr<B>(defaultValue: B): Getter<S, Exclude<A, undefined> | B>
@@ -813,6 +822,7 @@ export interface AffineFold<S, A> {
     path: [K1, K2]
   ): AffineFold<S, A[K1][K2]>
   path<K1 extends keyof A>(path: [K1]): AffineFold<S, A[K1]>
+  nth<N extends number>(n: N): AffineFold<S, Nth<A, N>>
   pick<K extends keyof A>(keys: K[]): AffineFold<S, Pick<A, K>>
   filter(predicate: (item: ElemType<A>) => boolean): AffineFold<S, A>
   valueOr<B>(defaultValue: B): AffineFold<S, Exclude<A, undefined> | B>
@@ -897,6 +907,7 @@ export interface Fold<S, A> {
     path: [K1, K2]
   ): Fold<S, A[K1][K2]>
   path<K1 extends keyof A>(path: [K1]): Fold<S, A[K1]>
+  nth<N extends number>(n: N): Fold<S, Nth<A, N>>
   pick<K extends keyof A>(keys: K[]): Fold<S, Pick<A, K>>
   filter(predicate: (item: ElemType<A>) => boolean): Fold<S, A>
   valueOr<B>(defaultValue: B): Fold<S, Exclude<A, undefined> | B>

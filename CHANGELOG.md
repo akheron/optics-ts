@@ -1,5 +1,10 @@
 # Changelog
 
+## 2.0.0 (unreleased)
+
+- **New features**
+  - Add `.nth()`
+
 ## 1.2.0
 
 - **New features**

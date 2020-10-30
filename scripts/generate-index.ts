@@ -8,6 +8,7 @@ import {
   ElemType,
   Eq,
   IfElse,
+  Nth,
   RequireString,
   Simplify
 } from './utils'
@@ -28,6 +29,7 @@ import {
   Plant,
   Prop,
   Optional,
+  SetNth,
   Union,
 } from './hkt'
 
@@ -140,6 +142,7 @@ const lens = (composition: Composition) => `\
     'Prop<A, K1>',
     'A[K1]'
   )}
+  nth<N extends number>(n: N): ${composition.optic('SetNth<A, N>', 'Nth<A, N>')}
   pick<K extends keyof A>(
     keys: K[]
   ): ${composition.optic('Plant<A, K>', 'Pick<A, K>')}

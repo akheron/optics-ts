@@ -89,8 +89,8 @@ yarn add optics-ts
 
 ## Requirements
 
-`optics-ts` requires the [`strictNullChecks` compiler
-option](https://www.typescriptlang.org/tsconfig#strictNullChecks).
+TypeScript >= 4.1 and the [`strictNullChecks` compiler
+option](https://www.typescriptlang.org/tsconfig#strictNullChecks) are required.
 
 I strongly recommend enabling all strict options in your project's
 `tsconfig.json`:
@@ -661,6 +661,15 @@ is equal to
 ```typescript
 foo.prop('a').prop('b').prop('c')
 ```
+
+### `nth<N extends number>(n: N): Lens<S, _, Nth<A, N>>`
+
+Only works on tuples whose length is a least `N + 1`.
+
+Create a lens that focuses on the index `N` of `A`. This is a lens because the
+length of `A` is checked on type level, so index `N` is always defined.
+
+See `at()` below for a similar prism that works on arrays of arbitrary length.
 
 #### `pick<K extends keyof A>(keys: K[]): Lens<S, _, Pick<A, K>>`
 

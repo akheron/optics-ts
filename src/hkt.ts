@@ -1,4 +1,4 @@
-import { ElemType, Eq } from './utils'
+import { ElemType, Eq, AnyTuple, Prec } from './utils'
 
 export interface HKT {
   0: unknown
@@ -78,6 +78,18 @@ export interface Path5<
     Path4<S, K1, K2, K3, K4>,
     Omit<S[K1][K2][K3][K4], K5> & { [KK in K5]: this[1] }
   >
+}
+
+type SetNthRec<N extends number, B, S> = N extends 0
+  ? S extends [any, ...infer U]
+    ? [B, ...U]
+    : never
+  : S extends [infer U, ...infer V]
+  ? [U, ...SetNthRec<Prec<N>, B, V>]
+  : never
+
+export interface SetNth<S, N extends number> extends HKT {
+  0: SetNthRec<N, this[1], S>
 }
 
 export interface Plant<S, K extends keyof S> extends HKT {

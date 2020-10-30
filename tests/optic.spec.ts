@@ -141,6 +141,40 @@ describe('lens/path', () => {
   })
 })
 
+describe('lens/nth', () => {
+  type Source = [number, string, boolean]
+  const source: Source = [42, 'foo', true]
+
+  const lens = O.optic_<Source>().nth(1)
+  type Focus = string
+
+  it('get', () => {
+    const result: Focus = O.get(lens)(source)
+    expect(result).toEqual('foo')
+  })
+
+  it('set - monomorphic', () => {
+    const result: Source = O.set(lens)('UPDATED')(source)
+    expect(result).toEqual(
+      [42, 'UPDATED', true]
+    )
+  })
+  it('modify - monomorphic', () => {
+    const result: Source = O.modify(lens)(x => `${x} UPDATED`)(source)
+    expect(result).toEqual([42, 'foo UPDATED', true])
+  })
+
+  type Target = [number, number, boolean]
+  it('set - polymorphic', () => {
+    const result: Target = O.set(lens)(99)(source)
+    expect(result).toEqual([42, 99, true])
+  })
+  it('modify - polymorphic', () => {
+    const result: Target = O.modify(lens)(x => x.length)(source)
+    expect(result).toEqual([42, 3, true])
+  })
+})
+
 describe('lens/pick', () => {
   type Source = {
     foo: string
