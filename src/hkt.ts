@@ -1,4 +1,4 @@
-import { ElemType, Eq, AnyTuple, Prec } from './utils'
+import { ElemType, Eq, Prec } from './utils'
 
 export interface HKT {
   0: unknown
@@ -39,46 +39,23 @@ export interface Prop<S, K extends keyof S> extends HKT {
   0: Omit<S, K> & { [KK in K]: this[1] }
 }
 
-export interface Path2<S, K1 extends keyof S, K2 extends keyof S[K1]>
-  extends HKT {
-  0: Apply<Prop<S, K1>, Omit<S[K1], K2> & { [KK in K2]: this[1] }>
-}
+export type SetTuplePath<S, K> = K extends []
+  ? Id
+  : K extends [infer K, ...infer R]
+  ? K extends keyof S
+    ? Compose<Prop<S, K>, SetTuplePath<S[K], R>>
+    : never
+  : never
 
-export interface Path3<
-  S,
-  K1 extends keyof S,
-  K2 extends keyof S[K1],
-  K3 extends keyof S[K1][K2]
-> extends HKT {
-  0: Apply<Path2<S, K1, K2>, Omit<S[K1][K2], K3> & { [KK in K3]: this[1] }>
-}
-
-export interface Path4<
-  S,
-  K1 extends keyof S,
-  K2 extends keyof S[K1],
-  K3 extends keyof S[K1][K2],
-  K4 extends keyof S[K1][K2][K3]
-> extends HKT {
-  0: Apply<
-    Path3<S, K1, K2, K3>,
-    Omit<S[K1][K2][K3], K4> & { [KK in K4]: this[1] }
-  >
-}
-
-export interface Path5<
-  S,
-  K1 extends keyof S,
-  K2 extends keyof S[K1],
-  K3 extends keyof S[K1][K2],
-  K4 extends keyof S[K1][K2][K3],
-  K5 extends keyof S[K1][K2][K3][K4]
-> extends HKT {
-  0: Apply<
-    Path4<S, K1, K2, K3, K4>,
-    Omit<S[K1][K2][K3][K4], K5> & { [KK in K5]: this[1] }
-  >
-}
+export type SetDottedPath<S, K> = K extends `${infer P}.${infer R}`
+  ? P extends keyof S
+    ? Compose<Prop<S, P>, SetDottedPath<S[P], R>>
+    : never
+  : K extends keyof S
+  ? Prop<S, K>
+  : K extends ''
+  ? Id
+  : never
 
 type SetNthRec<N extends number, B, S> = N extends 0
   ? S extends [any, ...infer U]

@@ -59,6 +59,24 @@ export type Prec<N> = N extends 6
   ? 0
   : never
 
+export type TuplePath<A, K> = K extends []
+  ? A
+  : K extends [infer P, ...infer R]
+  ? P extends keyof A
+    ? TuplePath<A[P], R>
+    : never
+  : never
+
+export type DottedPath<A, K> = K extends keyof A
+  ? A[K]
+  : K extends `${infer P}.${infer R}`
+  ? P extends keyof A
+    ? DottedPath<A[P], R>
+    : never
+  : K extends ''
+  ? A
+  : never
+
 export type AnyTuple<N extends number, Acc extends any[] = []> = N extends 0
   ? Acc
   : AnyTuple<Prec<N>, [...Acc, any]>

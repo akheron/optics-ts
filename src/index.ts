@@ -1,7 +1,16 @@
 // This file is generated, do not edit! See ../scripts/generate-index.ts
 
 import * as I from './internals'
-import { ElemType, Eq, IfElse, Nth, RequireString, Simplify } from './utils'
+import {
+  ElemType,
+  Eq,
+  IfElse,
+  Nth,
+  DottedPath,
+  TuplePath,
+  RequireString,
+  Simplify,
+} from './utils'
 import {
   Adapt,
   Apply,
@@ -12,14 +21,12 @@ import {
   Elems,
   HKT,
   Id,
-  Path2,
-  Path3,
-  Path4,
-  Path5,
   Plant,
   Prop,
   Optional,
   SetNth,
+  SetDottedPath,
+  SetTuplePath,
   Union,
 } from './hkt'
 
@@ -69,32 +76,12 @@ export interface Equivalence<S, T extends OpticParams, A> {
     optic: Lens<A, T2, A2>
   ): Lens<S, NextComposeParams<T, T2>, A2>
   prop<K extends keyof A>(key: K): Lens<S, NextParams<T, Prop<A, K>>, A[K]>
-  path<
-    K1 extends keyof A,
-    K2 extends keyof A[K1],
-    K3 extends keyof A[K1][K2],
-    K4 extends keyof A[K1][K2][K3],
-    K5 extends keyof A[K1][K2][K3][K4]
-  >(
-    path: [K1, K2, K3, K4, K5]
-  ): Lens<S, NextParams<T, Path5<A, K1, K2, K3, K4, K5>>, A[K1][K2][K3][K4][K5]>
-  path<
-    K1 extends keyof A,
-    K2 extends keyof A[K1],
-    K3 extends keyof A[K1][K2],
-    K4 extends keyof A[K1][K2][K3]
-  >(
-    path: [K1, K2, K3, K4]
-  ): Lens<S, NextParams<T, Path4<A, K1, K2, K3, K4>>, A[K1][K2][K3][K4]>
-  path<K1 extends keyof A, K2 extends keyof A[K1], K3 extends keyof A[K1][K2]>(
-    path: [K1, K2, K3]
-  ): Lens<S, NextParams<T, Path3<A, K1, K2, K3>>, A[K1][K2][K3]>
-  path<K1 extends keyof A, K2 extends keyof A[K1]>(
-    path: [K1, K2]
-  ): Lens<S, NextParams<T, Path2<A, K1, K2>>, A[K1][K2]>
-  path<K1 extends keyof A>(
-    path: [K1]
-  ): Lens<S, NextParams<T, Prop<A, K1>>, A[K1]>
+  path<K extends keyof any>(
+    path: K
+  ): Lens<S, NextParams<T, SetDottedPath<A, K>>, DottedPath<A, K>>
+  path<K extends (keyof any)[]>(
+    ...path: K
+  ): Lens<S, NextParams<T, SetTuplePath<A, K>>, TuplePath<A, K>>
   nth<N extends number>(n: N): Lens<S, NextParams<T, SetNth<A, N>>, Nth<A, N>>
   pick<K extends keyof A>(
     keys: K[]
@@ -197,32 +184,12 @@ export interface Iso<S, T extends OpticParams, A> {
     optic: Lens<A, T2, A2>
   ): Lens<S, NextComposeParams<T, T2>, A2>
   prop<K extends keyof A>(key: K): Lens<S, NextParams<T, Prop<A, K>>, A[K]>
-  path<
-    K1 extends keyof A,
-    K2 extends keyof A[K1],
-    K3 extends keyof A[K1][K2],
-    K4 extends keyof A[K1][K2][K3],
-    K5 extends keyof A[K1][K2][K3][K4]
-  >(
-    path: [K1, K2, K3, K4, K5]
-  ): Lens<S, NextParams<T, Path5<A, K1, K2, K3, K4, K5>>, A[K1][K2][K3][K4][K5]>
-  path<
-    K1 extends keyof A,
-    K2 extends keyof A[K1],
-    K3 extends keyof A[K1][K2],
-    K4 extends keyof A[K1][K2][K3]
-  >(
-    path: [K1, K2, K3, K4]
-  ): Lens<S, NextParams<T, Path4<A, K1, K2, K3, K4>>, A[K1][K2][K3][K4]>
-  path<K1 extends keyof A, K2 extends keyof A[K1], K3 extends keyof A[K1][K2]>(
-    path: [K1, K2, K3]
-  ): Lens<S, NextParams<T, Path3<A, K1, K2, K3>>, A[K1][K2][K3]>
-  path<K1 extends keyof A, K2 extends keyof A[K1]>(
-    path: [K1, K2]
-  ): Lens<S, NextParams<T, Path2<A, K1, K2>>, A[K1][K2]>
-  path<K1 extends keyof A>(
-    path: [K1]
-  ): Lens<S, NextParams<T, Prop<A, K1>>, A[K1]>
+  path<K extends keyof any>(
+    path: K
+  ): Lens<S, NextParams<T, SetDottedPath<A, K>>, DottedPath<A, K>>
+  path<K extends (keyof any)[]>(
+    ...path: K
+  ): Lens<S, NextParams<T, SetTuplePath<A, K>>, TuplePath<A, K>>
   nth<N extends number>(n: N): Lens<S, NextParams<T, SetNth<A, N>>, Nth<A, N>>
   pick<K extends keyof A>(
     keys: K[]
@@ -325,32 +292,12 @@ export interface Lens<S, T extends OpticParams, A> {
     optic: Lens<A, T2, A2>
   ): Lens<S, NextComposeParams<T, T2>, A2>
   prop<K extends keyof A>(key: K): Lens<S, NextParams<T, Prop<A, K>>, A[K]>
-  path<
-    K1 extends keyof A,
-    K2 extends keyof A[K1],
-    K3 extends keyof A[K1][K2],
-    K4 extends keyof A[K1][K2][K3],
-    K5 extends keyof A[K1][K2][K3][K4]
-  >(
-    path: [K1, K2, K3, K4, K5]
-  ): Lens<S, NextParams<T, Path5<A, K1, K2, K3, K4, K5>>, A[K1][K2][K3][K4][K5]>
-  path<
-    K1 extends keyof A,
-    K2 extends keyof A[K1],
-    K3 extends keyof A[K1][K2],
-    K4 extends keyof A[K1][K2][K3]
-  >(
-    path: [K1, K2, K3, K4]
-  ): Lens<S, NextParams<T, Path4<A, K1, K2, K3, K4>>, A[K1][K2][K3][K4]>
-  path<K1 extends keyof A, K2 extends keyof A[K1], K3 extends keyof A[K1][K2]>(
-    path: [K1, K2, K3]
-  ): Lens<S, NextParams<T, Path3<A, K1, K2, K3>>, A[K1][K2][K3]>
-  path<K1 extends keyof A, K2 extends keyof A[K1]>(
-    path: [K1, K2]
-  ): Lens<S, NextParams<T, Path2<A, K1, K2>>, A[K1][K2]>
-  path<K1 extends keyof A>(
-    path: [K1]
-  ): Lens<S, NextParams<T, Prop<A, K1>>, A[K1]>
+  path<K extends keyof any>(
+    path: K
+  ): Lens<S, NextParams<T, SetDottedPath<A, K>>, DottedPath<A, K>>
+  path<K extends (keyof any)[]>(
+    ...path: K
+  ): Lens<S, NextParams<T, SetTuplePath<A, K>>, TuplePath<A, K>>
   nth<N extends number>(n: N): Lens<S, NextParams<T, SetNth<A, N>>, Nth<A, N>>
   pick<K extends keyof A>(
     keys: K[]
@@ -453,36 +400,12 @@ export interface Prism<S, T extends OpticParams, A> {
     optic: Lens<A, T2, A2>
   ): Prism<S, NextComposeParams<T, T2>, A2>
   prop<K extends keyof A>(key: K): Prism<S, NextParams<T, Prop<A, K>>, A[K]>
-  path<
-    K1 extends keyof A,
-    K2 extends keyof A[K1],
-    K3 extends keyof A[K1][K2],
-    K4 extends keyof A[K1][K2][K3],
-    K5 extends keyof A[K1][K2][K3][K4]
-  >(
-    path: [K1, K2, K3, K4, K5]
-  ): Prism<
-    S,
-    NextParams<T, Path5<A, K1, K2, K3, K4, K5>>,
-    A[K1][K2][K3][K4][K5]
-  >
-  path<
-    K1 extends keyof A,
-    K2 extends keyof A[K1],
-    K3 extends keyof A[K1][K2],
-    K4 extends keyof A[K1][K2][K3]
-  >(
-    path: [K1, K2, K3, K4]
-  ): Prism<S, NextParams<T, Path4<A, K1, K2, K3, K4>>, A[K1][K2][K3][K4]>
-  path<K1 extends keyof A, K2 extends keyof A[K1], K3 extends keyof A[K1][K2]>(
-    path: [K1, K2, K3]
-  ): Prism<S, NextParams<T, Path3<A, K1, K2, K3>>, A[K1][K2][K3]>
-  path<K1 extends keyof A, K2 extends keyof A[K1]>(
-    path: [K1, K2]
-  ): Prism<S, NextParams<T, Path2<A, K1, K2>>, A[K1][K2]>
-  path<K1 extends keyof A>(
-    path: [K1]
-  ): Prism<S, NextParams<T, Prop<A, K1>>, A[K1]>
+  path<K extends keyof any>(
+    path: K
+  ): Prism<S, NextParams<T, SetDottedPath<A, K>>, DottedPath<A, K>>
+  path<K extends (keyof any)[]>(
+    ...path: K
+  ): Prism<S, NextParams<T, SetTuplePath<A, K>>, TuplePath<A, K>>
   nth<N extends number>(n: N): Prism<S, NextParams<T, SetNth<A, N>>, Nth<A, N>>
   pick<K extends keyof A>(
     keys: K[]
@@ -585,36 +508,12 @@ export interface Traversal<S, T extends OpticParams, A> {
     optic: Lens<A, T2, A2>
   ): Traversal<S, NextComposeParams<T, T2>, A2>
   prop<K extends keyof A>(key: K): Traversal<S, NextParams<T, Prop<A, K>>, A[K]>
-  path<
-    K1 extends keyof A,
-    K2 extends keyof A[K1],
-    K3 extends keyof A[K1][K2],
-    K4 extends keyof A[K1][K2][K3],
-    K5 extends keyof A[K1][K2][K3][K4]
-  >(
-    path: [K1, K2, K3, K4, K5]
-  ): Traversal<
-    S,
-    NextParams<T, Path5<A, K1, K2, K3, K4, K5>>,
-    A[K1][K2][K3][K4][K5]
-  >
-  path<
-    K1 extends keyof A,
-    K2 extends keyof A[K1],
-    K3 extends keyof A[K1][K2],
-    K4 extends keyof A[K1][K2][K3]
-  >(
-    path: [K1, K2, K3, K4]
-  ): Traversal<S, NextParams<T, Path4<A, K1, K2, K3, K4>>, A[K1][K2][K3][K4]>
-  path<K1 extends keyof A, K2 extends keyof A[K1], K3 extends keyof A[K1][K2]>(
-    path: [K1, K2, K3]
-  ): Traversal<S, NextParams<T, Path3<A, K1, K2, K3>>, A[K1][K2][K3]>
-  path<K1 extends keyof A, K2 extends keyof A[K1]>(
-    path: [K1, K2]
-  ): Traversal<S, NextParams<T, Path2<A, K1, K2>>, A[K1][K2]>
-  path<K1 extends keyof A>(
-    path: [K1]
-  ): Traversal<S, NextParams<T, Prop<A, K1>>, A[K1]>
+  path<K extends keyof any>(
+    path: K
+  ): Traversal<S, NextParams<T, SetDottedPath<A, K>>, DottedPath<A, K>>
+  path<K extends (keyof any)[]>(
+    ...path: K
+  ): Traversal<S, NextParams<T, SetTuplePath<A, K>>, TuplePath<A, K>>
   nth<N extends number>(
     n: N
   ): Traversal<S, NextParams<T, SetNth<A, N>>, Nth<A, N>>
@@ -713,30 +612,8 @@ export interface Getter<S, A> {
   // Getter · Lens => Getter
   compose<T2 extends OpticParams, A2>(optic: Lens<A, T2, A2>): Getter<S, A2>
   prop<K extends keyof A>(key: K): Getter<S, A[K]>
-  path<
-    K1 extends keyof A,
-    K2 extends keyof A[K1],
-    K3 extends keyof A[K1][K2],
-    K4 extends keyof A[K1][K2][K3],
-    K5 extends keyof A[K1][K2][K3][K4]
-  >(
-    path: [K1, K2, K3, K4, K5]
-  ): Getter<S, A[K1][K2][K3][K4][K5]>
-  path<
-    K1 extends keyof A,
-    K2 extends keyof A[K1],
-    K3 extends keyof A[K1][K2],
-    K4 extends keyof A[K1][K2][K3]
-  >(
-    path: [K1, K2, K3, K4]
-  ): Getter<S, A[K1][K2][K3][K4]>
-  path<K1 extends keyof A, K2 extends keyof A[K1], K3 extends keyof A[K1][K2]>(
-    path: [K1, K2, K3]
-  ): Getter<S, A[K1][K2][K3]>
-  path<K1 extends keyof A, K2 extends keyof A[K1]>(
-    path: [K1, K2]
-  ): Getter<S, A[K1][K2]>
-  path<K1 extends keyof A>(path: [K1]): Getter<S, A[K1]>
+  path<K extends keyof any>(path: K): Getter<S, DottedPath<A, K>>
+  path<K extends (keyof any)[]>(...path: K): Getter<S, TuplePath<A, K>>
   nth<N extends number>(n: N): Getter<S, Nth<A, N>>
   pick<K extends keyof A>(keys: K[]): Getter<S, Pick<A, K>>
   filter(predicate: (item: ElemType<A>) => boolean): Getter<S, A>
@@ -798,30 +675,8 @@ export interface AffineFold<S, A> {
   // AffineFold · Lens => AffineFold
   compose<T2 extends OpticParams, A2>(optic: Lens<A, T2, A2>): AffineFold<S, A2>
   prop<K extends keyof A>(key: K): AffineFold<S, A[K]>
-  path<
-    K1 extends keyof A,
-    K2 extends keyof A[K1],
-    K3 extends keyof A[K1][K2],
-    K4 extends keyof A[K1][K2][K3],
-    K5 extends keyof A[K1][K2][K3][K4]
-  >(
-    path: [K1, K2, K3, K4, K5]
-  ): AffineFold<S, A[K1][K2][K3][K4][K5]>
-  path<
-    K1 extends keyof A,
-    K2 extends keyof A[K1],
-    K3 extends keyof A[K1][K2],
-    K4 extends keyof A[K1][K2][K3]
-  >(
-    path: [K1, K2, K3, K4]
-  ): AffineFold<S, A[K1][K2][K3][K4]>
-  path<K1 extends keyof A, K2 extends keyof A[K1], K3 extends keyof A[K1][K2]>(
-    path: [K1, K2, K3]
-  ): AffineFold<S, A[K1][K2][K3]>
-  path<K1 extends keyof A, K2 extends keyof A[K1]>(
-    path: [K1, K2]
-  ): AffineFold<S, A[K1][K2]>
-  path<K1 extends keyof A>(path: [K1]): AffineFold<S, A[K1]>
+  path<K extends keyof any>(path: K): AffineFold<S, DottedPath<A, K>>
+  path<K extends (keyof any)[]>(...path: K): AffineFold<S, TuplePath<A, K>>
   nth<N extends number>(n: N): AffineFold<S, Nth<A, N>>
   pick<K extends keyof A>(keys: K[]): AffineFold<S, Pick<A, K>>
   filter(predicate: (item: ElemType<A>) => boolean): AffineFold<S, A>
@@ -883,30 +738,8 @@ export interface Fold<S, A> {
   // Fold · Lens => Fold
   compose<T2 extends OpticParams, A2>(optic: Lens<A, T2, A2>): Fold<S, A2>
   prop<K extends keyof A>(key: K): Fold<S, A[K]>
-  path<
-    K1 extends keyof A,
-    K2 extends keyof A[K1],
-    K3 extends keyof A[K1][K2],
-    K4 extends keyof A[K1][K2][K3],
-    K5 extends keyof A[K1][K2][K3][K4]
-  >(
-    path: [K1, K2, K3, K4, K5]
-  ): Fold<S, A[K1][K2][K3][K4][K5]>
-  path<
-    K1 extends keyof A,
-    K2 extends keyof A[K1],
-    K3 extends keyof A[K1][K2],
-    K4 extends keyof A[K1][K2][K3]
-  >(
-    path: [K1, K2, K3, K4]
-  ): Fold<S, A[K1][K2][K3][K4]>
-  path<K1 extends keyof A, K2 extends keyof A[K1], K3 extends keyof A[K1][K2]>(
-    path: [K1, K2, K3]
-  ): Fold<S, A[K1][K2][K3]>
-  path<K1 extends keyof A, K2 extends keyof A[K1]>(
-    path: [K1, K2]
-  ): Fold<S, A[K1][K2]>
-  path<K1 extends keyof A>(path: [K1]): Fold<S, A[K1]>
+  path<K extends keyof any>(path: K): Fold<S, DottedPath<A, K>>
+  path<K extends (keyof any)[]>(...path: K): Fold<S, TuplePath<A, K>>
   nth<N extends number>(n: N): Fold<S, Nth<A, N>>
   pick<K extends keyof A>(keys: K[]): Fold<S, Pick<A, K>>
   filter(predicate: (item: ElemType<A>) => boolean): Fold<S, A>
