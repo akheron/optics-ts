@@ -188,6 +188,7 @@ type Profunctor = any
 interface OpticFn {
   _tag: OpticType
   _removable?: true | undefined
+
   (P: Profunctor, optic: OpticFn): any
 }
 
@@ -294,14 +295,15 @@ const pick = (keys: string[]): OpticFn =>
     }
   )
 
-const nth = (n: number): OpticFn => lens(
-  value => value[n],
-  ([value, source]) => {
-    const result = source.slice()
-    result[n] = value
-    return result
-  }
-)
+const nth = (n: number): OpticFn =>
+  lens(
+    value => value[n],
+    ([value, source]) => {
+      const result = source.slice()
+      result[n] = value
+      return result
+    }
+  )
 
 const fst = nth(0)
 
@@ -473,7 +475,10 @@ export class Optic {
     return new Optic(compose(this._ref, prop(key)))
   }
 
-  path(keys: string[]): Optic {
+  path(...keys: string[]): Optic {
+    if (keys.length === 1) {
+      keys = keys[0].split('.')
+    }
     return new Optic(
       keys.reduce((ref, key) => compose(ref, prop(key)), this._ref)
     )
