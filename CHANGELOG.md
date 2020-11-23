@@ -2,8 +2,21 @@
 
 ## 2.0.0 (unreleased)
 
+- **BREAKING CHANGES**
+
+  - TypeScript 4.1 or newer is required
+
+  - `.path()` now takes varargs instead of an array.
+
+    Old: `.path(['foo', 'bar', 'baz'])`
+
+    New: `.path('foo', 'bar', 'baz')`
+
 - **New features**
+
   - Add `.nth()`
+
+  - Support dotted paths with `.path()`, e.g. `.path('foo.bar.baz')`
 
 ## 1.2.0
 
