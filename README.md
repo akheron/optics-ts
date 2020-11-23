@@ -146,8 +146,8 @@ const bar = O.optic<Data>().prop('foo').prop('bar')
 // or from the `foo` lens we defined above
 const bar = foo.prop('bar')
 // or use .path() to compose multiple prop lenses with a single call
-const bar = O.optic<Data>().path(['foo', 'bar'])
-// or use path with a nested string
+const bar = O.optic<Data>().path('foo', 'bar')
+// or use path with a dotted string path
 const bar = O.optic<Data>().path('foo.bar')
 ```
 
@@ -409,7 +409,7 @@ type Data = {
   foo: { bar: string }
   other: boolean
 }
-const bar = O.optic_<Data>().path(['foo', 'bar'])
+const bar = O.optic_<Data>().path('foo.bar')
 ```
 
 Let's modify `bar` to contain the length of the original string instead:
@@ -651,15 +651,21 @@ TypeScript's type system also allows array's numeric indices when using
 `keyof`. Use the `.at()` prism to focus on an array element at a given
 index.
 
-#### `path<K1, K2, ...>(keys: [K1, K2, ...]): Lens<S, _, A[K1][K2]...>`
+#### `path<K1, K2, ...>(...keys: [K1, K2, ...]): Lens<S, _, A[K1][K2]...>`
 
 A shortcut for focusing on chain of properties.
 
 ```typescript
-foo.path(['a', 'b', 'c'])
+foo.path('a.b.c')
 ```
 
 is equal to
+
+```typescript
+foo.path('a', 'b', 'c')
+```
+
+which is equal to
 
 ```typescript
 foo.prop('a').prop('b').prop('c')
