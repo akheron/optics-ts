@@ -594,6 +594,13 @@ describe('lens/filter', () => {
     .prop('bar')
   type Focus = string[]
 
+  it('remove after filter', () => {
+    const filtered = O.optic<Source[]>().filter(pred => pred.bar === 'quux')
+    const filteredAtIndex0 = filtered.at(0)
+    const result = O.remove(filteredAtIndex0)(source)
+    expect(result).toEqual([{ bar: 'baz' }, { bar: 'xyzzy' }])
+  })
+
   it('collect', () => {
     const result: Focus = O.collect(traversal)(source)
     expect(result).toEqual(['baz', 'xyzzy'])
