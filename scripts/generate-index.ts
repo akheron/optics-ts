@@ -124,6 +124,9 @@ const lens = (composition: Composition) => `\
   pick<K extends keyof A>(
     keys: K[]
   ): ${composition.optic('Plant<A, K>', 'Pick<A, K>')}
+  filter<B extends ElemType<A>>(
+    predicate: (item: ElemType<A>) => item is B
+  ): ${composition.optic('Union<A>', 'B[]')}
   filter(
     predicate: (item: ElemType<A>) => boolean
   ): ${composition.optic('Union<A>', 'A')}

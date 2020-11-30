@@ -390,25 +390,40 @@ const find = (predicate: (item: any) => boolean): OpticFn =>
   )
 
 const filter = (predicate: (item: any) => boolean): OpticFn =>
-  lens(
-    (source: any[]) => {
-      const indexes: any[] = source
-        .map((item, index) => (predicate(item) ? index : null))
-        .filter(index => index != null)
-      return indexes.map(index => source[index])
-    },
-    ([values, source]: [any[], any[]]) => {
-      const indexes: any[] = source
-        .map((item, index) => (predicate(item) ? index : null))
-        .filter(index => index != null)
-      const result = source.slice()
-      let j = 0
-      for (const index of indexes) {
-        result[index] = values[j]
-        j++
+  compose(
+    lens(
+      (source: any[]) => {
+        const indexes = source
+          .map((item, index) => (predicate(item) ? index : null))
+          .filter((index): index is number => index != null)
+        return [indexes.map(index => source[index]), indexes]
+      },
+      ([[values, indexes], source]: [[any[], number[]], any[]]) => {
+        const sn = source.length,
+          vn = values.length
+        let si = 0,
+          ii = 0,
+          vi = 0
+        const result = []
+        while (si < sn) {
+          if (indexes[ii] === si) {
+            ++ii
+            if (vi < vn) {
+              result.push(values[vi])
+              ++vi
+            }
+          } else {
+            result.push(source[si])
+          }
+          ++si
+        }
+        while (vi < vn) {
+          result.push(values[vi++])
+        }
+        return result
       }
-      return result
-    }
+    ),
+    fst
   )
 
 const valueOr = (defaultValue: any): OpticFn =>
