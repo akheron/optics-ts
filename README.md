@@ -47,9 +47,11 @@ TypeScript:
     - [`iso<U>(there: (a: A) => U, back: (u: U) => A): Iso<S, _, U>`](#isouthere-a-a--u-back-u-u--a-isos-_-u)
   - [Lenses](#lenses)
     - [`prop<K extends keyof A>(key: K): Lens<S, _, A[K]>`](#propk-extends-keyof-akey-k-lenss-_-ak)
-    - [`path<K1, K2, ...>(keys: [K1, K2, ...]): Lens<S, _, A[K1][K2]...>`](#pathk1-k2-keys-k1-k2--lenss-_-ak1k2)
+    - [`path<K1, K2, ...>(...keys: [K1, K2, ...]): Lens<S, _, A[K1][K2]...>`](#pathk1-k2-keys-k1-k2--lenss-_-ak1k2)
   - [`nth<N extends number>(n: N): Lens<S, _, Nth<A, N>>`](#nthn-extends-numbern-n-lenss-_-ntha-n)
     - [`pick<K extends keyof A>(keys: K[]): Lens<S, _, Pick<A, K>>`](#pickk-extends-keyof-akeys-k-lenss-_-picka-k)
+    - [`filter(pred: (item: ElemType<A>) => boolean): Lens<S, _, A>`](#filterpred-item-elemtypea--boolean-lenss-_-a)
+    - [`filter<B>(pred: (item: ElemType<A>) => item is B): Lens<S, _, B[]>`](#filterbpred-item-elemtypea--item-is-b-lenss-_-b)
     - [`valueOr<B>(defaultValue: B): Lens<S, _, Exclude<A, undefined> | B>`](#valueorbdefaultvalue-b-lenss-_-excludea-undefined--b)
   - [Prisms](#prisms)
     - [`optional(): Prism<S, _, Exclude<A, undefined>>`](#optional-prisms-_-excludea-undefined)
@@ -58,7 +60,7 @@ TypeScript:
     - [`at(i: number): RemovablePrism<S, _, ElemType<A>>`](#ati-number-removableprisms-_-elemtypea)
     - [`head(): Prism<S, _, ElemType<A>>`](#head-prisms-_-elemtypea)
     - [`index(i: number): RemovablePrism<S, _, ElemType<A>>`](#indexi-number-removableprisms-_-elemtypea)
-    - [`find(p: (e: ElemType<A>) => boolean): Prism<S, _, ElemType<A>>`](#findp-e-elemtypea--boolean-prisms-_-elemtypea)
+    - [`find(p: (e: ElemType<A>) => boolean): RemovablePrism<S, _, ElemType<A>>`](#findp-e-elemtypea--boolean-removableprisms-_-elemtypea)
     - [`when(f: (a: A) => boolean): Prism<S, _, A>`](#whenf-a-a--boolean-prisms-_-a)
   - [Traversals](#traversals)
     - [`elems(): Traversal<S, _, ElemType<A>>`](#elems-traversals-_-elemtypea)
@@ -715,6 +717,37 @@ O.set(monoLens)({ quux: null })(data)
 // ==> DisallowedTypeChange
 ```
 
+#### `filter(pred: (item: ElemType<A>) => boolean): Lens<S, _, A>`
+
+#### `filter<B>(pred: (item: ElemType<A>) => item is B): Lens<S, _, B[]>`
+
+Only works on arrays.
+
+Create a lens that focuses on the elements matched by `pred`. If `pred`
+is a type guard of `B`, narrow the type of the focus to `B[]`.
+
+```typescript
+const l = O.optic_<number[]>().filter(x => x % 2 === 1)
+
+// Writing an array of the same length replaces elements
+O.set(l)(['a', 'b', 'c'])([1, 2, 3, 5, 6]) // => ['a', 2, 'b', 'c', 6]
+
+// Writing a shorter array removes elements
+O.set(l)(['a', 'b'])([1, 2, 3, 5, 6]) // => ['a', 2, 'b', 6]
+
+// Writing a longer array adds elements to the end
+O.set(l)(['a', 'b', 'c', 'd', 'e'])([1, 2, 3, 5, 6]) // => ['a', 2, 'b', 'c', 6, 'd', 'e']
+```
+
+When writing an array of the same length, the values at matching indexes are
+replaced by the new values.
+
+written array must have the same length as the
+original one, i.e. elements cannot be added or removed through filter.
+
+When a different type `B` (array) is written, the result will have the
+type `A | B`, i.e. `(ElemType<A> | ElemType<B>)[]`.
+
 #### `valueOr<B>(defaultValue: B): Lens<S, _, Exclude<A, undefined> | B>`
 
 Create a lens that, when read through, returns `defaultValue` when the
@@ -768,7 +801,7 @@ Short for `at(0)`.
 
 **Deprecated**. Alias for `.at()`.
 
-#### `find(p: (e: ElemType<A>) => boolean): Prism<S, _, ElemType<A>>`
+#### `find(p: (e: ElemType<A>) => boolean): RemovablePrism<S, _, ElemType<A>>`
 
 Only works on array types. Removable. `ElemType<A>` is the element type
 of the array type `A`.

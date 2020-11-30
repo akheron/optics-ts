@@ -86,6 +86,9 @@ export interface Equivalence<S, T extends OpticParams, A> {
   pick<K extends keyof A>(
     keys: K[]
   ): Lens<S, NextParams<T, Plant<A, K>>, Pick<A, K>>
+  filter<B extends ElemType<A>>(
+    predicate: (item: ElemType<A>) => item is B
+  ): Lens<S, NextParams<T, Union<A>>, B[]>
   filter(
     predicate: (item: ElemType<A>) => boolean
   ): Lens<S, NextParams<T, Union<A>>, A>
@@ -194,6 +197,9 @@ export interface Iso<S, T extends OpticParams, A> {
   pick<K extends keyof A>(
     keys: K[]
   ): Lens<S, NextParams<T, Plant<A, K>>, Pick<A, K>>
+  filter<B extends ElemType<A>>(
+    predicate: (item: ElemType<A>) => item is B
+  ): Lens<S, NextParams<T, Union<A>>, B[]>
   filter(
     predicate: (item: ElemType<A>) => boolean
   ): Lens<S, NextParams<T, Union<A>>, A>
@@ -302,6 +308,9 @@ export interface Lens<S, T extends OpticParams, A> {
   pick<K extends keyof A>(
     keys: K[]
   ): Lens<S, NextParams<T, Plant<A, K>>, Pick<A, K>>
+  filter<B extends ElemType<A>>(
+    predicate: (item: ElemType<A>) => item is B
+  ): Lens<S, NextParams<T, Union<A>>, B[]>
   filter(
     predicate: (item: ElemType<A>) => boolean
   ): Lens<S, NextParams<T, Union<A>>, A>
@@ -410,6 +419,9 @@ export interface Prism<S, T extends OpticParams, A> {
   pick<K extends keyof A>(
     keys: K[]
   ): Prism<S, NextParams<T, Plant<A, K>>, Pick<A, K>>
+  filter<B extends ElemType<A>>(
+    predicate: (item: ElemType<A>) => item is B
+  ): Prism<S, NextParams<T, Union<A>>, B[]>
   filter(
     predicate: (item: ElemType<A>) => boolean
   ): Prism<S, NextParams<T, Union<A>>, A>
@@ -520,6 +532,9 @@ export interface Traversal<S, T extends OpticParams, A> {
   pick<K extends keyof A>(
     keys: K[]
   ): Traversal<S, NextParams<T, Plant<A, K>>, Pick<A, K>>
+  filter<B extends ElemType<A>>(
+    predicate: (item: ElemType<A>) => item is B
+  ): Traversal<S, NextParams<T, Union<A>>, B[]>
   filter(
     predicate: (item: ElemType<A>) => boolean
   ): Traversal<S, NextParams<T, Union<A>>, A>
@@ -616,6 +631,9 @@ export interface Getter<S, A> {
   path<K extends (keyof any)[]>(...path: K): Getter<S, TuplePath<A, K>>
   nth<N extends number>(n: N): Getter<S, Nth<A, N>>
   pick<K extends keyof A>(keys: K[]): Getter<S, Pick<A, K>>
+  filter<B extends ElemType<A>>(
+    predicate: (item: ElemType<A>) => item is B
+  ): Getter<S, B[]>
   filter(predicate: (item: ElemType<A>) => boolean): Getter<S, A>
   valueOr<B>(defaultValue: B): Getter<S, Exclude<A, undefined> | B>
 
@@ -679,6 +697,9 @@ export interface AffineFold<S, A> {
   path<K extends (keyof any)[]>(...path: K): AffineFold<S, TuplePath<A, K>>
   nth<N extends number>(n: N): AffineFold<S, Nth<A, N>>
   pick<K extends keyof A>(keys: K[]): AffineFold<S, Pick<A, K>>
+  filter<B extends ElemType<A>>(
+    predicate: (item: ElemType<A>) => item is B
+  ): AffineFold<S, B[]>
   filter(predicate: (item: ElemType<A>) => boolean): AffineFold<S, A>
   valueOr<B>(defaultValue: B): AffineFold<S, Exclude<A, undefined> | B>
 
@@ -742,6 +763,9 @@ export interface Fold<S, A> {
   path<K extends (keyof any)[]>(...path: K): Fold<S, TuplePath<A, K>>
   nth<N extends number>(n: N): Fold<S, Nth<A, N>>
   pick<K extends keyof A>(keys: K[]): Fold<S, Pick<A, K>>
+  filter<B extends ElemType<A>>(
+    predicate: (item: ElemType<A>) => item is B
+  ): Fold<S, B[]>
   filter(predicate: (item: ElemType<A>) => boolean): Fold<S, A>
   valueOr<B>(defaultValue: B): Fold<S, Exclude<A, undefined> | B>
 

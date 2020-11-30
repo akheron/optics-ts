@@ -18,6 +18,13 @@
 
   - Support dotted paths with `.path()`, e.g. `.path('foo.bar.baz')`
 
+  - `.filter()` now narrows the element type if given a type guard
+
+- **Fixes**
+
+  - Fix `.filter()` to work when adding/removing elements, and document this
+    behavior
+
 ## 1.2.0
 
 - **New features**
