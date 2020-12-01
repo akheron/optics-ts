@@ -432,6 +432,24 @@ const valueOr = (defaultValue: any): OpticFn =>
     ([value, source]: [any, any]) => value
   )
 
+const partsOf = (traversal: Optic): OpticFn =>
+  compose(
+    lens(
+      (source: any) => {
+        const value = collect(traversal, source)
+        return [value, value.length]
+      },
+      ([[value, originalLength], source]) => {
+        if (value.length !== originalLength) {
+          throw new Error('cannot add/remove elements through partsOf')
+        }
+        let i = 0
+        return modify(traversal, () => value[i++], source)
+      }
+    ),
+    fst
+  )
+
 const prependTo: OpticFn = lens(
   (source: any[]) => undefined,
   ([value, source]: [any, any[]]) => {
@@ -513,6 +531,12 @@ export class Optic {
 
   valueOr(defaultValue: any): Optic {
     return new Optic(compose(this._ref, valueOr(defaultValue)))
+  }
+
+  partsOf(traversalOrFn: any): Optic {
+    const traversal =
+      typeof traversalOrFn === 'function' ? traversalOrFn(optic) : traversalOrFn
+    return new Optic(compose(this._ref, partsOf(traversal._ref)))
   }
 
   optional(): Optic {

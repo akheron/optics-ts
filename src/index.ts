@@ -21,6 +21,7 @@ import {
   Elems,
   HKT,
   Id,
+  PartsOf,
   Plant,
   Prop,
   Optional,
@@ -95,6 +96,12 @@ export interface Equivalence<S, T extends OpticParams, A> {
   valueOr<B>(
     defaultValue: B
   ): Lens<S, NextParams<T, Id>, Exclude<A, undefined> | B>
+  partsOf<U extends OpticParams, B>(
+    traversal: Traversal<A, U, B>
+  ): Lens<S, NextParams<T, PartsOf<U['_T'], A>>, B[]>
+  partsOf<U extends OpticParams, B>(
+    makeTraversal: (o: OpticFor_<A>) => Traversal<A, U, B>
+  ): Lens<S, NextParams<T, PartsOf<U['_T'], A>>, B[]>
 
   // Equivalence · Prism => Prism
   compose<T2 extends OpticParams, A2>(
@@ -206,6 +213,12 @@ export interface Iso<S, T extends OpticParams, A> {
   valueOr<B>(
     defaultValue: B
   ): Lens<S, NextParams<T, Id>, Exclude<A, undefined> | B>
+  partsOf<U extends OpticParams, B>(
+    traversal: Traversal<A, U, B>
+  ): Lens<S, NextParams<T, PartsOf<U['_T'], A>>, B[]>
+  partsOf<U extends OpticParams, B>(
+    makeTraversal: (o: OpticFor_<A>) => Traversal<A, U, B>
+  ): Lens<S, NextParams<T, PartsOf<U['_T'], A>>, B[]>
 
   // Iso · Prism => Prism
   compose<T2 extends OpticParams, A2>(
@@ -317,6 +330,12 @@ export interface Lens<S, T extends OpticParams, A> {
   valueOr<B>(
     defaultValue: B
   ): Lens<S, NextParams<T, Id>, Exclude<A, undefined> | B>
+  partsOf<U extends OpticParams, B>(
+    traversal: Traversal<A, U, B>
+  ): Lens<S, NextParams<T, PartsOf<U['_T'], A>>, B[]>
+  partsOf<U extends OpticParams, B>(
+    makeTraversal: (o: OpticFor_<A>) => Traversal<A, U, B>
+  ): Lens<S, NextParams<T, PartsOf<U['_T'], A>>, B[]>
 
   // Lens · Prism => Prism
   compose<T2 extends OpticParams, A2>(
@@ -428,6 +447,12 @@ export interface Prism<S, T extends OpticParams, A> {
   valueOr<B>(
     defaultValue: B
   ): Prism<S, NextParams<T, Id>, Exclude<A, undefined> | B>
+  partsOf<U extends OpticParams, B>(
+    traversal: Traversal<A, U, B>
+  ): Prism<S, NextParams<T, PartsOf<U['_T'], A>>, B[]>
+  partsOf<U extends OpticParams, B>(
+    makeTraversal: (o: OpticFor_<A>) => Traversal<A, U, B>
+  ): Prism<S, NextParams<T, PartsOf<U['_T'], A>>, B[]>
 
   // Prism · Prism => Prism
   compose<T2 extends OpticParams, A2>(
@@ -541,6 +566,12 @@ export interface Traversal<S, T extends OpticParams, A> {
   valueOr<B>(
     defaultValue: B
   ): Traversal<S, NextParams<T, Id>, Exclude<A, undefined> | B>
+  partsOf<U extends OpticParams, B>(
+    traversal: Traversal<A, U, B>
+  ): Traversal<S, NextParams<T, PartsOf<U['_T'], A>>, B[]>
+  partsOf<U extends OpticParams, B>(
+    makeTraversal: (o: OpticFor_<A>) => Traversal<A, U, B>
+  ): Traversal<S, NextParams<T, PartsOf<U['_T'], A>>, B[]>
 
   // Traversal · Prism => Traversal
   compose<T2 extends OpticParams, A2>(
@@ -636,6 +667,12 @@ export interface Getter<S, A> {
   ): Getter<S, B[]>
   filter(predicate: (item: ElemType<A>) => boolean): Getter<S, A>
   valueOr<B>(defaultValue: B): Getter<S, Exclude<A, undefined> | B>
+  partsOf<U extends OpticParams, B>(
+    traversal: Traversal<A, U, B>
+  ): Getter<S, B[]>
+  partsOf<U extends OpticParams, B>(
+    makeTraversal: (o: OpticFor_<A>) => Traversal<A, U, B>
+  ): Getter<S, B[]>
 
   // Getter · Prism => AffineFold
   compose<T2 extends OpticParams, A2>(
@@ -702,6 +739,12 @@ export interface AffineFold<S, A> {
   ): AffineFold<S, B[]>
   filter(predicate: (item: ElemType<A>) => boolean): AffineFold<S, A>
   valueOr<B>(defaultValue: B): AffineFold<S, Exclude<A, undefined> | B>
+  partsOf<U extends OpticParams, B>(
+    traversal: Traversal<A, U, B>
+  ): AffineFold<S, B[]>
+  partsOf<U extends OpticParams, B>(
+    makeTraversal: (o: OpticFor_<A>) => Traversal<A, U, B>
+  ): AffineFold<S, B[]>
 
   // AffineFold · Prism => AffineFold
   compose<T2 extends OpticParams, A2>(
@@ -768,6 +811,10 @@ export interface Fold<S, A> {
   ): Fold<S, B[]>
   filter(predicate: (item: ElemType<A>) => boolean): Fold<S, A>
   valueOr<B>(defaultValue: B): Fold<S, Exclude<A, undefined> | B>
+  partsOf<U extends OpticParams, B>(traversal: Traversal<A, U, B>): Fold<S, B[]>
+  partsOf<U extends OpticParams, B>(
+    makeTraversal: (o: OpticFor_<A>) => Traversal<A, U, B>
+  ): Fold<S, B[]>
 
   // Fold · Prism => Fold
   compose<T2 extends OpticParams, A2>(optic: Prism<A, T2, A2>): Fold<S, A2>

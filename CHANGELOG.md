@@ -20,6 +20,8 @@
 
   - `.filter()` now narrows the element type if given a type guard
 
+  - Add `partsOf()`
+
 - **Fixes**
 
   - Fix `.filter()` to work when adding/removing elements, and document this

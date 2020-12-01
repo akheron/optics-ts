@@ -24,6 +24,7 @@ import {
   Elems,
   HKT,
   Id,
+  PartsOf,
   Plant,
   Prop,
   Optional,
@@ -133,6 +134,14 @@ const lens = (composition: Composition) => `\
   valueOr<B>(defaultValue: B): ${composition.optic(
     'Id',
     'Exclude<A, undefined> | B'
+  )}
+  partsOf<U extends OpticParams, B>(traversal: Traversal<A, U, B>): ${composition.optic(
+    "PartsOf<U['_T'], A>",
+    'B[]'
+  )}
+  partsOf<U extends OpticParams, B>(makeTraversal: (o: OpticFor_<A>) => Traversal<A, U, B>): ${composition.optic(
+    "PartsOf<U['_T'], A>",
+    'B[]'
   )}
 `
 

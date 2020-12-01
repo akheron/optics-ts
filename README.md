@@ -756,6 +756,30 @@ is returned unchanged.
 
 Fully polymorphic in the write direction.
 
+#### `partsOf(traversal: Traversal<A, _, B>): Lens<S, _, B[]>`
+
+#### `partsOf(makeTraversal: (o: Optic<A>) => Traversal<A, _, B>): Lens<S, _, B[]>`
+
+Create a lens from the given traversal, or from the traversal returned by the
+given function. When read through, the result is an array of elements as if
+produced by `collect()`. When written through, the focuses of the traversal are
+replaced with the values from the written array. For a polymorphic write, the
+focuses of the tarversal get the type of the written array elements. If a
+shorter or longer array is written, **throws an error**. This is to ensure that
+all focuses are replaced and the types are correct.
+
+For example, this reverses the words of string:
+
+```typescript
+const lens = O.optic<string>().partsOf(o => o.words())
+O.modify(lens)(words => [...words].reverse())('this is a test')
+// 'test a is this'
+```
+
+Note that composing `partsOf` with setters (like `appendTo` or `prependTo`) or
+removing elements through `partsOf` will not wobk, because the extra element
+added by the setter or the removed element will cause `partsOf` to throw.
+
 ### Prisms
 
 Prisms have the type `Prism<S, T, A>`. In the following, we omit the
