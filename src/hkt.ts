@@ -73,6 +73,10 @@ export interface Plant<S, K extends keyof S> extends HKT {
   0: Omit<S, K> & { [KK in keyof this[1]]: this[1][KK] }
 }
 
+export interface PartsOf<T extends HKT, A> extends HKT {
+  0: Apply<T, ElemType<this[1]>>
+}
+
 interface DisallowedTypeChange {
   readonly _: unique symbol
 }
