@@ -271,6 +271,20 @@ export const collect = (optic: any, source: any): any =>
 
 /////////////////////////////////////////////////////////////////////////////
 
+const indexed = iso(
+  (value: any[]) => value.map((v, k) => [k, v]),
+  (value: [number, any][]) => {
+    const sorted = [...value].sort((a, b) => a[0] - b[0])
+    const result = []
+    for (let i = 0; i < sorted.length; ++i) {
+      if (i === sorted.length - 1 || sorted[i][0] !== sorted[i + 1][0]) {
+        result.push(sorted[i][1])
+      }
+    }
+    return result
+  }
+)
+
 const prop = (key: string): OpticFn =>
   lens(
     (source: any) => source[key],
@@ -502,6 +516,10 @@ export class Optic {
 
   iso(there: (x: any) => any, back: (x: any) => any): Optic {
     return new Optic(compose(this._ref, iso(there, back)))
+  }
+
+  indexed(): Optic {
+    return new Optic(compose(this._ref, indexed))
   }
 
   prop(key: string): Optic {

@@ -21,6 +21,7 @@ import {
   Elems,
   HKT,
   Id,
+  Index,
   PartsOf,
   Plant,
   Prop,
@@ -71,6 +72,7 @@ export interface Equivalence<S, T extends OpticParams, A> {
     there: (a: A) => U,
     back: (u: U) => A
   ): Iso<S, NextParams<T, Adapt<A, U>>, U>
+  indexed(): Iso<S, NextParams<T, Index>, [number, ElemType<A>][]>
 
   // Equivalence · Lens => Lens
   compose<T2 extends OpticParams, A2>(
@@ -188,6 +190,7 @@ export interface Iso<S, T extends OpticParams, A> {
     there: (a: A) => U,
     back: (u: U) => A
   ): Iso<S, NextParams<T, Adapt<A, U>>, U>
+  indexed(): Iso<S, NextParams<T, Index>, [number, ElemType<A>][]>
 
   // Iso · Lens => Lens
   compose<T2 extends OpticParams, A2>(
@@ -305,6 +308,7 @@ export interface Lens<S, T extends OpticParams, A> {
     there: (a: A) => U,
     back: (u: U) => A
   ): Lens<S, NextParams<T, Adapt<A, U>>, U>
+  indexed(): Lens<S, NextParams<T, Index>, [number, ElemType<A>][]>
 
   // Lens · Lens => Lens
   compose<T2 extends OpticParams, A2>(
@@ -422,6 +426,7 @@ export interface Prism<S, T extends OpticParams, A> {
     there: (a: A) => U,
     back: (u: U) => A
   ): Prism<S, NextParams<T, Adapt<A, U>>, U>
+  indexed(): Prism<S, NextParams<T, Index>, [number, ElemType<A>][]>
 
   // Prism · Lens => Prism
   compose<T2 extends OpticParams, A2>(
@@ -539,6 +544,7 @@ export interface Traversal<S, T extends OpticParams, A> {
     there: (a: A) => U,
     back: (u: U) => A
   ): Traversal<S, NextParams<T, Adapt<A, U>>, U>
+  indexed(): Traversal<S, NextParams<T, Index>, [number, ElemType<A>][]>
 
   // Traversal · Lens => Traversal
   compose<T2 extends OpticParams, A2>(
@@ -654,6 +660,7 @@ export interface Getter<S, A> {
   // Getter · Iso => Getter
   compose<T2 extends OpticParams, A2>(optic: Iso<A, T2, A2>): Getter<S, A2>
   iso<U>(there: (a: A) => U, back: (u: U) => A): Getter<S, U>
+  indexed(): Getter<S, [number, ElemType<A>][]>
 
   // Getter · Lens => Getter
   compose<T2 extends OpticParams, A2>(optic: Lens<A, T2, A2>): Getter<S, A2>
@@ -726,6 +733,7 @@ export interface AffineFold<S, A> {
   // AffineFold · Iso => AffineFold
   compose<T2 extends OpticParams, A2>(optic: Iso<A, T2, A2>): AffineFold<S, A2>
   iso<U>(there: (a: A) => U, back: (u: U) => A): AffineFold<S, U>
+  indexed(): AffineFold<S, [number, ElemType<A>][]>
 
   // AffineFold · Lens => AffineFold
   compose<T2 extends OpticParams, A2>(optic: Lens<A, T2, A2>): AffineFold<S, A2>
@@ -798,6 +806,7 @@ export interface Fold<S, A> {
   // Fold · Iso => Fold
   compose<T2 extends OpticParams, A2>(optic: Iso<A, T2, A2>): Fold<S, A2>
   iso<U>(there: (a: A) => U, back: (u: U) => A): Fold<S, U>
+  indexed(): Fold<S, [number, ElemType<A>][]>
 
   // Fold · Lens => Fold
   compose<T2 extends OpticParams, A2>(optic: Lens<A, T2, A2>): Fold<S, A2>
