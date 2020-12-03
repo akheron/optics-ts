@@ -1,29 +1,16 @@
 # Changelog
 
-## 2.0.0 (unreleased)
+## 2.0.0
 
 - **BREAKING CHANGES**
-
   - TypeScript 4.1 or newer is required
-
-  - `.path()` now takes varargs instead of an array.
-
-    Old: `.path(['foo', 'bar', 'baz'])`
-
-    New: `.path('foo', 'bar', 'baz')`
-
+  - `.path()` now takes varargs instead of an array. Old: `.path(['foo', 'bar', 'baz'])`, new: `.path('foo', 'bar', 'baz')`
 - **New features**
-
   - Add `.nth()`
-
   - Support dotted paths with `.path()`, e.g. `.path('foo.bar.baz')`
-
   - `.filter()` now narrows the element type if given a type guard
-
   - Add `partsOf()`
-
 - **Fixes**
-
   - Fix `.filter()` to work when adding/removing elements, and document this
     behavior
 
