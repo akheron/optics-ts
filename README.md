@@ -791,6 +791,16 @@ Note that composing `partsOf` with setters (like `appendTo` or `prependTo`) or
 removing elements through `partsOf` will not wobk, because the extra element
 added by the setter or the removed element will cause `partsOf` to throw.
 
+#### `reread(fn: (value: A) => A): Lens<S, _, A>`
+
+#### `rewrite(fn: (value: A) => A): Lens<S, _, A>`
+
+Create a lens that can modify the value in the read direction (`reread()`) or
+write direction (`rewrite()`). This is useful to e.g. ensure data structure
+invariants in some cases.
+
+Note that both `reread` and `rewrite` are monomorphic.
+
 ### Prisms
 
 Prisms have the type `Prism<S, T, A>`. In the following, we omit the

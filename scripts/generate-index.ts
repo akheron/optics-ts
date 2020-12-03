@@ -145,6 +145,14 @@ const lens = (composition: Composition) => `\
     "PartsOf<U['_T'], A>",
     'B[]'
   )}
+  reread(read: (value: A) => A): ${composition.optic(
+    'DisallowTypeChange<A>',
+    'A'
+  )}
+  rewrite(write: (value: A) => A): ${composition.optic(
+    'DisallowTypeChange<A>',
+    'A'
+  )}
 `
 
 const prism = (composition: Composition) => `\

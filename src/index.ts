@@ -104,6 +104,12 @@ export interface Equivalence<S, T extends OpticParams, A> {
   partsOf<U extends OpticParams, B>(
     makeTraversal: (o: OpticFor_<A>) => Traversal<A, U, B>
   ): Lens<S, NextParams<T, PartsOf<U['_T'], A>>, B[]>
+  reread(
+    read: (value: A) => A
+  ): Lens<S, NextParams<T, DisallowTypeChange<A>>, A>
+  rewrite(
+    write: (value: A) => A
+  ): Lens<S, NextParams<T, DisallowTypeChange<A>>, A>
 
   // Equivalence · Prism => Prism
   compose<T2 extends OpticParams, A2>(
@@ -222,6 +228,12 @@ export interface Iso<S, T extends OpticParams, A> {
   partsOf<U extends OpticParams, B>(
     makeTraversal: (o: OpticFor_<A>) => Traversal<A, U, B>
   ): Lens<S, NextParams<T, PartsOf<U['_T'], A>>, B[]>
+  reread(
+    read: (value: A) => A
+  ): Lens<S, NextParams<T, DisallowTypeChange<A>>, A>
+  rewrite(
+    write: (value: A) => A
+  ): Lens<S, NextParams<T, DisallowTypeChange<A>>, A>
 
   // Iso · Prism => Prism
   compose<T2 extends OpticParams, A2>(
@@ -340,6 +352,12 @@ export interface Lens<S, T extends OpticParams, A> {
   partsOf<U extends OpticParams, B>(
     makeTraversal: (o: OpticFor_<A>) => Traversal<A, U, B>
   ): Lens<S, NextParams<T, PartsOf<U['_T'], A>>, B[]>
+  reread(
+    read: (value: A) => A
+  ): Lens<S, NextParams<T, DisallowTypeChange<A>>, A>
+  rewrite(
+    write: (value: A) => A
+  ): Lens<S, NextParams<T, DisallowTypeChange<A>>, A>
 
   // Lens · Prism => Prism
   compose<T2 extends OpticParams, A2>(
@@ -458,6 +476,12 @@ export interface Prism<S, T extends OpticParams, A> {
   partsOf<U extends OpticParams, B>(
     makeTraversal: (o: OpticFor_<A>) => Traversal<A, U, B>
   ): Prism<S, NextParams<T, PartsOf<U['_T'], A>>, B[]>
+  reread(
+    read: (value: A) => A
+  ): Prism<S, NextParams<T, DisallowTypeChange<A>>, A>
+  rewrite(
+    write: (value: A) => A
+  ): Prism<S, NextParams<T, DisallowTypeChange<A>>, A>
 
   // Prism · Prism => Prism
   compose<T2 extends OpticParams, A2>(
@@ -578,6 +602,12 @@ export interface Traversal<S, T extends OpticParams, A> {
   partsOf<U extends OpticParams, B>(
     makeTraversal: (o: OpticFor_<A>) => Traversal<A, U, B>
   ): Traversal<S, NextParams<T, PartsOf<U['_T'], A>>, B[]>
+  reread(
+    read: (value: A) => A
+  ): Traversal<S, NextParams<T, DisallowTypeChange<A>>, A>
+  rewrite(
+    write: (value: A) => A
+  ): Traversal<S, NextParams<T, DisallowTypeChange<A>>, A>
 
   // Traversal · Prism => Traversal
   compose<T2 extends OpticParams, A2>(
@@ -680,6 +710,8 @@ export interface Getter<S, A> {
   partsOf<U extends OpticParams, B>(
     makeTraversal: (o: OpticFor_<A>) => Traversal<A, U, B>
   ): Getter<S, B[]>
+  reread(read: (value: A) => A): Getter<S, A>
+  rewrite(write: (value: A) => A): Getter<S, A>
 
   // Getter · Prism => AffineFold
   compose<T2 extends OpticParams, A2>(
@@ -753,6 +785,8 @@ export interface AffineFold<S, A> {
   partsOf<U extends OpticParams, B>(
     makeTraversal: (o: OpticFor_<A>) => Traversal<A, U, B>
   ): AffineFold<S, B[]>
+  reread(read: (value: A) => A): AffineFold<S, A>
+  rewrite(write: (value: A) => A): AffineFold<S, A>
 
   // AffineFold · Prism => AffineFold
   compose<T2 extends OpticParams, A2>(
@@ -824,6 +858,8 @@ export interface Fold<S, A> {
   partsOf<U extends OpticParams, B>(
     makeTraversal: (o: OpticFor_<A>) => Traversal<A, U, B>
   ): Fold<S, B[]>
+  reread(read: (value: A) => A): Fold<S, A>
+  rewrite(write: (value: A) => A): Fold<S, A>
 
   // Fold · Prism => Fold
   compose<T2 extends OpticParams, A2>(optic: Prism<A, T2, A2>): Fold<S, A2>

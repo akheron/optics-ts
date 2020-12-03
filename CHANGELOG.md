@@ -4,6 +4,7 @@
 
 - **New features**
   - Add `.indexed()`
+  - Add `.reread()` and `.rewrite()`
 
 ## 2.0.0
 
