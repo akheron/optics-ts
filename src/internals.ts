@@ -464,6 +464,18 @@ const partsOf = (traversal: Optic): OpticFn =>
     fst
   )
 
+const reread = (fn: Function): OpticFn =>
+  lens(
+    (source: any) => fn(source),
+    ([value, _]) => value
+  )
+
+const rewrite = (fn: Function): OpticFn =>
+  lens(
+    source => source,
+    ([value, _]) => fn(value)
+  )
+
 const prependTo: OpticFn = lens(
   (source: any[]) => undefined,
   ([value, source]: [any, any[]]) => {
@@ -555,6 +567,14 @@ export class Optic {
     const traversal =
       typeof traversalOrFn === 'function' ? traversalOrFn(optic) : traversalOrFn
     return new Optic(compose(this._ref, partsOf(traversal._ref)))
+  }
+
+  reread(fn: Function): Optic {
+    return new Optic(compose(this._ref, reread(fn)))
+  }
+
+  rewrite(fn: Function): Optic {
+    return new Optic(compose(this._ref, rewrite(fn)))
   }
 
   optional(): Optic {
