@@ -638,6 +638,16 @@ the focus and transforms it to another value. `back` is the inverse of
 Note that `iso` is monomorphic. There's no polymorphic alternative
 (yet).
 
+#### `indexed(): Iso<S, _, [number, ElemType<A>][]>`
+
+Only works on arrays. `ElemType<A>` is the element type of the array type `A`.
+
+Ceate an isomorphism from an array of values to an array of index-value pairs,
+i.e. from `[a, b, ...]` to `[[0, a], [1, b], ...]`.
+
+In the write direction, elements are sorted by index, and only the last one of
+duplicate indices are kept.
+
 ### Lenses
 
 Lenses have the type `Lens<S, T, A>`. In the following, we omit the
@@ -721,7 +731,8 @@ O.set(monoLens)({ quux: null })(data)
 
 #### `filter<B>(pred: (item: ElemType<A>) => item is B): Lens<S, _, B[]>`
 
-Only works on arrays.
+Only works on arrays. `ElemType<A>` is the element type
+of the array type `A`.
 
 Create a lens that focuses on the elements matched by `pred`. If `pred`
 is a type guard of `B`, narrow the type of the focus to `B[]`.
@@ -739,7 +750,7 @@ O.set(l)(['a', 'b'])([1, 2, 3, 5, 6]) // => ['a', 2, 'b', 6]
 O.set(l)(['a', 'b', 'c', 'd', 'e'])([1, 2, 3, 5, 6]) // => ['a', 2, 'b', 'c', 6, 'd', 'e']
 ```
 
-When writing an array of the same length, the values at matching indexes are
+When writing an array of the same length, the values at matching indices are
 replaced by the new values.
 
 written array must have the same length as the
@@ -806,7 +817,8 @@ the output type.
 
 #### `at(i: number): RemovablePrism<S, _, ElemType<A>>`
 
-Only works on arrays and strings. Removable.
+Only works on arrays and strings. Removable. `ElemType<A>` is the element type
+of the array type `A`.
 
 Create a prism that focuses on the element type of the array `A`, or on
 a substring of length 1 if `A` is `string`.
@@ -881,7 +893,8 @@ parameters.
 
 #### `appendTo(): Setter<S, _, ElemType<A>>`
 
-Only works on arrays.
+Only works on arrays. `ElemType<A>` is the element type
+of the array type `A`.
 
 Create a setter that focuses on the part _before the first element_ or
 _after the last element_ of the focus array. When written through,

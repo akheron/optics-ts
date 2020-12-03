@@ -24,6 +24,7 @@ import {
   Elems,
   HKT,
   Id,
+  Index,
   PartsOf,
   Plant,
   Prop,
@@ -109,6 +110,7 @@ const iso = (composition: Composition) => `\
     there: (a: A) => U,
     back: (u: U) => A
   ): ${composition.optic('Adapt<A, U>', 'U')}
+  indexed(): ${composition.optic('Index', '[number, ElemType<A>][]')}
 `
 
 const lens = (composition: Composition) => `\

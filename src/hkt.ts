@@ -15,6 +15,14 @@ export interface Id extends HKT {
   0: this[1]
 }
 
+export interface ExpectedIndexedArray<_T> {
+  readonly _: unique symbol
+}
+
+export interface Index extends HKT {
+  0: this[1] extends [number, infer T][] ? T[] : ExpectedIndexedArray<this[1]>
+}
+
 export interface Const<A> extends HKT {
   0: A
 }
