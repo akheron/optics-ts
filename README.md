@@ -944,12 +944,8 @@ JavaScript, but only few for TypeScript. It's generally hard to create
 good typings for optics in TypeScript, and the task becomes impossible
 if one tried to retrofit types on an existing JavaScript implementation.
 
-[monocle-ts](https://github.com/gcanti/monocle-ts) is probably the most
-popular TypeScript optics library. It lacks polymorphism, and creating
-optics is verbose and cumbersome. You first create optics for each level
-of the data structure, and then compose them with separate function
-calls. This also often requires you to declare many unnecessary
-intermediate types for your data.
+- [monocle-ts](https://github.com/gcanti/monocle-ts) is probably the most
+  popular TypeScript optics library.
 
-[@grammarly/focal](https://github.com/grammarly/focal) is not an optics
-library per se, rather an UI framework. Its optics are very limited.
+- [@grammarly/focal](https://github.com/grammarly/focal) is not an optics
+  library per se, rather an UI framework for TypeScript.
