@@ -1,0 +1,6 @@
+exclude-labels:
+  - 'dependencies'
+template: |
+  ## What’s Changed
+
+  $CHANGES
