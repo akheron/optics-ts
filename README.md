@@ -2,17 +2,16 @@
 
 [![CircleCI](https://circleci.com/gh/akheron/optics-ts.svg?style=shield)](https://circleci.com/gh/akheron/optics-ts)
 
-`optics-ts` provides type-safe, ergonomic, polymorphic optics for
-TypeScript:
+`optics-ts` provides type-safe, ergonomic, polymorphic optics for TypeScript:
 
-- **Optics** allow you to read or modify values from deeply nested
-  data structures, while keeping all data immutable.
-- **Ergonomic**: Optics are composed with method chaining, making it
-  easy and fun!
-- **Polymorphic**: When writing through the optics, you can change the
-  data types in the nested structure.
-- **Type-safe**: The compiler will type check all operations you do.
-  No `any`, ever.
+- **Optics** allow you to read or modify values from deeply nested data
+  structures, while keeping all data immutable.
+- **Ergonomic**: Optics are composed with method chaining, making it easy and
+  fun!
+- **Polymorphic**: When writing through the optics, you can change the data
+  types in the nested structure.
+- **Type-safe**: The compiler will type check all operations you do. No `any`,
+  ever.
 
 <!-- START doctoc generated TOC please keep comment here to allow auto update -->
 <!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
@@ -92,8 +91,9 @@ yarn add optics-ts
 
 ## Requirements
 
-TypeScript >= 4.1 and the [`strictNullChecks` compiler
-option](https://www.typescriptlang.org/tsconfig#strictNullChecks) are required.
+TypeScript >= 4.1 and the
+[`strictNullChecks` compiler option](https://www.typescriptlang.org/tsconfig#strictNullChecks)
+are required.
 
 I strongly recommend enabling all strict options in your project's
 `tsconfig.json`:
@@ -106,8 +106,8 @@ I strongly recommend enabling all strict options in your project's
 }
 ```
 
-If this is not possible for your project, enable only the
-`strictNullChecks` option:
+If this is not possible for your project, enable only the `strictNullChecks`
+option:
 
 ```
 {
@@ -127,9 +127,9 @@ import * as O from 'optics-ts'
 
 ### Lens
 
-Lens is the most common optic you're going to use. You can create an
-optic for a data structure by calling `O.optic()`, and turn in into a
-lens that focuses on a property of an object with `.prop()`:
+Lens is the most common optic you're going to use. You can create an optic for a
+data structure by calling `O.optic()`, and turn in into a lens that focuses on a
+property of an object with `.prop()`:
 
 ```typescript
 type Data = {
@@ -174,26 +174,26 @@ O.set(bar)(99)(data)
 //   other: 'stuff'
 // }
 
-O.modify(bar)(x => x * 100)(data)
+O.modify(bar)((x) => x * 100)(data)
 // => {
 //   foo: { bar: 4200 },
 //   other: 'stuff'
 // }
 ```
 
-Writing through optics always creates a new data structure instead of
-modifying the existing one. In other words, data is immutable.
+Writing through optics always creates a new data structure instead of modifying
+the existing one. In other words, data is immutable.
 
 ### Prism
 
-Lenses are great for focusing to a part of a larger structure. Prisms
-are much like lenses, but they don't necessarily match anything, i.e.
-they can have zero focuses.
+Lenses are great for focusing to a part of a larger structure. Prisms are much
+like lenses, but they don't necessarily match anything, i.e. they can have zero
+focuses.
 
 A practical example is focusing on a branch of a union type. Here, the
-`User.age` field can be `number` or `undefined`. With the `.optional()`
-prism we can focus only when the value is a `number`, and do nothing
-when it's `undefined`:
+`User.age` field can be `number` or `undefined`. With the `.optional()` prism we
+can focus only when the value is a `number`, and do nothing when it's
+`undefined`:
 
 ```typescript
 type User = {
@@ -204,8 +204,8 @@ type User = {
 const age = O.optic<User>().prop('age').optional()
 ```
 
-You read through a prism using the `preview()` function. When the prism
-doesn't match, it returns `undefined`.
+You read through a prism using the `preview()` function. When the prism doesn't
+match, it returns `undefined`.
 
 ```typescript
 const userWithAge: User = {
@@ -225,11 +225,11 @@ O.preview(age)(userWithoutAge)
 
 If the prism doesn't match, `preview()` returns undefined, as seen above.
 
-You can write through a prism normally with `set()` and `modify()`. If
-the prism doesn't match, the value is unchanged:
+You can write through a prism normally with `set()` and `modify()`. If the prism
+doesn't match, the value is unchanged:
 
 ```typescript
-O.modify(age)(n => n + 1)(userWithAge)
+O.modify(age)((n) => n + 1)(userWithAge)
 // ==> {
 //   name: 'Betty',
 //   age: 43,
@@ -242,9 +242,9 @@ O.set(age)(60)(userWithoutAge)
 // }
 ```
 
-`.guard()` is another method that creates a prism. It's a generalization
-of `.optional()` in the sense that you can match on any branch of a
-union type instead of just the non-`undefined` part:
+`.guard()` is another method that creates a prism. It's a generalization of
+`.optional()` in the sense that you can match on any branch of a union type
+instead of just the non-`undefined` part:
 
 ```typescript
 interface Square {
@@ -270,22 +270,21 @@ O.preview(rectWidth)({ kind: 'square', size: 10 })
 O.preview(rectWidth)({ kind: 'rectangle', width: 5, height: 7 })
 // ==> 5
 
-O.modify(rectWidth)(w => w * 2)({ kind: 'rectangle', width: 5, height: 7 })
+O.modify(rectWidth)((w) => w * 2)({ kind: 'rectangle', width: 5, height: 7 })
 // ==> { kind: 'rectangle', width: 10, height: 7 })
 ```
 
-Notice how above we used `.guard(...).prop(...)`, composing a prism with
-a lens. This yields a prism, so we used `preview()` to read through it.
-See [Types of optics](#types-of-optics) for the rules of composition.
+Notice how above we used `.guard(...).prop(...)`, composing a prism with a lens.
+This yields a prism, so we used `preview()` to read through it. See
+[Types of optics](#types-of-optics) for the rules of composition.
 
 ### Removable optics
 
 Some optics are removable. This means that they focus on an element of a
-container (e.g. an array), and you can remove the element from the
-container.
+container (e.g. an array), and you can remove the element from the container.
 
-`.at()` is a removable prism. It focuses on an index of an array, and
-lets you also remove that index:
+`.at()` is a removable prism. It focuses on an index of an array, and lets you
+also remove that index:
 
 ```typescript
 interface User {
@@ -314,12 +313,11 @@ O.remove(secondUser)(oneUser)
 
 ### Traversal
 
-The next optic type is the traversal. While lenses have 1 focus and
-prisms have 0 or 1 focus (no match or match), traversals have 0 or
-more focuses.
+The next optic type is the traversal. While lenses have 1 focus and prisms have
+0 or 1 focus (no match or match), traversals have 0 or more focuses.
 
-The simplest example of a traversal is to focus on the elements of an
-array. To create such a traversal, use `.elems()`:
+The simplest example of a traversal is to focus on the elements of an array. To
+create such a traversal, use `.elems()`:
 
 ```typescript
 type Person {
@@ -333,8 +331,8 @@ const friendsNames = O.optic<Person>()
   .prop('name')
 ```
 
-To read through a traversal, call `collect()` to collect all focused
-elements into an array:
+To read through a traversal, call `collect()` to collect all focused elements
+into an array:
 
 ```typescript
 const john = { name: 'John', friends: [] }
@@ -348,7 +346,7 @@ O.collect(friendsNames)(amy)
 Writing through a traversal writes to all focused values:
 
 ```typescript
-O.modify(friendsNames)(name => `${name} Wayne`)(amy)
+O.modify(friendsNames)((name) => `${name} Wayne`)(amy)
 // ==> {
 //   name: 'Amy',
 //   friends: [
@@ -358,29 +356,28 @@ O.modify(friendsNames)(name => `${name} Wayne`)(amy)
 // }
 ```
 
-Note again how we used `.prop(...).elems(...).prop(...)`, composing a
-lens with a traversal, and then with a lens again. This yields a
-traversal. See [Types of optics](#types-of-optics) for more info.
+Note again how we used `.prop(...).elems(...).prop(...)`, composing a lens with
+a traversal, and then with a lens again. This yields a traversal. See
+[Types of optics](#types-of-optics) for more info.
 
-It's sometimes useful to further focus on certain elements of a
-traversal. This can be done by composing a traversal with a prism like
-`.when()` that skips items that don't match a predicate:
+It's sometimes useful to further focus on certain elements of a traversal. This
+can be done by composing a traversal with a prism like `.when()` that skips
+items that don't match a predicate:
 
 ```typescript
 const even = O.optic<number[]>()
   .elems()
-  .when(n => n % 2 === 0)
+  .when((n) => n % 2 === 0)
 
-O.modify(even)(n => -n)([1, 2, 3, 4, 5])
+O.modify(even)((n) => -n)([1, 2, 3, 4, 5])
 // ==> [1, -2, 3, -4, 5]
 ```
 
 ### Other types of optics
 
-In fact, calling `O.optic()` also yields an optic, but instead of
-being a lens, prism or traversal, it's an equivalence. As the name
-suggests, equivalence keeps the value equal, in both reading and
-writing directions:
+In fact, calling `O.optic()` also yields an optic, but instead of being a lens,
+prism or traversal, it's an equivalence. As the name suggests, equivalence keeps
+the value equal, in both reading and writing directions:
 
 ```typescript
 const str = O.optic<string>()
@@ -392,19 +389,19 @@ O.set(str)('new')('original')
 // ==> 'new' ('original' is discarded)
 ```
 
-Supported optic types also include _isomorphism_, which can be used to
-do 2-way data transformations. Furthermore, there are read-only optics
-analoguous to isomorphism, prism, and traversal. While isomorphism is
-2-way transformation (a mapping function and its inverse), _getter_ is a
-one-way transformation (just a mapping function). _Affine fold_ and
-_fold_ are read-only variants of prism and traversal.
+Supported optic types also include _isomorphism_, which can be used to do 2-way
+data transformations. Furthermore, there are read-only optics analoguous to
+isomorphism, prism, and traversal. While isomorphism is 2-way transformation (a
+mapping function and its inverse), _getter_ is a one-way transformation (just a
+mapping function). _Affine fold_ and _fold_ are read-only variants of prism and
+traversal.
 
 ### Polymorphism
 
-Optics can be polymorphic, which means you can change the type of the
-focus when you write through an optic. Since this is a relatively rare
-use case, and may be confusing if done by accident, polymorphic optics
-are created with `optic_()` (note the underscore):
+Optics can be polymorphic, which means you can change the type of the focus when
+you write through an optic. Since this is a relatively rare use case, and may be
+confusing if done by accident, polymorphic optics are created with `optic_()`
+(note the underscore):
 
 ```typescript
 type Data = {
@@ -422,7 +419,7 @@ const data: Data = {
   other: true,
 }
 
-const updated = O.modify(bar)(str => str.length)(data)
+const updated = O.modify(bar)((str) => str.length)(data)
 // ==> {
 //   foo: { bar: 11 },
 //   other: true
@@ -432,31 +429,31 @@ const updated = O.modify(bar)(str => str.length)(data)
 This is a type-safe operation, i.e. the compiler knows that the type of
 `updated.foo.bar` is `number`, editor autocomplete works correctly, etc.
 
-If you ever see a `DisallowedTypeChange` type being returned from an
-`optics-ts` function, it means that you tried to change the type when
-writing through a non-polymorphic (monomorphic) optic.
+If you ever see a `DisallowedTypeChange` type being returned from an `optics-ts`
+function, it means that you tried to change the type when writing through a
+non-polymorphic (monomorphic) optic.
 
 ## API reference
 
 ### Types of optics
 
-The supported optic classes are Equivalence, Iso (isomorphism), Lens,
-Prism, Traversal, Getter, AffineFold, Fold and Setter.
+The supported optic classes are Equivalence, Iso (isomorphism), Lens, Prism,
+Traversal, Getter, AffineFold, Fold and Setter.
 
-Equivalence, Iso, Lens, Prism and Traversal are read-write, i.e. you can
-read and write through them. Getter, AffineFold and Fold are read-only.
-Setter is write-only.
+Equivalence, Iso, Lens, Prism and Traversal are read-write, i.e. you can read
+and write through them. Getter, AffineFold and Fold are read-only. Setter is
+write-only.
 
-Equivalence, Iso, Lens and Getter have one focus, i.e. you can
-always read and write through them (Getter doesn't support writing).
-Prism and AffineFold have zero or one focus, i.e. reading may yield no
-value and writing may have no effect if there's no focus. Traversal and
-Fold have zero or more focuses, meaning that reading yields zero or more
-values, and writing modifies zero or more values.
+Equivalence, Iso, Lens and Getter have one focus, i.e. you can always read and
+write through them (Getter doesn't support writing). Prism and AffineFold have
+zero or one focus, i.e. reading may yield no value and writing may have no
+effect if there's no focus. Traversal and Fold have zero or more focuses,
+meaning that reading yields zero or more values, and writing modifies zero or
+more values.
 
-Any read-write and read-only optic can be composed with another
-read-write and read-only optic. The type of the resulting optic can be
-determined from this diagram:
+Any read-write and read-only optic can be composed with another read-write and
+read-only optic. The type of the resulting optic can be determined from this
+diagram:
 
 ```
 Equivalence -> Iso -> Lens ---> Prism ------> Traversal
@@ -465,103 +462,97 @@ Equivalence -> Iso -> Lens ---> Prism ------> Traversal
                       Getter -> AffineFold -> Fold
 ```
 
-When you compose two optics A and B, the result is the nearest optic
-that you get by following the arrows starting from both A and B.
+When you compose two optics A and B, the result is the nearest optic that you
+get by following the arrows starting from both A and B.
 
-For example, composing a Getter with a Traversal yields a Fold.
-Composing an Iso with a Prism yields a Prism.
+For example, composing a Getter with a Traversal yields a Fold. Composing an Iso
+with a Prism yields a Prism.
 
 ```
 Setter
 ```
 
-Setter is special. You can only compose writable optics with setters.
-Setters cannot be further composed with any other optic.
+Setter is special. You can only compose writable optics with setters. Setters
+cannot be further composed with any other optic.
 
 ```
 RemovablePrism
 ```
 
-RemovablePrism behaves like a regular prism, but it can be removed from
-its containing container. When composed with other optics, composes like
-a regular Prism.
+RemovablePrism behaves like a regular prism, but it can be removed from its
+containing container. When composed with other optics, composes like a regular
+Prism.
 
 The naming of the optic classes was inspired by
-[Glassery](http://oleg.fi/gists/posts/2017-04-18-glassery.html) by Oleg
-Grenrus.
+[Glassery](http://oleg.fi/gists/posts/2017-04-18-glassery.html) by Oleg Grenrus.
 
 ### Method chaining
 
-Optics are composed with method chaining. This means that each optic
-type has most of the methods documented below, regardless of the type of
-the optic that the method creates. The only difference is the return
-type, which is determined by the composition rules above.
+Optics are composed with method chaining. This means that each optic type has
+most of the methods documented below, regardless of the type of the optic that
+the method creates. The only difference is the return type, which is determined
+by the composition rules above.
 
-For example, assume we have a variable `myLens` that holds a `Lens`, and
-call `.optional()` on it:
+For example, assume we have a variable `myLens` that holds a `Lens`, and call
+`.optional()` on it:
 
 ```typescript
 const newOptic = myLens.optional()
 ```
 
-`.optional()` creates a prism, so `newOptic` will be a composition of
-lens and prism, i.e. a prism.
+`.optional()` creates a prism, so `newOptic` will be a composition of lens and
+prism, i.e. a prism.
 
-Which methods each optic type has depends on the composition rules
-presented in [Typef of optic](#types-of-optics). For example, the
-`.prop()` method creates a lens, so a getter has that method because you
-can compose a getter and a lens. On the other hand, the `.appendTo()`
-method, which creates a setter, is not available in a getter, because
-getters cannot be composed with setters.
+Which methods each optic type has depends on the composition rules presented in
+[Typef of optic](#types-of-optics). For example, the `.prop()` method creates a
+lens, so a getter has that method because you can compose a getter and a lens.
+On the other hand, the `.appendTo()` method, which creates a setter, is not
+available in a getter, because getters cannot be composed with setters.
 
 ### Type parameters
 
-All writable optics have 3 type parameters: `<S, T, A>`, and all
-read-only optics have 2 type parameters: `<S, A>`:
+All writable optics have 3 type parameters: `<S, T, A>`, and all read-only
+optics have 2 type parameters: `<S, A>`:
 
 - `S` is the source on which the optic operates
 
 - `A` is the type of the focus or focuses
 
-- `T` is a type that encodes how the output type is constructed with
-  polymorphic writes, as well as info about the optic's removability
+- `T` is a type that encodes how the output type is constructed with polymorphic
+  writes, as well as info about the optic's removability
 
-Conceptually, when you write a value of type `B`, the output type will
-be `S` with `A` replaced by `B` at the focus(es) of the optic. `T`
-contains a mechanism that transforms `B` to the output type. This
-construct makes it possible for the optics to be polymorphic on the type
-level. The read-only optics don't need `T` because you cannot write
-through them or remove their focus.
+Conceptually, when you write a value of type `B`, the output type will be `S`
+with `A` replaced by `B` at the focus(es) of the optic. `T` contains a mechanism
+that transforms `B` to the output type. This construct makes it possible for the
+optics to be polymorphic on the type level. The read-only optics don't need `T`
+because you cannot write through them or remove their focus.
 
-In the following, we leave the exact definition of `T` for each optic
-out for clarity, writing just `_` in its place. It's usually clear from
-how the optic works what will come out if you write a value of a
-different type.
+In the following, we leave the exact definition of `T` for each optic out for
+clarity, writing just `_` in its place. It's usually clear from how the optic
+works what will come out if you write a value of a different type.
 
-In the documentation of functions that can be used to write through an
-optic, the return type is denoted by `T<B>`. While not valid TypeScript
-syntax (because `T` is a type parameter instead of a concrete type),
-this captures the meaning quite well: `B` is applied to the
-"higher-kinded" type `T`, yielding the output type.
+In the documentation of functions that can be used to write through an optic,
+the return type is denoted by `T<B>`. While not valid TypeScript syntax (because
+`T` is a type parameter instead of a concrete type), this captures the meaning
+quite well: `B` is applied to the "higher-kinded" type `T`, yielding the output
+type.
 
 Interested readers can refer to [hkt.ts](src/hkt.ts) to see how the
-higher-kinded types / partially applied type operators are actually
-implemented.
+higher-kinded types / partially applied type operators are actually implemented.
 
 ### Top-level functions
 
-These functions are available as top level exports of the `optics-ts`
-module.
+These functions are available as top level exports of the `optics-ts` module.
 
-Most functions have `Optic` in their signature. It means that multiple
-optics work with the function. The optic classes that are actually
-applicable are documented in the function description.
+Most functions have `Optic` in their signature. It means that multiple optics
+work with the function. The optic classes that are actually applicable are
+documented in the function description.
 
 #### `optic<S>(): Equivalence<S, _, S>`
 
 Create a monomorphic equivalence for `S`. If you ever see the type
-`DisallowedTypeChange`, it means that you have attempted to change a
-type with a monomorphic optic.
+`DisallowedTypeChange`, it means that you have attempted to change a type with a
+monomorphic optic.
 
 #### `optic_<S>(): Equivalence<S, _, S>`
 
@@ -573,29 +564,29 @@ Read a value through an `Equivalence`, `Iso`, `Lens` or `Getter`.
 
 #### `preview<S, A>(optic: Optic<S, _, A>) => (source: S) => A | undefined`
 
-Read a value through a `Prism`, `Traversal`, `AffineFold` or `Fold`. For
-`Prism` and `AffineFold`, return `undefined` if the optic doesn't match
-(has zero focuses). For `Traversal` and `Fold`, returns the value of the
-first focus, or `undefined` if there are no focuses.
+Read a value through a `Prism`, `Traversal`, `AffineFold` or `Fold`. For `Prism`
+and `AffineFold`, return `undefined` if the optic doesn't match (has zero
+focuses). For `Traversal` and `Fold`, returns the value of the first focus, or
+`undefined` if there are no focuses.
 
 #### `collect<S, A>(optic: Optic<S, _, A>) => (source: S) => A[]`
 
-Read all focused values through a `Prism`, `Traversal`, `AffineFold` or
-`Fold`. For `Prism` and `AffineFold`, the return value is an array of 0
-or 1 elements. For `Traversal` and `Fold`, the return value is an array
-of zero or more elements.
+Read all focused values through a `Prism`, `Traversal`, `AffineFold` or `Fold`.
+For `Prism` and `AffineFold`, the return value is an array of 0 or 1 elements.
+For `Traversal` and `Fold`, the return value is an array of zero or more
+elements.
 
 #### `modify<S, T, A>(optic: Optic<S, T, A>) => <B>(f: (a: A) => B) => (source: S) => T<B>`
 
-Modify the focused value(s) through an `Equivalence`, `Iso`, `Lens`,
-`Prism` or `Traversal`. Returns an updated copy of `source` with all
-focuses modified by mapping them through the function `f`.
+Modify the focused value(s) through an `Equivalence`, `Iso`, `Lens`, `Prism` or
+`Traversal`. Returns an updated copy of `source` with all focuses modified by
+mapping them through the function `f`.
 
 #### `set<S, T, A>(optic: Optic<S, T, A>) => <B>(value: B) => (source: S) => T<B>`
 
-Write a constant value through an `Equivalence`, `Iso`, `Lens`, `Prism`
-or `Traversal`. Returns an updated copy of `source` with all focuses
-replaced by `value`.
+Write a constant value through an `Equivalence`, `Iso`, `Lens`, `Prism` or
+`Traversal`. Returns an updated copy of `source` with all focuses replaced by
+`value`.
 
 #### `remove<S, T, A>(optic: Optic<S, T, A>) => (source: S) => S`
 
@@ -603,40 +594,35 @@ Remove the focus of a `RemovablePrism` from its containing container.
 
 #### `compose<S, A1, A2><optic1: Optic<S, _, A1>, optic2: Optic<A1, _, A2>): Optic<S, _, A2>`
 
-Compose two optics. If the first optic is from `S` to `A1`, and the
-second optic is from `A1` to `A2`, the result is from `S` to `A2`.
+Compose two optics. If the first optic is from `S` to `A1`, and the second optic
+is from `A1` to `A2`, the result is from `S` to `A2`.
 
 See [Types of optics](#types-of-optics) for the rules of composition.
 
 ### Creating optics
 
-The methods documented below are available on all optics types:
-`Equivalence`, `Iso`, `Lens`, `Prism`, `Traversal`, `Getter`,
-`AffineFold` and `Fold`. The documented return type is the type of the
-optic that these methods create. The actual return type is the
-composition of the optic on which the method is called and on the optic
-that the method creates.
+The methods documented below are available on all optics types: `Equivalence`,
+`Iso`, `Lens`, `Prism`, `Traversal`, `Getter`, `AffineFold` and `Fold`. The
+documented return type is the type of the optic that these methods create. The
+actual return type is the composition of the optic on which the method is called
+and on the optic that the method creates.
 
-Note that there are no functions to create `AffineFold` or `Fold`
-optics. You can only get these by composing other types of optics.
-`Equivalence` can be created by calling the top-level `optic()`
-function.
+Note that there are no functions to create `AffineFold` or `Fold` optics. You
+can only get these by composing other types of optics. `Equivalence` can be
+created by calling the top-level `optic()` function.
 
 ### Isomorphisms
 
-Isomorphisms have the type `Iso<S, T, A>`. In the following, we omit
-the exact definition of `T` for clarity, and use `_` instead. See
-[Type parameters](#type-parameters) for the meanings of type
-parameters.
+Isomorphisms have the type `Iso<S, T, A>`. In the following, we omit the exact
+definition of `T` for clarity, and use `_` instead. See
+[Type parameters](#type-parameters) for the meanings of type parameters.
 
 #### `iso<U>(there: (a: A) => U, back: (u: U) => A): Iso<S, _, U>`
 
-Create an isomorphism from functions `there` and `back`. `there` takes
-the focus and transforms it to another value. `back` is the inverse of
-`there`.
+Create an isomorphism from functions `there` and `back`. `there` takes the focus
+and transforms it to another value. `back` is the inverse of `there`.
 
-Note that `iso` is monomorphic. There's no polymorphic alternative
-(yet).
+Note that `iso` is monomorphic. There's no polymorphic alternative (yet).
 
 #### `indexed(): Iso<S, _, [number, ElemType<A>][]>`
 
@@ -650,18 +636,17 @@ duplicate indices are kept.
 
 ### Lenses
 
-Lenses have the type `Lens<S, T, A>`. In the following, we omit the
-exact definition of `T` for clarity, and use `_` instead. See [Type
-parameters](#type-parameters) for the meanings of type parameters.
+Lenses have the type `Lens<S, T, A>`. In the following, we omit the exact
+definition of `T` for clarity, and use `_` instead. See
+[Type parameters](#type-parameters) for the meanings of type parameters.
 
 #### `prop<K extends keyof A>(key: K): Lens<S, _, A[K]>`
 
 Create a lens that focuses on the property `K` of `A`.
 
-**Note:** `prop()` only works for string properties, even though
-TypeScript's type system also allows array's numeric indices when using
-`keyof`. Use the `.at()` prism to focus on an array element at a given
-index.
+**Note:** `prop()` only works for string properties, even though TypeScript's
+type system also allows array's numeric indices when using `keyof`. Use the
+`.at()` prism to focus on an array element at a given index.
 
 #### `path<K1, K2, ...>(...keys: [K1, K2, ...]): Lens<S, _, A[K1][K2]...>`
 
@@ -694,9 +679,9 @@ See `at()` below for a similar prism that works on arrays of arbitrary length.
 
 #### `pick<K extends keyof A>(keys: K[]): Lens<S, _, Pick<A, K>>`
 
-Create a lens that focuses on a sub-object of `A` with the given
-properties. When writing through a polymorphic `.pick()` lens, you can
-add or remove properties.
+Create a lens that focuses on a sub-object of `A` with the given properties.
+When writing through a polymorphic `.pick()` lens, you can add or remove
+properties.
 
 Example:
 
@@ -731,14 +716,13 @@ O.set(monoLens)({ quux: null })(data)
 
 #### `filter<B>(pred: (item: ElemType<A>) => item is B): Lens<S, _, B[]>`
 
-Only works on arrays. `ElemType<A>` is the element type
-of the array type `A`.
+Only works on arrays. `ElemType<A>` is the element type of the array type `A`.
 
-Create a lens that focuses on the elements matched by `pred`. If `pred`
-is a type guard of `B`, narrow the type of the focus to `B[]`.
+Create a lens that focuses on the elements matched by `pred`. If `pred` is a
+type guard of `B`, narrow the type of the focus to `B[]`.
 
 ```typescript
-const l = O.optic_<number[]>().filter(x => x % 2 === 1)
+const l = O.optic_<number[]>().filter((x) => x % 2 === 1)
 
 // Writing an array of the same length replaces elements
 O.set(l)(['a', 'b', 'c'])([1, 2, 3, 5, 6]) // => ['a', 2, 'b', 'c', 6]
@@ -753,17 +737,17 @@ O.set(l)(['a', 'b', 'c', 'd', 'e'])([1, 2, 3, 5, 6]) // => ['a', 2, 'b', 'c', 6,
 When writing an array of the same length, the values at matching indices are
 replaced by the new values.
 
-written array must have the same length as the
-original one, i.e. elements cannot be added or removed through filter.
+written array must have the same length as the original one, i.e. elements
+cannot be added or removed through filter.
 
-When a different type `B` (array) is written, the result will have the
-type `A | B`, i.e. `(ElemType<A> | ElemType<B>)[]`.
+When a different type `B` (array) is written, the result will have the type
+`A | B`, i.e. `(ElemType<A> | ElemType<B>)[]`.
 
 #### `valueOr<B>(defaultValue: B): Lens<S, _, Exclude<A, undefined> | B>`
 
-Create a lens that, when read through, returns `defaultValue` when the
-focused value is `undefined`. If the focus is not `undefined`, the focus
-is returned unchanged.
+Create a lens that, when read through, returns `defaultValue` when the focused
+value is `undefined`. If the focus is not `undefined`, the focus is returned
+unchanged.
 
 Fully polymorphic in the write direction.
 
@@ -782,8 +766,8 @@ all focuses are replaced and the types are correct.
 For example, this reverses the words of string:
 
 ```typescript
-const lens = O.optic<string>().partsOf(o => o.words())
-O.modify(lens)(words => [...words].reverse())('this is a test')
+const lens = O.optic<string>().partsOf((o) => o.words())
+O.modify(lens)((words) => [...words].reverse())('this is a test')
 // 'test a is this'
 ```
 
@@ -803,9 +787,9 @@ Note that both `reread` and `rewrite` are monomorphic.
 
 ### Prisms
 
-Prisms have the type `Prism<S, T, A>`. In the following, we omit the
-exact definition of `T` for clarity, and use `_` instead. See [Type
-parameters](#type-parameters) for the meanings of type parameters.
+Prisms have the type `Prism<S, T, A>`. In the following, we omit the exact
+definition of `T` for clarity, and use `_` instead. See
+[Type parameters](#type-parameters) for the meanings of type parameters.
 
 #### `optional(): Prism<S, _, Exclude<A, undefined>>`
 
@@ -813,31 +797,31 @@ Create a prism that focuses on the non-`undefined` subtype of `A`.
 
 #### `guard<U extends A>(g: (a: A) => a is U): Prism<S, _, U>`
 
-Create a prism that focuses on the subtype `U` of `A` that matches the
-type guard `g`.
+Create a prism that focuses on the subtype `U` of `A` that matches the type
+guard `g`.
 
-Note that `guard()` is monomorphic. Use `guard_` if you want a
-polymorphic guard.
+Note that `guard()` is monomorphic. Use `guard_` if you want a polymorphic
+guard.
 
 #### `guard_<F extends HKT>(): <U extends A>(g: (a: A) => a is U) => Prism<S, T · F, U>`
 
-Create a prism that focuses on the subtype of `A` that matches the type
-guard `g`. When written to, uses the higher-kinded type `F` to construct
-the output type.
+Create a prism that focuses on the subtype of `A` that matches the type guard
+`g`. When written to, uses the higher-kinded type `F` to construct the output
+type.
 
 #### `at(i: number): RemovablePrism<S, _, ElemType<A>>`
 
 Only works on arrays and strings. Removable. `ElemType<A>` is the element type
 of the array type `A`.
 
-Create a prism that focuses on the element type of the array `A`, or on
-a substring of length 1 if `A` is `string`.
+Create a prism that focuses on the element type of the array `A`, or on a
+substring of length 1 if `A` is `string`.
 
-When an element of a different type `B` is written to an array, the
-resulting array will have the type `Array<A | B>`.
+When an element of a different type `B` is written to an array, the resulting
+array will have the type `Array<A | B>`.
 
-When writing to a string, only strings can be written. The length of the
-written string can be something else than 1.
+When writing to a string, only strings can be written. The length of the written
+string can be something else than 1.
 
 #### `head(): Prism<S, _, ElemType<A>>`
 
@@ -849,44 +833,43 @@ Short for `at(0)`.
 
 #### `find(p: (e: ElemType<A>) => boolean): RemovablePrism<S, _, ElemType<A>>`
 
-Only works on array types. Removable. `ElemType<A>` is the element type
-of the array type `A`.
+Only works on array types. Removable. `ElemType<A>` is the element type of the
+array type `A`.
 
-Like `.at()`, but the index to be focused on is determined by finding
-the first element that matches the given predicate.
+Like `.at()`, but the index to be focused on is determined by finding the first
+element that matches the given predicate.
 
-When a different type `B` is written through this optic, the resulting
-array will have the type `Array<A | B>`.
+When a different type `B` is written through this optic, the resulting array
+will have the type `Array<A | B>`.
 
 #### `when(f: (a: A) => boolean): Prism<S, _, A>`
 
-Create a prism that skips the focus if it doesn't match the given
-predicate. Especially useful for filtering the focuses of a travesal.
+Create a prism that skips the focus if it doesn't match the given predicate.
+Especially useful for filtering the focuses of a travesal.
 
-When a different type `B` is written through this optic, the resulting
-value will have the type `A | B`.
+When a different type `B` is written through this optic, the resulting value
+will have the type `A | B`.
 
 ### Traversals
 
-Traversals have the type `Traversal<S, T, A>`. In the following, we
-omit the exact definition of `T` for clarity, and use `_` instead. See
-[Type parameters](#type-parameters) for the meanings of type
-parameters.
+Traversals have the type `Traversal<S, T, A>`. In the following, we omit the
+exact definition of `T` for clarity, and use `_` instead. See
+[Type parameters](#type-parameters) for the meanings of type parameters.
 
 #### `elems(): Traversal<S, _, ElemType<A>>`
 
-Only works on array types. `ElemType<A>` is the element type of the
-array type `A`.
+Only works on array types. `ElemType<A>` is the element type of the array type
+`A`.
 
 Create a traversal that focuses on all the elements of the array.
 
 ### Getters
 
-Getters are read-only optics with a single focus. You can think of them
-like one-way isomorphisms or read-only lenses.
+Getters are read-only optics with a single focus. You can think of them like
+one-way isomorphisms or read-only lenses.
 
-Getters have the type `Getter<S, A>`. See [Type
-parameters](#type-parameters) for the meanings of type parameters.
+Getters have the type `Getter<S, A>`. See [Type parameters](#type-parameters)
+for the meanings of type parameters.
 
 #### `to<B>(f: (a: A) => B): Getter<S, B>`
 
@@ -894,24 +877,22 @@ Create a getter that applies the function `f` to its focus.
 
 ### Setters
 
-Setters have the type `Setter<S, T, A>`. In the following, we
-omit the exact definition of `T` for clarity, and use `_` instead. See
-[Type parameters](#type-parameters) for the meanings of type
-parameters.
+Setters have the type `Setter<S, T, A>`. In the following, we omit the exact
+definition of `T` for clarity, and use `_` instead. See
+[Type parameters](#type-parameters) for the meanings of type parameters.
 
 #### `prependTo(): Setter<S, _, ElemType<A>>`
 
 #### `appendTo(): Setter<S, _, ElemType<A>>`
 
-Only works on arrays. `ElemType<A>` is the element type
-of the array type `A`.
+Only works on arrays. `ElemType<A>` is the element type of the array type `A`.
 
-Create a setter that focuses on the part _before the first element_ or
-_after the last element_ of the focus array. When written through,
-prepends or appends the value to the array.
+Create a setter that focuses on the part _before the first element_ or _after
+the last element_ of the focus array. When written through, prepends or appends
+the value to the array.
 
-When an element of a different type `B` is written, the resulting array
-will have the type `Array<A | B>`.
+When an element of a different type `B` is written, the resulting array will
+have the type `Array<A | B>`.
 
 ### Composing
 
@@ -923,26 +904,26 @@ The following optics only work on strings.
 
 #### `chars(): Traversal<S, _, string>`
 
-Create a traversal that focuses on all the characters of the current
-string focus.
+Create a traversal that focuses on all the characters of the current string
+focus.
 
-When written through, characters can be removed by writing the empty
-string, or changed to longer strings.
+When written through, characters can be removed by writing the empty string, or
+changed to longer strings.
 
 #### `words(): Traversal<S, _, string>`
 
-Create a traversal that focuses on all the words of the current string
-focus. Words are substrings that are separated by whitespace.
+Create a traversal that focuses on all the words of the current string focus.
+Words are substrings that are separated by whitespace.
 
-When written through, words can be removed by writing the empty string,
-or changed to longer or shorter strings.
+When written through, words can be removed by writing the empty string, or
+changed to longer or shorter strings.
 
 ## Prior art
 
-There are many existing optics libraries of varying degree for
-JavaScript, but only few for TypeScript. It's generally hard to create
-good typings for optics in TypeScript, and the task becomes impossible
-if one tried to retrofit types on an existing JavaScript implementation.
+There are many existing optics libraries of varying degree for JavaScript, but
+only few for TypeScript. It's generally hard to create good typings for optics
+in TypeScript, and the task becomes impossible if one tried to retrofit types on
+an existing JavaScript implementation.
 
 - [monocle-ts](https://github.com/gcanti/monocle-ts) is probably the most
   popular TypeScript optics library.

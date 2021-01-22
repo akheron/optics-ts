@@ -1,6 +1,7 @@
 import { OpticType, compositionType } from '../src/internals'
 
 const header = `\
+/* eslint-disable @typescript-eslint/no-non-null-assertion, @typescript-eslint/adjacent-overload-signatures, @typescript-eslint/no-unused-vars, @typescript-eslint/ban-types */
 // This file is generated, do not edit! See ../scripts/generate-index.ts
 
 import * as I from './internals'
@@ -77,8 +78,6 @@ const makeComposition = (
 ): Composition | undefined => {
   const composition = compositionType[optic][composee]
   if (composition === undefined) return undefined
-
-  const R = (removable: boolean): string => (removable ? ', true' : '')
 
   if (isReadOnly(composition)) {
     return {
@@ -247,7 +246,7 @@ export interface ${optic}${typeSig} {
   ${removable}
 
 ${opticNames
-  .map(composee => {
+  .map((composee) => {
     const composition = makeComposition(optic, composee)
     if (composition === undefined) return ''
 
@@ -264,7 +263,7 @@ ${opticNames
 }
 
 const generateOpticInterfaces = () =>
-  opticNames.map(optic => generateOpticInterface(optic)).join('\n')
+  opticNames.map((optic) => generateOpticInterface(optic)).join('\n')
 
 const composeFunction = (optic: OpticType, composee: OpticType): string => {
   const [typeSig1, optic1] = isReadOnly(optic)
@@ -286,8 +285,8 @@ export function compose<${typeSig1}, ${typeSig2}>(${optic1}, ${optic2}): ${compo
 
 const generateComposeSignatures = () =>
   opticNames
-    .map(optic =>
-      opticNames.map(composee => composeFunction(optic, composee)).join('')
+    .map((optic) =>
+      opticNames.map((composee) => composeFunction(optic, composee)).join('')
     )
     .join('')
 

@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-non-null-assertion */
 export const id = (x: any) => x
 
 type Either<E, T> = Left<E> | Right<T>
@@ -45,7 +46,7 @@ const monoidArray = {
   empty: () => [],
   foldMap: (f: (x: any) => any, xs: any[]) => {
     let acc: any[] = []
-    xs.forEach(x => {
+    xs.forEach((x) => {
       acc = acc.concat(f(x))
     })
     return acc
@@ -311,7 +312,7 @@ const pick = (keys: string[]): OpticFn =>
 
 const nth = (n: number): OpticFn =>
   lens(
-    value => value[n],
+    (value) => value[n],
     ([value, source]) => {
       const result = source.slice()
       result[n] = value
@@ -379,7 +380,7 @@ const find = (predicate: (item: any) => boolean): OpticFn =>
   removable(
     compose(
       lens(
-        source => {
+        (source) => {
           const index = source.findIndex(predicate)
           if (index === -1) {
             return [noMatch, -1]
@@ -410,7 +411,7 @@ const filter = (predicate: (item: any) => boolean): OpticFn =>
         const indexes = source
           .map((item, index) => (predicate(item) ? index : null))
           .filter((index): index is number => index != null)
-        return [indexes.map(index => source[index]), indexes]
+        return [indexes.map((index) => source[index]), indexes]
       },
       ([[values, indexes], source]: [[any[], number[]], any[]]) => {
         const sn = source.length,
@@ -443,7 +444,7 @@ const filter = (predicate: (item: any) => boolean): OpticFn =>
 const valueOr = (defaultValue: any): OpticFn =>
   lens(
     (source: any) => (source === undefined ? defaultValue : source),
-    ([value, source]: [any, any]) => value
+    ([value, _source]: [any, any]) => value
   )
 
 const partsOf = (traversal: Optic): OpticFn =>
@@ -464,20 +465,20 @@ const partsOf = (traversal: Optic): OpticFn =>
     fst
   )
 
-const reread = (fn: Function): OpticFn =>
+const reread = (fn: (value: any) => any): OpticFn =>
   lens(
     (source: any) => fn(source),
     ([value, _]) => value
   )
 
-const rewrite = (fn: Function): OpticFn =>
+const rewrite = (fn: (value: any) => any): OpticFn =>
   lens(
-    source => source,
+    (source) => source,
     ([value, _]) => fn(value)
   )
 
 const prependTo: OpticFn = lens(
-  (source: any[]) => undefined,
+  (_source: any[]) => undefined,
   ([value, source]: [any, any[]]) => {
     if (value === undefined) return source
     return [value, ...source]
@@ -485,7 +486,7 @@ const prependTo: OpticFn = lens(
 )
 
 const appendTo: OpticFn = lens(
-  (source: any[]) => undefined,
+  (_source: any[]) => undefined,
   ([value, source]: [any, any[]]) => {
     if (value === undefined) return source
     return [...source, value]
@@ -494,19 +495,19 @@ const appendTo: OpticFn = lens(
 
 const chars: OpticFn = compose(
   iso(
-    s => s.split(''),
-    a => a.join('')
+    (s) => s.split(''),
+    (a) => a.join('')
   ),
   elems
 )
 
 const words: OpticFn = compose(
   iso(
-    s => s.split(/\b/),
-    a => a.join('')
+    (s) => s.split(/\b/),
+    (a) => a.join('')
   ),
   elems,
-  when(s => !/\s+/.test(s))
+  when((s) => !/\s+/.test(s))
 )
 
 /////////////////////////////////////////////////////////////////////////////
@@ -569,11 +570,11 @@ export class Optic {
     return new Optic(compose(this._ref, partsOf(traversal._ref)))
   }
 
-  reread(fn: Function): Optic {
+  reread(fn: (value: any) => any): Optic {
     return new Optic(compose(this._ref, reread(fn)))
   }
 
-  rewrite(fn: Function): Optic {
+  rewrite(fn: (value: any) => any): Optic {
     return new Optic(compose(this._ref, rewrite(fn)))
   }
 
@@ -582,10 +583,10 @@ export class Optic {
   }
 
   guard_() {
-    return (fn: Function): Optic => this.guard(fn)
+    return (fn: (value: any) => any): Optic => this.guard(fn)
   }
 
-  guard(fn: Function): Optic {
+  guard(fn: (value: any) => any): Optic {
     return new Optic(compose(this._ref, guard(fn as any)))
   }
 

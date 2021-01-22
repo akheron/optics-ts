@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-non-null-assertion, @typescript-eslint/adjacent-overload-signatures, @typescript-eslint/no-unused-vars, @typescript-eslint/ban-types */
 // This file is generated, do not edit! See ../scripts/generate-index.ts
 
 import * as I from './internals'
@@ -1439,19 +1440,19 @@ export function get<S, A>(
     | Lens<S, any, A>
     | Getter<S, A>
 ): (source: S) => A {
-  return source => I.get((optic as any)._ref, source)
+  return (source) => I.get((optic as any)._ref, source)
 }
 
 export function preview<S, A>(
   optic: Prism<S, any, A> | Traversal<S, any, A> | AffineFold<S, A> | Fold<S, A>
 ): (source: S) => A | undefined {
-  return source => I.preview((optic as any)._ref, source)
+  return (source) => I.preview((optic as any)._ref, source)
 }
 
 export function collect<S, A>(
   optic: Prism<S, any, A> | Traversal<S, any, A> | Fold<S, A>
 ): (source: S) => A[] {
-  return source => I.collect((optic as any)._ref, source)
+  return (source) => I.collect((optic as any)._ref, source)
 }
 
 export function modify<S, T extends OpticParams, A>(
@@ -1462,7 +1463,7 @@ export function modify<S, T extends OpticParams, A>(
     | Prism<S, T, A>
     | Traversal<S, T, A>
 ): <B>(f: (a: A) => B) => (source: S) => Simplify<S, Apply<T['_T'], B>> {
-  return f => source => I.modify((optic as any)._ref, f, source)
+  return (f) => (source) => I.modify((optic as any)._ref, f, source)
 }
 
 export function set<S, T extends OpticParams, A>(
@@ -1474,13 +1475,13 @@ export function set<S, T extends OpticParams, A>(
     | Traversal<S, T, A>
     | Setter<S, T, A>
 ): <B>(value: B) => (source: S) => Simplify<S, Apply<T['_T'], B>> {
-  return value => source => I.set((optic as any)._ref, value, source)
+  return (value) => (source) => I.set((optic as any)._ref, value, source)
 }
 
 export function remove<S>(
   optic: Prism<S, Params<any, true>, any> | Traversal<S, Params<any, true>, any>
 ): (source: S) => S {
-  return source => I.remove((optic as any)._ref, source)
+  return (source) => I.remove((optic as any)._ref, source)
 }
 
 // Taken from fp-ts

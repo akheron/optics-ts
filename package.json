@@ -24,8 +24,8 @@
     "build": "tsc -p tsconfig.cjs.json && tsc -p tsconfig.esm.json",
     "test": "jest",
     "clean": "rm -rf dist/",
-    "lint": "prettier --check '**/*.ts'",
-    "lint:fix": "prettier --write '**/*.ts'",
+    "lint": "eslint --max-warnings 0 '**/*.ts' && prettier --check \"**/*.{json,md}\"",
+    "lint:fix": "eslint --fix '**/*.ts' && prettier --write '**/*.{json,md}'",
     "prepublishOnly": "yarn run clean && yarn run build",
     "doctoc": "doctoc README.md --title '## Table of Contents' && prettier --write README.md",
     "generate-index": "ts-node ./scripts/generate-index.ts > src/index.ts && prettier --write src/index.ts"
@@ -33,9 +33,14 @@
   "devDependencies": {
     "@babel/types": "^7.12.1",
     "@types/jest": "^26.0.15",
+    "@typescript-eslint/eslint-plugin": "^4.14.0",
+    "@typescript-eslint/parser": "^4.14.0",
     "doctoc": "^1.4.0",
+    "eslint": "^7.18.0",
+    "eslint-config-prettier": "^7.2.0",
+    "eslint-plugin-prettier": "^3.3.1",
     "jest": "^26.6.1",
-    "prettier": "^2.2.0",
+    "prettier": "^2.2.1",
     "ts-jest": "^26.4.3",
     "ts-node": "^9.0.0",
     "typescript": "^4.1.2"
