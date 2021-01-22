@@ -1,3 +1,4 @@
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 interface NotAnArrayType<_T> {
   readonly _: unique symbol
 }
@@ -41,6 +42,7 @@ export type RequireString<A, B> = IfElse<
   ExpectedStringButGot<A>
 >
 
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 interface ExpectedStringButGot<_T> {
   readonly _: unique symbol
 }

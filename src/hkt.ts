@@ -15,6 +15,7 @@ export interface Id extends HKT {
   0: this[1]
 }
 
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 export interface ExpectedIndexedArray<_T> {
   readonly _: unique symbol
 }
@@ -81,6 +82,7 @@ export interface Plant<S, K extends keyof S> extends HKT {
   0: Omit<S, K> & { [KK in keyof this[1]]: this[1][KK] }
 }
 
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 export interface PartsOf<T extends HKT, A> extends HKT {
   0: Apply<T, ElemType<this[1]>>
 }

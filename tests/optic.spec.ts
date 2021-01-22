@@ -23,8 +23,8 @@ describe('lens/iso', () => {
   const lens = O.optic<Source>()
     .prop('foo')
     .iso(
-      a => ({ value: a.bar.baz }),
-      b => ({ bar: { baz: b.value } })
+      (a) => ({ value: a.bar.baz }),
+      (b) => ({ bar: { baz: b.value } })
     )
   type Focus = { value: string }
 
@@ -41,7 +41,7 @@ describe('lens/iso', () => {
     })
   })
   it('modify - monomorphic', () => {
-    const result: Source = O.modify(lens)(x => ({
+    const result: Source = O.modify(lens)((x) => ({
       value: `${x.value} UPDATED`,
     }))(source)
     expect(result).toEqual({
@@ -61,7 +61,7 @@ describe('indexed', () => {
   type Focus = [number, string][]
 
   it('get', () => {
-    const result = O.get(iso)(source)
+    const result: Focus = O.get(iso)(source)
     expect(result).toEqual([
       [0, 'foo'],
       [1, 'bar'],
@@ -143,7 +143,7 @@ describe('lens/prop', () => {
     })
   })
   it('modify - monomorphic', () => {
-    const result: Source = O.modify(lens)(x => `${x} UPDATED`)(source)
+    const result: Source = O.modify(lens)((x) => `${x} UPDATED`)(source)
     expect(result).toEqual({
       foo: { bar: { baz: 'quux UPDATED' } },
       xyzzy: 42,
@@ -159,7 +159,7 @@ describe('lens/prop', () => {
     })
   })
   it('modify - polymorphic', () => {
-    const result: Target = O.modify(lens)(x => x.length)(source)
+    const result: Target = O.modify(lens)((x) => x.length)(source)
     expect(result).toEqual({
       foo: { bar: { baz: 4 } },
       xyzzy: 42,
@@ -187,7 +187,7 @@ describe('lens/path (tuple)', () => {
     })
   })
   it('modify - monomorphic', () => {
-    const result: Source = O.modify(lens)(x => `${x} UPDATED`)(source)
+    const result: Source = O.modify(lens)((x) => `${x} UPDATED`)(source)
     expect(result).toEqual({
       foo: { bar: { baz: 'quux UPDATED' } },
       xyzzy: 42,
@@ -203,7 +203,7 @@ describe('lens/path (tuple)', () => {
     })
   })
   it('modify - polymorphic', () => {
-    const result: Target = O.modify(lens)(x => x.length)(source)
+    const result: Target = O.modify(lens)((x) => x.length)(source)
     expect(result).toEqual({
       foo: { bar: { baz: 4 } },
       xyzzy: 42,
@@ -231,7 +231,7 @@ describe('lens/path (dotted)', () => {
     })
   })
   it('modify - monomorphic', () => {
-    const result: Source = O.modify(lens)(x => `${x} UPDATED`)(source)
+    const result: Source = O.modify(lens)((x) => `${x} UPDATED`)(source)
     expect(result).toEqual({
       foo: { bar: { baz: 'quux UPDATED' } },
       xyzzy: 42,
@@ -247,7 +247,7 @@ describe('lens/path (dotted)', () => {
     })
   })
   it('modify - polymorphic', () => {
-    const result: Target = O.modify(lens)(x => x.length)(source)
+    const result: Target = O.modify(lens)((x) => x.length)(source)
     expect(result).toEqual({
       foo: { bar: { baz: 4 } },
       xyzzy: 42,
@@ -350,21 +350,21 @@ describe('at (on array)', () => {
     expect(result).toEqual(source2)
   })
   it('modify defined - monomorphic', () => {
-    const result: Source = O.modify(prism)(x => `${x} UPDATED`)(source1)
+    const result: Source = O.modify(prism)((x) => `${x} UPDATED`)(source1)
     expect(result).toEqual(['foo', 'bar UPDATED', 'baz', 'quux'])
   })
   it('modify undefined - monomorphic', () => {
-    const result: Source = O.modify(prism)(x => `${x} UPDATED`)(source2)
+    const result: Source = O.modify(prism)((x) => `${x} UPDATED`)(source2)
     expect(result).toEqual(source2)
   })
 
   type Target = Array<string | number>
   it('modify defined - polymorphic', () => {
-    const result: Target = O.modify(prism)(x => x.length)(source1)
+    const result: Target = O.modify(prism)((x) => x.length)(source1)
     expect(result).toEqual(['foo', 3, 'baz', 'quux'])
   })
   it('modify undefined - polymorphic', () => {
-    const result: Target = O.modify(prism)(x => x.length)(source2)
+    const result: Target = O.modify(prism)((x) => x.length)(source2)
     expect(result).toEqual(source2)
   })
 
@@ -469,7 +469,7 @@ describe('lens/guard_', () => {
   type Baz = { baz: boolean }
 
   function isBar<T>(v: Inner<T>): v is Bar<T> {
-    return v.hasOwnProperty('bar')
+    return Object.prototype.hasOwnProperty.call(v, 'bar')
   }
 
   interface InnerBarF extends O.HKT {
@@ -508,13 +508,13 @@ describe('lens/guard_', () => {
 
   type Target = { foo: Inner<number> }
   it('modify matching - polymorphic', () => {
-    const result: Target = O.modify(prism)(x => x.length)(source1)
+    const result: Target = O.modify(prism)((x) => x.length)(source1)
     expect(result).toEqual({
       foo: { bar: 4 },
     })
   })
   it('modify non-matching - polymorphic', () => {
-    const result: Target = O.modify(prism)(x => x.length)(source2)
+    const result: Target = O.modify(prism)((x) => x.length)(source2)
     expect(result).toEqual(source2)
   })
 })
@@ -524,7 +524,7 @@ describe('lens/guard', () => {
   type Baz = { baz: number }
 
   function isBar(v: Bar | Baz): v is Bar {
-    return v.hasOwnProperty('bar')
+    return Object.prototype.hasOwnProperty.call(v, 'bar')
   }
 
   type Source = { foo: Bar | Baz }
@@ -566,7 +566,7 @@ describe('find', () => {
     { bar: 'xyzzy' },
   ]
 
-  const prism = O.optic_<Source[]>().find(item => item.bar === 'quux')
+  const prism = O.optic_<Source[]>().find((item) => item.bar === 'quux')
   type Focus = Source | undefined
 
   it('preview defined', () => {
@@ -579,7 +579,7 @@ describe('find', () => {
   })
 
   it('modify defined - monomorphic', () => {
-    const result: Source[] = O.modify(prism)(x => ({
+    const result: Source[] = O.modify(prism)((x) => ({
       bar: `${x.bar} UPDATED`,
     }))(source1)
     expect(result).toEqual([
@@ -589,7 +589,7 @@ describe('find', () => {
     ])
   })
   it('modify undefined - monomorphic', () => {
-    const result: Source[] = O.modify(prism)(x => ({
+    const result: Source[] = O.modify(prism)((x) => ({
       bar: `${x.bar} UPDATED`,
     }))(source2)
     expect(result).toEqual(source2)
@@ -597,11 +597,11 @@ describe('find', () => {
 
   type Target = { bar: string } | number
   it('modify defined - polymorphic', () => {
-    const result: Target[] = O.modify(prism)(x => x.bar.length)(source1)
+    const result: Target[] = O.modify(prism)((x) => x.bar.length)(source1)
     expect(result).toEqual([{ bar: 'baz' }, 4, { bar: 'xyzzy' }])
   })
   it('modify undefined - polymorphic', () => {
-    const result: Target[] = O.modify(prism)(x => x.bar.length)(source2)
+    const result: Target[] = O.modify(prism)((x) => x.bar.length)(source2)
     expect(result).toEqual(source2)
   })
 
@@ -622,7 +622,7 @@ describe('lens/when', () => {
 
   const prism = O.optic_<Source>()
     .prop('foo')
-    .when(x => x < 10)
+    .when((x) => x < 10)
   type Focus = number
 
   it('preview defined', () => {
@@ -635,21 +635,21 @@ describe('lens/when', () => {
   })
 
   it('modify defined', () => {
-    const result: Source = O.modify(prism)(x => -x)(source1)
+    const result: Source = O.modify(prism)((x) => -x)(source1)
     expect(result).toEqual({ foo: -5 })
   })
   it('modify defined', () => {
-    const result: Source = O.modify(prism)(x => -x)(source2)
+    const result: Source = O.modify(prism)((x) => -x)(source2)
     expect(result).toEqual(source2)
   })
 
   type Target = { foo: number | string }
   it('modify defined - polymorphic', () => {
-    const result: Target = O.modify(prism)(x => `${x}`)(source1)
+    const result: Target = O.modify(prism)((x) => `${x}`)(source1)
     expect(result).toEqual({ foo: '5' })
   })
   it('modify undefined - polymorphic', () => {
-    const result: Target = O.modify(prism)(x => `${x}`)(source2)
+    const result: Target = O.modify(prism)((x) => `${x}`)(source2)
     expect(result).toEqual(source2)
   })
 })
@@ -659,7 +659,7 @@ describe('filter', () => {
     type Source = string[]
     const source: Source = ['baz', 'quux', 'xyzzy']
 
-    const lens = O.optic_<Source>().filter(item => item !== 'quux')
+    const lens = O.optic_<Source>().filter((item) => item !== 'quux')
     type Focus = string[]
 
     it('get', () => {
@@ -672,7 +672,7 @@ describe('filter', () => {
     type Source = string[]
     const source: Source = ['baz', 'quux', 'xyzzy']
 
-    const lens = O.optic_<Source>().filter(item => item !== 'quux')
+    const lens = O.optic_<Source>().filter((item) => item !== 'quux')
 
     it('set - monomorphic', () => {
       const result: Source = O.set(lens)(['BAZ', 'XYZZY'])(source)
@@ -753,7 +753,7 @@ describe('partsOf', () => {
   type Source = { foo: number[] }[]
   const source = [{ foo: [1, 2] }, { foo: [] }, { foo: [3] }]
 
-  const lens = O.optic_<Source>().partsOf(o => o.elems().prop('foo').elems())
+  const lens = O.optic_<Source>().partsOf((o) => o.elems().prop('foo').elems())
   type Focus = number[]
 
   it('get', () => {
@@ -770,7 +770,7 @@ describe('partsOf', () => {
   })
 
   it('modify - monomorphic', () => {
-    const result: Source = O.modify(lens)(x => [x[1], x[2], x[0]])(source)
+    const result: Source = O.modify(lens)((x) => [x[1], x[2], x[0]])(source)
     expect(result).toEqual([{ foo: [2, 3] }, { foo: [] }, { foo: [1] }])
   })
 
@@ -785,9 +785,9 @@ describe('partsOf', () => {
   })
 
   it('lol', () => {
-    const result = O.modify(O.optic<string>().partsOf(o => o.words()))(words =>
-      [...words].reverse()
-    )('this is a test')
+    const result = O.modify(
+      O.optic<string>().partsOf((o) => o.words())
+    )((words) => [...words].reverse())('this is a test')
     expect(result).toEqual('test a is this')
   })
 
@@ -802,7 +802,7 @@ describe('partsOf', () => {
 })
 
 describe('reread', () => {
-  const lens = O.optic<string>().reread(x => x.toUpperCase())
+  const lens = O.optic<string>().reread((x) => x.toUpperCase())
 
   it('get', () => {
     const result: string = O.get(lens)('foo')
@@ -818,7 +818,7 @@ describe('reread', () => {
 })
 
 describe('rewrite', () => {
-  const lens = O.optic<string>().rewrite(x => x.toUpperCase())
+  const lens = O.optic<string>().rewrite((x) => x.toUpperCase())
 
   it('get', () => {
     const result: string = O.get(lens)('foo')
@@ -849,7 +849,7 @@ describe('lens/elems', () => {
   })
 
   it('modify - monomorphic', () => {
-    const result: Source = O.modify(traversal)(x => `${x} UPDATED`)(source)
+    const result: Source = O.modify(traversal)((x) => `${x} UPDATED`)(source)
     expect(result).toEqual({
       foo: [
         { bar: 'baz UPDATED' },
@@ -862,7 +862,7 @@ describe('lens/elems', () => {
 
   type Target = { foo: Array<{ bar: boolean }>; other: number }
   it('modify - polymorphic', () => {
-    const result: Target = O.modify(traversal)(x => x.length === 4)(source)
+    const result: Target = O.modify(traversal)((x) => x.length === 4)(source)
     expect(result).toEqual({
       foo: [{ bar: false }, { bar: true }, { bar: false }],
       other: 42,
@@ -876,7 +876,7 @@ describe('lens/to', () => {
 
   const getter = O.optic_<Source>()
     .prop('foo')
-    .to(s => s.length / 2)
+    .to((s) => s.length / 2)
   type Focus = number
 
   it('get', () => {
@@ -969,7 +969,7 @@ describe('prism/to', () => {
   const affineFold = O.optic_<Source>()
     .optional()
     .prop('foo')
-    .to(s => s.length / 2)
+    .to((s) => s.length / 2)
   type Focus = number | undefined
 
   it('preview defined', () => {
@@ -995,7 +995,7 @@ describe('traversal/prop', () => {
   })
 
   it('modify - monomorphic', () => {
-    const result: Source[] = O.modify(traversal)(x => `${x} UPDATED`)(source)
+    const result: Source[] = O.modify(traversal)((x) => `${x} UPDATED`)(source)
     expect(result).toEqual([
       { bar: 'baz UPDATED' },
       { bar: 'quux UPDATED' },
@@ -1005,7 +1005,7 @@ describe('traversal/prop', () => {
 
   type Target = { bar: number }
   it('modify - polymorphic', () => {
-    const result: Target[] = O.modify(traversal)(x => x.length)(source)
+    const result: Target[] = O.modify(traversal)((x) => x.length)(source)
     expect(result).toEqual([{ bar: 3 }, { bar: 4 }, { bar: 5 }])
   })
 })
@@ -1023,7 +1023,7 @@ describe('traversal/optional', () => {
   })
 
   it('modify - monomorphic', () => {
-    const result: Source[] = O.modify(traversal)(x => `${x} UPDATED`)(source)
+    const result: Source[] = O.modify(traversal)((x) => `${x} UPDATED`)(source)
     expect(result).toEqual([
       { bar: 'baz UPDATED' },
       undefined,
@@ -1033,7 +1033,7 @@ describe('traversal/optional', () => {
 
   type Target = { bar: number } | undefined
   it('modify - polymorphic', () => {
-    const result: Target[] = O.modify(traversal)(x => x.length)(source)
+    const result: Target[] = O.modify(traversal)((x) => x.length)(source)
     expect(result).toEqual([{ bar: 3 }, undefined, { bar: 5 }])
   })
 })
@@ -1045,7 +1045,7 @@ describe('traversal/to', () => {
   const fold = O.optic_<Source[]>()
     .elems()
     .prop('bar')
-    .to(s => s.length / 2)
+    .to((s) => s.length / 2)
   type Focus = number[]
 
   it('collect', () => {
@@ -1071,7 +1071,7 @@ describe('traversal/prop/prop', () => {
   })
 
   it('modify - monomorphic', () => {
-    const result: Source[] = O.modify(traversal)(x => `${x} UPDATED`)(source)
+    const result: Source[] = O.modify(traversal)((x) => `${x} UPDATED`)(source)
     expect(result).toEqual([
       { bar: { baz: 'a UPDATED' } },
       { bar: { baz: 'b UPDATED' } },
@@ -1081,7 +1081,7 @@ describe('traversal/prop/prop', () => {
 
   type Target = { bar: { baz: number } }
   it('modify - polymorphic', () => {
-    const result: Target[] = O.modify(traversal)(x => x.charCodeAt(0))(source)
+    const result: Target[] = O.modify(traversal)((x) => x.charCodeAt(0))(source)
     expect(result).toEqual([
       { bar: { baz: 97 } },
       { bar: { baz: 98 } },
@@ -1100,7 +1100,7 @@ describe('traversal/filter', () => {
   ]
 
   const traversal = O.optic_<Source[]>()
-    .filter(item => item.type % 2 == 0)
+    .filter((item) => item.type % 2 == 0)
     .elems()
     .prop('value')
   type Focus = string[]
@@ -1111,7 +1111,7 @@ describe('traversal/filter', () => {
   })
 
   it('modify - monomorphic', () => {
-    const result: Source[] = O.modify(traversal)(x => `${x} UPDATED`)(source)
+    const result: Source[] = O.modify(traversal)((x) => `${x} UPDATED`)(source)
     expect(result).toEqual([
       { type: 1, value: 'foo' },
       { type: 2, value: 'bar UPDATED' },
@@ -1122,7 +1122,7 @@ describe('traversal/filter', () => {
 
   type Target = { type: number; value: string | number }
   it('modify - polymorphic', () => {
-    const result: Target[] = O.modify(traversal)(x => x.length)(source)
+    const result: Target[] = O.modify(traversal)((x) => x.length)(source)
     expect(result).toEqual([
       { type: 1, value: 'foo' },
       { type: 2, value: 3 },
@@ -1148,7 +1148,7 @@ describe('traversal/elems', () => {
   })
 
   it('modify - monomorphic', () => {
-    const result: Source = O.modify(traversal)(x => x / 10)(source)
+    const result: Source = O.modify(traversal)((x) => x / 10)(source)
     expect(result).toEqual([
       [6.5, 6.6],
       [6.7, 6.8],
@@ -1157,7 +1157,7 @@ describe('traversal/elems', () => {
 
   type Target = string[][]
   it('modify - polymorphic', () => {
-    const result: Target = O.modify(traversal)(x => String.fromCharCode(x))(
+    const result: Target = O.modify(traversal)((x) => String.fromCharCode(x))(
       source
     )
     expect(result).toEqual([
@@ -1177,7 +1177,7 @@ describe('traversal/when', () => {
   const traversal = O.optic_<number[][]>()
     .elems()
     .elems()
-    .when(x => x % 2 == 0)
+    .when((x) => x % 2 == 0)
   type Focus = number
 
   it('collect', () => {
@@ -1186,7 +1186,7 @@ describe('traversal/when', () => {
   })
 
   it('modify - monomorphic', () => {
-    const result: Source = O.modify(traversal)(x => -x)(source)
+    const result: Source = O.modify(traversal)((x) => -x)(source)
     expect(result).toEqual([
       [65, -66],
       [-68, 69, -70],
@@ -1195,7 +1195,7 @@ describe('traversal/when', () => {
 
   type Target = (string | number)[][]
   it('modify - polymorphic', () => {
-    const result: Target = O.modify(traversal)(x => String.fromCharCode(x))(
+    const result: Target = O.modify(traversal)((x) => String.fromCharCode(x))(
       source
     )
     expect(result).toEqual([
@@ -1244,12 +1244,12 @@ describe('strings', () => {
     })
 
     it('write longer', () => {
-      const result: string = O.modify(traversal)(s => s + s)('abc')
+      const result: string = O.modify(traversal)((s) => s + s)('abc')
       expect(result).toEqual('aabbcc')
     })
 
     it('remove chars', () => {
-      const result: string = O.modify(traversal)(s =>
+      const result: string = O.modify(traversal)((s) =>
         s === 'b' || s === 'f' ? '' : s
       )('abcdef')
       expect(result).toEqual('acde')
@@ -1267,19 +1267,19 @@ describe('strings', () => {
 
     it('write', () => {
       const source = ' foo  bar baz  '
-      const result: string = O.modify(traversal)(s => s.toUpperCase())(source)
+      const result: string = O.modify(traversal)((s) => s.toUpperCase())(source)
       expect(result).toEqual(' FOO  BAR BAZ  ')
     })
 
     it('write longer', () => {
       const source = ' foo  bar baz  '
-      const result: string = O.modify(traversal)(s => s + s)(source)
+      const result: string = O.modify(traversal)((s) => s + s)(source)
       expect(result).toEqual(' foofoo  barbar bazbaz  ')
     })
 
     it('write shorter', () => {
       const source = ' foo  bar baz  '
-      const result: string = O.modify(traversal)(s =>
+      const result: string = O.modify(traversal)((s) =>
         s === 'bar' ? '' : s === 'foo' ? 'f' : s
       )(source)
       expect(result).toEqual(' f   baz  ')
