@@ -1,0 +1,13 @@
+name: Auto-merge dependabot updates
+on:
+  schedule:
+    - cron: '0 * * * *'
+jobs:
+  test:
+    name: Auto-merge dependabot updates
+    runs-on: ubuntu-latest
+    steps:
+      - uses: akheron/dependabot-cron-action@main
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          merge-method: rebase
