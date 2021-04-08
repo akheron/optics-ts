@@ -1,6 +1,6 @@
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-interface NotAnArrayType<_T> {
+export interface NotAnArrayType<T> {
   readonly _: unique symbol
+  readonly _t: T
 }
 
 export type ElemType<A> = IfElse<
@@ -9,14 +9,7 @@ export type ElemType<A> = IfElse<
   A extends (infer Item)[] ? Item : NotAnArrayType<A>
 >
 
-// Conduct the check through return value types to work around the
-// Distributive Conditional Types feature:
-// https://www.typescriptlang.org/docs/handbook/advanced-types.html#distributive-conditional-types
-export type Eq<A, B> = (() => A) extends () => B
-  ? (() => B) extends () => A
-    ? true
-    : false
-  : false
+export type Eq<A, B> = [A, B] extends [B, A] ? true : false
 
 // A if it's equal to B, otherwise B
 export type Simplify<A, B> = Eq<A, B> extends true ? A : B
@@ -90,3 +83,6 @@ export type Nth<A, N extends number> = A extends [
 ]
   ? U
   : never
+
+/** Useful for working around distributive conditional types */
+export type Unnaked<T> = T extends unknown ? T : never
