@@ -238,7 +238,7 @@ function compose(optic1: OpticFn, optic2: OpticFn, optic3?: OpticFn): OpticFn {
 
 const eq: OpticFn = withTag('Equivalence', (_P: any, optic: any) => optic)
 
-const iso = (there: (x: any) => any, back: (x: any) => any): OpticFn =>
+export const iso = (there: (x: any) => any, back: (x: any) => any): OpticFn =>
   withTag('Iso', (P: any, optic: any): Optic => P.dimap(there, back, optic))
 
 const lens = (view: (x: any) => any, update: (x: any) => any): OpticFn =>
@@ -251,7 +251,7 @@ const prism = (match: (x: any) => any, build: (x: any) => any): OpticFn =>
     P.dimap(match, (x: any) => either(id, build, x), P.right(optic))
   )
 
-const elems = withTag(
+export const elems = withTag(
   'Traversal',
   (P: any, optic: any): OpticFn => P.dimap(id, id, P.wander(optic))
 )
@@ -295,13 +295,13 @@ const indexed = iso(
   }
 )
 
-const prop = (key: string): OpticFn =>
+export const prop = (key: string): OpticFn =>
   lens(
     (source: any) => source[key],
     ([value, source]: [any, any]) => ({ ...source, [key]: value })
   )
 
-const pick = (keys: string[]): OpticFn =>
+export const pick = (keys: string[]): OpticFn =>
   lens(
     (source: any) => {
       const value: any = {}
@@ -340,7 +340,7 @@ const mustMatch = when((source: any) => source !== noMatch)
 
 const removeMe: unique symbol = Symbol('__remove_me__')
 
-const at = (i: number): OpticFn =>
+export const at = (i: number): OpticFn =>
   removable(
     compose(
       lens(
@@ -450,7 +450,7 @@ const filter = (predicate: (item: any) => boolean): OpticFn =>
     fst
   )
 
-const valueOr = (defaultValue: any): OpticFn =>
+export const valueOr = (defaultValue: any): OpticFn =>
   lens(
     (source: any) => (source === undefined ? defaultValue : source),
     ([value, _source]: [any, any]) => value

@@ -11,6 +11,14 @@ export interface Compose<F extends HKT, G extends HKT> extends HKT {
   0: Apply<F, Apply<G, this[1]>>
 }
 
+export interface HKT2 {
+  0: unknown
+  1: unknown
+  2: unknown
+}
+
+export type Apply2<F extends HKT2, A, B> = (F & { 1: A; 2: B })[0]
+
 export interface Id extends HKT {
   0: this[1]
 }
