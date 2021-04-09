@@ -1,5 +1,5 @@
-import type { Optic, A, B, S, T, TryA, TryT } from './optic'
-import * as I from '../internals'
+import type { Optic, A, B, S, T, TryA, TryT } from './optic.js'
+import * as I from '../internals.js'
 
 interface ValueOrA<N> extends A {
   0: TryA<this, Exclude<S<this>, undefined> | N>

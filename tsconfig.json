@@ -1,11 +1,8 @@
 {
   "compilerOptions": {
-    "module": "CommonJS",
-    "outDir": "./dist/lib",
-    "target": "ES5",
-    "declaration": true,
+    "target": "ES6",
+    "moduleResolution": "node",
     "strict": true,
-    "skipLibCheck": true,
-    "lib": ["ES6", "DOM"]
+    "skipLibCheck": true
   }
 }

@@ -1,6 +1,6 @@
-import { expectType } from './test-utils.tspec'
+import { expectType } from './test-utils.tspec.js'
 import * as O from '.'
-import { ArrayOrStringExpected, StringExpected } from './at'
+import { ArrayOrStringExpected, StringExpected } from './at.js'
 
 const optic = O.at(5)
 

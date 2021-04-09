@@ -1,6 +1,6 @@
-import { expectType } from './test-utils.tspec'
+import { expectType } from './test-utils.tspec.js'
 import * as O from '.'
-import { NoSuchProperty } from './prop'
+import { NoSuchProperty } from './prop.js'
 
 type Source = { foo: number; bar: { baz: string } }
 declare const s: Source
