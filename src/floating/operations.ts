@@ -1,7 +1,7 @@
-import type { Optic, Try, Try2, OpticError } from './optic'
-import type { Apply, Apply2, HKT, HKT2 } from '../hkt'
-import type { Eq, Simplify } from '../utils'
-import * as I from '../internals'
+import type { Optic, Try, Try2, OpticError } from './optic.js'
+import type { Apply, Apply2, HKT, HKT2 } from '../hkt.js'
+import type { Eq, Simplify } from '../utils.js'
+import * as I from '../internals.js'
 
 export function get<
   C extends 'Equivalence' | 'Iso' | 'Lens' | 'Getter',

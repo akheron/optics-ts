@@ -1,6 +1,6 @@
-import type { Optic, OpticError, TryA, TryT, A, B, T } from './optic'
-import * as I from '../internals'
-import { Eq } from '../utils'
+import type { Optic, OpticError, TryA, TryT, A, B, T } from './optic.js'
+import * as I from '../internals.js'
+import { Eq } from '../utils.js'
 
 export interface DisallowedTypeChange<Expected, Got> extends OpticError {
   readonly _: unique symbol

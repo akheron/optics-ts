@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-non-null-assertion, @typescript-eslint/adjacent-overload-signatures, @typescript-eslint/no-unused-vars, @typescript-eslint/ban-types */
 // This file is generated, do not edit! See ../scripts/generate-index.ts
 
-import * as I from './internals'
+import * as I from './internals.js'
 import {
   ElemType,
   Eq,
@@ -11,7 +11,7 @@ import {
   TuplePath,
   RequireString,
   Simplify,
-} from './utils'
+} from './utils.js'
 import {
   Adapt,
   Apply,
@@ -31,7 +31,7 @@ import {
   SetDottedPath,
   SetTuplePath,
   Union,
-} from './hkt'
+} from './hkt.js'
 
 export { Apply, Compose, Eq, HKT }
 

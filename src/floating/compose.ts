@@ -1,7 +1,7 @@
-import type { HKT, HKT2, Apply, Apply2 } from '../hkt'
-import type { Optic, Class, B, S } from './optic'
-import { Prop, prop } from './prop'
-import { compositionType, OpticType } from '../internals'
+import type { HKT, HKT2, Apply, Apply2 } from '../hkt.js'
+import type { Optic, Class, B, S } from './optic.js'
+import { Prop, prop } from './prop.js'
+import { compositionType, OpticType } from '../internals.js'
 
 interface ComposeA<A1 extends HKT, A2 extends HKT> extends HKT {
   0: Apply<A2, Apply<A1, S<this>>>
