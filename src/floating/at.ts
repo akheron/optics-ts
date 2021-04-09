@@ -1,6 +1,6 @@
-import type { Optic, A, B, S, T, TryA, TryT, OpticError } from './optic'
-import type { Eq } from '../utils'
-import * as I from '../internals'
+import type { Optic, A, B, S, T, TryA, TryT, OpticError } from './optic.js'
+import type { Eq } from '../utils.js'
+import * as I from '../internals.js'
 
 export interface ArrayOrStringExpected<T> extends OpticError {
   readonly _: unique symbol

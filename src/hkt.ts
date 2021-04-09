@@ -1,4 +1,4 @@
-import { ElemType, Eq, Prec } from './utils'
+import { ElemType, Eq, Prec } from './utils.js'
 
 export interface HKT {
   0: unknown

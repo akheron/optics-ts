@@ -1,5 +1,5 @@
-import { expectType } from './test-utils.tspec'
-import { InvalidModifyFn } from './operations'
+import { expectType } from './test-utils.tspec.js'
+import { InvalidModifyFn } from './operations.js'
 import * as O from '.'
 
 describe('modify', () => {

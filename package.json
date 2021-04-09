@@ -14,17 +14,30 @@
     "immutable",
     "functional-programming"
   ],
-  "main": "./dist/lib/index.js",
-  "module": "./dist/esm/index.js",
-  "typings": "./dist/lib/index.d.ts",
+  "exports": {
+    ".": {
+      "import": "./dist/mjs/index.js",
+      "require": "./dist/cjs/index.js"
+    },
+    "./floating": {
+      "import": "./dist/mjs/floating/index.js",
+      "require": "./dist/cjs/floating/index.js"
+    }
+  },
   "files": [
-    "dist"
+    "dist",
+    "floating",
+    "*.d.ts"
   ],
   "scripts": {
-    "build": "tsc -p tsconfig.cjs.json && tsc -p tsconfig.esm.json",
+    "typecheck": "tsc --noEmit",
+    "build": "yarn build:cjs && yarn build:mjs && yarn build:typings && scripts/fixup",
+    "build:cjs": "tsc -p tsconfig.cjs.json",
+    "build:mjs": "tsc -p tsconfig.mjs.json",
+    "build:typings": "tsc -p tsconfig.typings.json",
     "build:test": "tsc -p tsconfig.test.json",
-    "test": "yarn build:test && jest dist-test/",
-    "clean": "rm -rf dist/ dist-test/",
+    "test": "yarn build:test && jest",
+    "clean": "rm -rf dist/ dist-test/ floating/ *.d.ts",
     "lint": "eslint --max-warnings 0 '**/*.ts' && prettier --check \"**/*.{json,md}\"",
     "lint:fix": "eslint --fix '**/*.ts' && prettier --write '**/*.{json,md}'",
     "prepublishOnly": "yarn run clean && yarn run build",

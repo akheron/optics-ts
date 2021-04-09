@@ -1,6 +1,6 @@
-import { expectType } from './test-utils.tspec'
+import { expectType } from './test-utils.tspec.js'
 import * as O from '.'
-import { ArrayExpected } from './elems'
+import { ArrayExpected } from './elems.js'
 
 describe('elems', () => {
   const optic = O.elems

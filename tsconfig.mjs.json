@@ -1,8 +1,8 @@
 {
   "extends": "./tsconfig",
   "compilerOptions": {
-    "outDir": "./dist/cjs",
-    "module": "CommonJS"
+    "outDir": "./dist/mjs",
+    "module": "ES6"
   },
   "include": ["src/**/*.ts"],
   "exclude": ["src/**/*.spec.ts", "src/**/*.tspec.ts"]

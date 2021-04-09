@@ -1,6 +1,6 @@
-import type { Optic, OpticError, A, B, S, T, TryA, TryT } from './optic'
-import type { Unnaked } from '../utils'
-import * as I from '../internals'
+import type { Optic, OpticError, A, B, S, T, TryA, TryT } from './optic.js'
+import type { Unnaked } from '../utils.js'
+import * as I from '../internals.js'
 
 export interface InvalidPick<K, A> extends OpticError {
   readonly _: unique symbol

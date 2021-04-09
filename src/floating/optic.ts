@@ -1,4 +1,4 @@
-import type { HKT, HKT2 } from '../hkt'
+import type { HKT, HKT2 } from '../hkt.js'
 
 export type Class =
   | 'Equivalence'

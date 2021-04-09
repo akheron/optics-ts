@@ -1,6 +1,6 @@
 import * as O from '.'
-import { expectType } from './test-utils.tspec'
-import { DisallowedTypeChange } from './iso'
+import { expectType } from './test-utils.tspec.js'
+import { DisallowedTypeChange } from './iso.js'
 
 describe('iso', () => {
   const optic = O.iso(
