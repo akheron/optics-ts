@@ -48,7 +48,7 @@
   - [Lenses](#lenses)
     - [`prop<K extends keyof A>(key: K): Lens<S, _, A[K]>`](#propk-extends-keyof-akey-k-lenss-_-ak)
     - [`path<K1, K2, ...>(...keys: [K1, K2, ...]): Lens<S, _, A[K1][K2]...>`](#pathk1-k2-keys-k1-k2--lenss-_-ak1k2)
-  - [`nth<N extends number>(n: N): Lens<S, _, Nth<A, N>>`](#nthn-extends-numbern-n-lenss-_-ntha-n)
+    - [`nth<N extends number>(n: N): Lens<S, _, Nth<A, N>>`](#nthn-extends-numbern-n-lenss-_-ntha-n)
     - [`pick<K extends keyof A>(keys: K[]): Lens<S, _, Pick<A, K>>`](#pickk-extends-keyof-akeys-k-lenss-_-picka-k)
     - [`filter(pred: (item: ElemType<A>) => boolean): Lens<S, _, A>`](#filterpred-item-elemtypea--boolean-lenss-_-a)
     - [`filter<B>(pred: (item: ElemType<A>) => item is B): Lens<S, _, B[]>`](#filterbpred-item-elemtypea--item-is-b-lenss-_-b)
@@ -673,7 +673,7 @@ which is equal to
 foo.prop('a').prop('b').prop('c')
 ```
 
-### `nth<N extends number>(n: N): Lens<S, _, Nth<A, N>>`
+#### `nth<N extends number>(n: N): Lens<S, _, Nth<A, N>>`
 
 Only works on tuples whose length is a least `N + 1`.
 
