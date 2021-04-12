@@ -44,6 +44,26 @@ export interface ElemUnion<A> extends HKT {
   0: Array<ElemType<A> | this[1]>
 }
 
+export interface Entries extends HKT {
+  0: [this[1]] extends [[infer K, infer V]]
+    ? [K] extends [string | number | symbol]
+      ? Record<K, V>
+      : never
+    : never
+}
+
+export interface Keys<S> extends HKT {
+  0: [this[1]] extends [string | number | symbol]
+    ? S extends Record<any, infer V>
+      ? Record<this[1], V>
+      : never
+    : never
+}
+
+export interface Values<S> extends HKT {
+  0: S extends Record<infer K, any> ? Record<K, this[1]> : never
+}
+
 export interface Prop<S, K extends keyof S> extends HKT {
   0: Omit<S, K> & { [KK in K]: this[1] }
 }

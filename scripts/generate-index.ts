@@ -7,6 +7,9 @@ const header = `\
 import * as I from './internals'
 import {
   ElemType,
+  EntryType,
+  KeyType,
+  ValueType,
   Eq,
   IfElse,
   Nth,
@@ -21,6 +24,9 @@ import {
   Choice,
   Compose,
   DisallowTypeChange,
+  Entries,
+  Keys,
+  Values,
   ElemUnion,
   Elems,
   HKT,
@@ -187,6 +193,9 @@ const prism = (composition: Composition) => `\
 
 const traversal = (composition: Composition) => `\
   elems(): ${composition.optic('Elems', 'ElemType<A>')}
+  entries(): ${composition.optic('Entries', 'EntryType<A>')}
+  keys(): ${composition.optic('Keys<A>', 'KeyType<A>')}
+  values(): ${composition.optic('Values<A>', 'ValueType<A>')}
   chars(): RequireString<A, ${composition.optic(
     'DisallowTypeChange<string>',
     'string'

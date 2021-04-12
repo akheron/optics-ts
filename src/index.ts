@@ -4,6 +4,9 @@
 import * as I from './internals'
 import {
   ElemType,
+  EntryType,
+  KeyType,
+  ValueType,
   Eq,
   IfElse,
   Nth,
@@ -18,6 +21,9 @@ import {
   Choice,
   Compose,
   DisallowTypeChange,
+  Entries,
+  Keys,
+  Values,
   ElemUnion,
   Elems,
   HKT,
@@ -153,6 +159,9 @@ export interface Equivalence<S, T extends OpticParams, A> {
     optic: Traversal<A, T2, A2>
   ): Traversal<S, NextComposeParams<T, T2>, A2>
   elems(): Traversal<S, NextParams<T, Elems>, ElemType<A>>
+  entries(): Traversal<S, NextParams<T, Entries>, EntryType<A>>
+  keys(): Traversal<S, NextParams<T, Keys<A>>, KeyType<A>>
+  values(): Traversal<S, NextParams<T, Values<A>>, ValueType<A>>
   chars(): RequireString<
     A,
     Traversal<S, NextParams<T, DisallowTypeChange<string>>, string>
@@ -277,6 +286,9 @@ export interface Iso<S, T extends OpticParams, A> {
     optic: Traversal<A, T2, A2>
   ): Traversal<S, NextComposeParams<T, T2>, A2>
   elems(): Traversal<S, NextParams<T, Elems>, ElemType<A>>
+  entries(): Traversal<S, NextParams<T, Entries>, EntryType<A>>
+  keys(): Traversal<S, NextParams<T, Keys<A>>, KeyType<A>>
+  values(): Traversal<S, NextParams<T, Values<A>>, ValueType<A>>
   chars(): RequireString<
     A,
     Traversal<S, NextParams<T, DisallowTypeChange<string>>, string>
@@ -401,6 +413,9 @@ export interface Lens<S, T extends OpticParams, A> {
     optic: Traversal<A, T2, A2>
   ): Traversal<S, NextComposeParams<T, T2>, A2>
   elems(): Traversal<S, NextParams<T, Elems>, ElemType<A>>
+  entries(): Traversal<S, NextParams<T, Entries>, EntryType<A>>
+  keys(): Traversal<S, NextParams<T, Keys<A>>, KeyType<A>>
+  values(): Traversal<S, NextParams<T, Values<A>>, ValueType<A>>
   chars(): RequireString<
     A,
     Traversal<S, NextParams<T, DisallowTypeChange<string>>, string>
@@ -525,6 +540,9 @@ export interface Prism<S, T extends OpticParams, A> {
     optic: Traversal<A, T2, A2>
   ): Traversal<S, NextComposeParams<T, T2>, A2>
   elems(): Traversal<S, NextParams<T, Elems>, ElemType<A>>
+  entries(): Traversal<S, NextParams<T, Entries>, EntryType<A>>
+  keys(): Traversal<S, NextParams<T, Keys<A>>, KeyType<A>>
+  values(): Traversal<S, NextParams<T, Values<A>>, ValueType<A>>
   chars(): RequireString<
     A,
     Traversal<S, NextParams<T, DisallowTypeChange<string>>, string>
@@ -653,6 +671,9 @@ export interface Traversal<S, T extends OpticParams, A> {
     optic: Traversal<A, T2, A2>
   ): Traversal<S, NextComposeParams<T, T2>, A2>
   elems(): Traversal<S, NextParams<T, Elems>, ElemType<A>>
+  entries(): Traversal<S, NextParams<T, Entries>, EntryType<A>>
+  keys(): Traversal<S, NextParams<T, Keys<A>>, KeyType<A>>
+  values(): Traversal<S, NextParams<T, Values<A>>, ValueType<A>>
   chars(): RequireString<
     A,
     Traversal<S, NextParams<T, DisallowTypeChange<string>>, string>
@@ -741,6 +762,9 @@ export interface Getter<S, A> {
   // Getter · Traversal => Fold
   compose<T2 extends OpticParams, A2>(optic: Traversal<A, T2, A2>): Fold<S, A2>
   elems(): Fold<S, ElemType<A>>
+  entries(): Fold<S, EntryType<A>>
+  keys(): Fold<S, KeyType<A>>
+  values(): Fold<S, ValueType<A>>
   chars(): RequireString<A, Fold<S, string>>
   words(): RequireString<A, Fold<S, string>>
 
@@ -816,6 +840,9 @@ export interface AffineFold<S, A> {
   // AffineFold · Traversal => Fold
   compose<T2 extends OpticParams, A2>(optic: Traversal<A, T2, A2>): Fold<S, A2>
   elems(): Fold<S, ElemType<A>>
+  entries(): Fold<S, EntryType<A>>
+  keys(): Fold<S, KeyType<A>>
+  values(): Fold<S, ValueType<A>>
   chars(): RequireString<A, Fold<S, string>>
   words(): RequireString<A, Fold<S, string>>
 
@@ -877,6 +904,9 @@ export interface Fold<S, A> {
   // Fold · Traversal => Fold
   compose<T2 extends OpticParams, A2>(optic: Traversal<A, T2, A2>): Fold<S, A2>
   elems(): Fold<S, ElemType<A>>
+  entries(): Fold<S, EntryType<A>>
+  keys(): Fold<S, KeyType<A>>
+  values(): Fold<S, ValueType<A>>
   chars(): RequireString<A, Fold<S, string>>
   words(): RequireString<A, Fold<S, string>>
 
