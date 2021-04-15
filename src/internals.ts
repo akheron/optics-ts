@@ -281,7 +281,7 @@ export const collect = (optic: any, source: any): any =>
 
 /////////////////////////////////////////////////////////////////////////////
 
-const indexed = iso(
+export const indexed = iso(
   (value: any[]) => value.map((v, k) => [k, v]),
   (value: [number, any][]) => {
     const sorted = [...value].sort((a, b) => a[0] - b[0])
