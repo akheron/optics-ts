@@ -319,7 +319,7 @@ export const pick = (keys: string[]): OpticFn =>
     }
   )
 
-const nth = (n: number): OpticFn =>
+export const nth = (n: number): OpticFn =>
   lens(
     (value) => value[n],
     ([value, source]) => {
