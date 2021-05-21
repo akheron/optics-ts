@@ -7,6 +7,5 @@ interface ValueOrA<N> extends A {
 interface ValueOrT extends T {
   0: TryT<this, B<this>>
 }
-export const valueOr: <B>(
-  b: B
-) => Optic<'Lens', ValueOrA<B>, ValueOrT> = I.valueOr as any
+export const valueOr: <B>(b: B) => Optic<'Lens', ValueOrA<B>, ValueOrT> =
+  I.valueOr as any
