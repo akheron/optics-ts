@@ -413,7 +413,7 @@ const find = (predicate: (item: any) => boolean): OpticFn =>
     )
   )
 
-const filter = (predicate: (item: any) => boolean): OpticFn =>
+export const filter = (predicate: (item: any) => boolean): OpticFn =>
   compose(
     lens(
       (source: any[]) => {
