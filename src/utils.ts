@@ -30,11 +30,8 @@ type Or<A extends true | false, B extends true | false> = A extends true
   ? true
   : B
 
-export type IfElse<
-  Condition extends true | false,
-  Then,
-  Else
-> = Condition extends true ? Then : Else
+export type IfElse<Condition extends true | false, Then, Else> =
+  Condition extends true ? Then : Else
 
 export type RequireString<A, B> = IfElse<
   Eq<A, string>,

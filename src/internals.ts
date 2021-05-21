@@ -22,12 +22,17 @@ const either = <E, T, U>(
 ): U => (e._tag === 'Left' ? mapLeft(e.value) : mapRight(e.value))
 
 const profunctorFn = {
-  dimap: (f: (x: any) => any, g: (x: any) => any, fn: (x: any) => any) => (
-    x: any
-  ) => g(fn(f(x))),
-  first: (f: (x: any) => any) => ([x, y]: [any, any]) => [f(x), y],
-  right: (f: (x: any) => any) => (e: Either<any, any>): Either<any, any> =>
-    e._tag === 'Left' ? e : Right(f(e.value)),
+  dimap:
+    (f: (x: any) => any, g: (x: any) => any, fn: (x: any) => any) => (x: any) =>
+      g(fn(f(x))),
+  first:
+    (f: (x: any) => any) =>
+    ([x, y]: [any, any]) =>
+      [f(x), y],
+  right:
+    (f: (x: any) => any) =>
+    (e: Either<any, any>): Either<any, any> =>
+      e._tag === 'Left' ? e : Right(f(e.value)),
   wander: (f: any) => (xs: any[]) => xs.map(f),
 }
 
@@ -54,10 +59,14 @@ const monoidArray = {
 }
 
 const profunctorConst = (monoid: any) => ({
-  dimap: (f: (x: any) => any, _g: (x: any) => any, toF: (x: any) => any) => (
-    x: any
-  ) => toF(f(x)),
-  first: (toF: (x: any) => any) => ([x, _y]: [any, any]) => toF(x),
+  dimap:
+    (f: (x: any) => any, _g: (x: any) => any, toF: (x: any) => any) =>
+    (x: any) =>
+      toF(f(x)),
+  first:
+    (toF: (x: any) => any) =>
+    ([x, _y]: [any, any]) =>
+      toF(x),
   right: (toF: (x: any) => any) => (e: Either<any, any>) =>
     e._tag === 'Left' ? monoid.empty() : toF(e.value),
   wander: (toF: (x: any) => any) => (xs: any[]) => monoid.foldMap(toF, xs),
