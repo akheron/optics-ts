@@ -36,9 +36,9 @@ describe('partsOf', () => {
   })
 
   it('lol', () => {
-    const result = O.modify(
-      O.optic<string>().partsOf((o) => o.words())
-    )((words) => [...words].reverse())('this is a test')
+    const result = O.modify(O.optic<string>().partsOf((o) => o.words()))(
+      (words) => [...words].reverse()
+    )('this is a test')
     expect(result).toEqual('test a is this')
   })
 
