@@ -739,14 +739,8 @@ O.set(l)(['a', 'b'])([1, 2, 3, 5, 6]) // => ['a', 2, 'b', 6]
 O.set(l)(['a', 'b', 'c', 'd', 'e'])([1, 2, 3, 5, 6]) // => ['a', 2, 'b', 'c', 6, 'd', 'e']
 ```
 
-When writing an array of the same length, the values at matching indices are
-replaced by the new values.
-
-written array must have the same length as the original one, i.e. elements
-cannot be added or removed through filter.
-
-When a different type `B` (array) is written, the result will have the type
-`A | B`, i.e. `(ElemType<A> | ElemType<B>)[]`.
+When a different type `U extends any[]` is written, the result will have the
+type `A | U`, i.e. `(ElemType<A> | ElemType<U>)[]`.
 
 #### `valueOr<B>(defaultValue: B): Lens<S, _, Exclude<A, undefined> | B>`
 
