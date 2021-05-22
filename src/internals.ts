@@ -510,7 +510,7 @@ const chars: OpticFn = compose(
   elems
 )
 
-const words: OpticFn = compose(
+export const words: OpticFn = compose(
   iso(
     (s) => s.split(/\b/),
     (a) => a.join('')
