@@ -10,6 +10,6 @@ interface ElemsA extends A {
   0: TryA<this, S<this> extends (infer Item)[] ? Item : ArrayExpected<S<this>>>
 }
 interface ElemsT extends T {
-  0: TryT<this, Array<B<this>>>
+  0: TryT<this, S<this> extends any[] ? B<this>[] : ArrayExpected<S<this>>>
 }
 export const elems: Optic<'Traversal', ElemsA, ElemsT> = I.elems as any
