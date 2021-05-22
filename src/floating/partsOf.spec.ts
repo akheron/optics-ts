@@ -1,10 +1,16 @@
 import * as O from '.'
 
 describe('partsOf', () => {
+  it('get - single argument', () => {
+    const lens = O.partsOf(O.compose(O.elems, 'foo', O.elems))
+    const result: Focus = O.get(lens, source)
+    expect(result).toEqual([1, 2, 3])
+  })
+
   type Source = { foo: number[] }[]
   const source = [{ foo: [1, 2] }, { foo: [] }, { foo: [3] }]
 
-  const lens = O.partsOf(O.compose(O.elems, 'foo', O.elems))
+  const lens = O.partsOf(O.elems, 'foo', O.elems)
   type Focus = number[]
 
   it('get', () => {

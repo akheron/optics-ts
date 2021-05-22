@@ -137,7 +137,7 @@ type Compose1<O1, O2> = ToOptic<O1> extends Optic<
     : never
   : never
 
-type Compose<T extends [any, ...any]> = T extends [
+export type Compose<T extends [any, ...any]> = T extends [
   infer First,
   infer Second,
   ...infer Rest
@@ -155,9 +155,11 @@ function compose1(optic1: any, optic2: any) {
   return result
 }
 
-type Input = string | Optic<any, any, any, any>
+export type ComposeArg = string | Optic<any, any, any, any>
 
-export function compose<T extends [Input, ...Input[]]>(...args: T): Compose<T> {
+export function compose<T extends [ComposeArg, ...ComposeArg[]]>(
+  ...args: T
+): Compose<T> {
   const [first, ...rest] = args
   const optic = typeof first === 'string' ? prop(first) : first
   if (!rest.length) return optic as any

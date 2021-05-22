@@ -1,9 +1,14 @@
 import { expectType } from './test-utils.tspec.js'
 import * as O from '.'
 import { ArrayExpected as ArrayExpectedE } from './elems.js'
-import { ArrayExpected } from './partsOf.js'
+import { ArrayExpected, TraversalExpected } from './partsOf.js'
 
 describe('partsOf', () => {
+  it('not a traversal', () => {
+    const optic = O.partsOf('foo', 'bar', 'baz')
+    expectType<TraversalExpected>()(optic)()
+  })
+
   const lens = O.partsOf(O.elems)
 
   it('get - source not compatible with the traversal', () => {
