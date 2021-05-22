@@ -456,7 +456,7 @@ export const valueOr = (defaultValue: any): OpticFn =>
     ([value, _source]: [any, any]) => value
   )
 
-const partsOf = (traversal: Optic): OpticFn =>
+export const partsOf = (traversal: Optic): OpticFn =>
   compose(
     lens(
       (source: any) => {
