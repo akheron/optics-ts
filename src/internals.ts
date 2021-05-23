@@ -377,7 +377,7 @@ export const at = (i: number): OpticFn =>
     )
   )
 
-const optional: OpticFn = prism(
+export const optional: OpticFn = prism(
   (source: any) => (source === undefined ? Left(undefined) : Right(source)),
   id
 )
