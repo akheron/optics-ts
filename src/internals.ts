@@ -474,7 +474,7 @@ export const partsOf = (traversal: Optic): OpticFn =>
     fst
   )
 
-const reread = (fn: (value: any) => any): OpticFn =>
+export const reread = (fn: (value: any) => any): OpticFn =>
   lens(
     (source: any) => fn(source),
     ([value, _]) => value
