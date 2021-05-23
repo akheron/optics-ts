@@ -382,7 +382,7 @@ export const optional: OpticFn = prism(
   id
 )
 
-const guard = <A, U extends A>(fn: (a: A) => a is U): OpticFn =>
+export const guard = <A, U extends A>(fn: (a: A) => a is U): OpticFn =>
   prism((source: A) => (fn(source) ? Right(source) : Left(source)), id)
 
 const find = (predicate: (item: any) => boolean): OpticFn =>
