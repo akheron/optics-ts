@@ -480,7 +480,7 @@ export const reread = (fn: (value: any) => any): OpticFn =>
     ([value, _]) => value
   )
 
-const rewrite = (fn: (value: any) => any): OpticFn =>
+export const rewrite = (fn: (value: any) => any): OpticFn =>
   lens(
     (source) => source,
     ([value, _]) => fn(value)
