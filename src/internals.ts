@@ -385,7 +385,7 @@ export const optional: OpticFn = prism(
 export const guard = <A, U extends A>(fn: (a: A) => a is U): OpticFn =>
   prism((source: A) => (fn(source) ? Right(source) : Left(source)), id)
 
-const find = (predicate: (item: any) => boolean): OpticFn =>
+export const find = (predicate: (item: any) => boolean): OpticFn =>
   removable(
     compose(
       lens(
