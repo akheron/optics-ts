@@ -502,7 +502,7 @@ const appendTo: OpticFn = lens(
   }
 )
 
-const chars: OpticFn = compose(
+export const chars: OpticFn = compose(
   iso(
     (s) => s.split(''),
     (a) => a.join('')
