@@ -6,10 +6,10 @@ export interface StringExpected<T> extends OpticError {
   readonly _t: T
 }
 
-interface WordsA extends A {
+interface CharsA extends A {
   0: TryA<this, S<this> extends string ? string : StringExpected<S<this>>>
 }
-interface WordsT extends T {
+interface CharsT extends T {
   0: TryT<
     this,
     S<this> extends string
@@ -20,4 +20,4 @@ interface WordsT extends T {
   >
 }
 
-export const words: Optic<'Traversal', WordsA, WordsT> = I.words as any
+export const chars: Optic<'Traversal', CharsA, CharsT> = I.chars as any
