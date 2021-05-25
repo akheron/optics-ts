@@ -331,7 +331,7 @@ export const nth = (n: number): OpticFn =>
 
 const fst = nth(0)
 
-const when = (pred: (x: any) => boolean): OpticFn =>
+export const when = (pred: (x: any) => boolean): OpticFn =>
   prism((x: any) => (pred(x) ? Right(x) : Left(x)), id)
 
 const noMatch: unique symbol = Symbol('__no_match__')
