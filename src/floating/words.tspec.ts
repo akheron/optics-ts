@@ -1,6 +1,6 @@
 import { expectType } from './test-utils.tspec.js'
 import * as O from '.'
-import { StringExpected } from './words.js'
+import type { StringExpected } from './errors.js'
 
 describe('words', () => {
   it('collect - source not a string', () => {

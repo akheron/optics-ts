@@ -1,10 +1,6 @@
-import type { Optic, OpticError, TryA, TryT, A, B, S, T } from './optic.js'
+import type { Optic, TryA, TryT, A, B, S, T } from './optic.js'
+import type { StringExpected } from './errors.js'
 import * as I from '../internals.js'
-
-export interface StringExpected<T> extends OpticError {
-  readonly _: unique symbol
-  readonly _t: T
-}
 
 interface CharsA extends A {
   0: TryA<this, S<this> extends string ? string : StringExpected<S<this>>>

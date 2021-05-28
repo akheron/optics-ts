@@ -1,16 +1,7 @@
-import type { Optic, A, B, S, T, TryA, TryT, OpticError } from './optic.js'
+import type { Optic, A, B, S, T, TryA, TryT } from './optic.js'
+import type { ArrayOrStringExpected, StringExpected } from './errors.js'
 import type { Eq } from '../utils.js'
 import * as I from '../internals.js'
-
-export interface ArrayOrStringExpected<T> extends OpticError {
-  readonly _: unique symbol
-  readonly _t: T
-}
-
-export interface StringExpected<T> extends OpticError {
-  readonly _: unique symbol
-  readonly _t: T
-}
 
 interface AtA extends A {
   0: TryA<

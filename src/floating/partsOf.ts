@@ -1,16 +1,8 @@
-import type { Optic, OpticError, TryA, TryT, A, B, S, T, Try } from './optic.js'
+import type { Optic, TryA, TryT, A, B, S, T, Try } from './optic.js'
+import type { ArrayExpected, TraversalExpected } from './errors.js'
 import * as I from '../internals.js'
 import { Apply, Apply2 } from '../hkt.js'
 import { Compose, compose, ComposeArg } from './compose.js'
-
-export interface ArrayExpected<T> extends OpticError {
-  readonly _: unique symbol
-  readonly _t: T
-}
-
-export interface TraversalExpected extends OpticError {
-  readonly _: unique symbol
-}
 
 interface PartsOfA<Traversal extends Optic<'Traversal', any, any>> extends A {
   0: TryA<

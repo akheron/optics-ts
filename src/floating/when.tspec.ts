@@ -1,6 +1,6 @@
 import { expectType } from './test-utils.tspec.js'
 import * as O from '.'
-import { Expected } from './when.js'
+import type { Expected } from './errors.js'
 
 const optic = O.when((value: number) => value % 2 == 0)
 

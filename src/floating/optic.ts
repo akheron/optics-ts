@@ -1,4 +1,5 @@
 import type { HKT, HKT2 } from '../hkt.js'
+import type { OpticError } from './errors.js'
 
 export type Class =
   | 'Equivalence'
@@ -28,10 +29,6 @@ export interface Optic<
   readonly _A: A
   readonly _T: T
   readonly _R: R
-}
-
-export interface OpticError {
-  readonly __error: unique symbol
 }
 
 export type Try<P, U> = P extends OpticError ? P : U

@@ -1,11 +1,6 @@
-import type { Optic, OpticError, TryA, TryT, A, B, S, T } from './optic.js'
+import type { Optic, TryA, TryT, A, B, S, T } from './optic.js'
+import type { NoSuchProperty } from './errors.js'
 import * as I from '../internals.js'
-
-export interface NoSuchProperty<K extends string, A> extends OpticError {
-  readonly _: unique symbol
-  readonly _k: K
-  readonly _a: A
-}
 
 interface PropA<K extends string> extends A {
   0: TryA<

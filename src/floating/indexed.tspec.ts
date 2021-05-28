@@ -1,6 +1,6 @@
 import { expectType } from './test-utils.tspec.js'
 import * as O from '.'
-import { ArrayExpected, ArrayOfIndexValuePairsExpected } from './indexed.js'
+import type { ArrayExpected, ArrayOfIndexValuePairsExpected } from './errors.js'
 
 const optic = O.indexed
 

@@ -1,6 +1,6 @@
 import { expectType } from './test-utils.tspec.js'
 import * as O from '.'
-import { ArrayExpected } from './appendTo.js'
+import type { ArrayExpected } from './errors.js'
 
 describe('appendTo', () => {
   it('set - source not an array', () => {

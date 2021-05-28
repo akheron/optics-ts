@@ -1,6 +1,6 @@
 import * as O from '.'
 import { expectType } from './test-utils.tspec.js'
-import { Expected } from './to.js'
+import type { Expected } from './errors.js'
 
 const optic = O.to((x: string) => x.length)
 
