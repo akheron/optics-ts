@@ -1,6 +1,6 @@
 import { expectType } from './test-utils.tspec.js'
 import * as O from '.'
-import { TupleExpected } from './nth.js'
+import type { TupleExpected } from './errors.js'
 
 describe('nth', () => {
   it('get - not a tuple', () => {
