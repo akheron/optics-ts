@@ -256,7 +256,7 @@ export const elems = withTag(
   (P: any, optic: any): OpticFn => P.dimap(id, id, P.wander(optic))
 )
 
-const to = (fn: (a: any) => any): OpticFn =>
+export const to = (fn: (a: any) => any): OpticFn =>
   withTag('Getter', (P: any, optic: any) => P.dimap(fn, id, optic))
 
 /////////////////////////////////////////////////////////////////////////////
