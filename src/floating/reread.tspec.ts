@@ -16,7 +16,7 @@ describe('reread', () => {
     expectType<Expected<string, undefined>>()(result3)()
   })
 
-  it('set - source not of the correcttype', () => {
+  it('set - source not of the correct type', () => {
     const result = O.set(optic, 'foo', 123)
     expectType<Expected<string, number>>()(result)()
   })
