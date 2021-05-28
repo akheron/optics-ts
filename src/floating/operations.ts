@@ -1,4 +1,5 @@
-import type { Optic, Try, Try2, OpticError } from './optic.js'
+import type { Optic, Try, Try2 } from './optic.js'
+import type { InvalidModifyFn } from './errors.js'
 import type { Apply, Apply2, HKT, HKT2 } from '../hkt.js'
 import type { Eq, Simplify } from '../utils.js'
 import * as I from '../internals.js'
@@ -63,12 +64,6 @@ export function collect(...args: any[]): any {
     case 2:
       return I.collect(args[0], args[1])
   }
-}
-
-export interface InvalidModifyFn<Expected, Got> extends OpticError {
-  readonly _: unique symbol
-  readonly _got: Got
-  readonly _expected: Expected
 }
 
 type Modify<A extends HKT, B, S, T extends HKT2> = Apply<A, S> extends infer AU

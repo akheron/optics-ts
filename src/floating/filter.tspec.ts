@@ -1,6 +1,6 @@
 import { expectType } from './test-utils.tspec.js'
 import * as O from '.'
-import { ArrayOfExpected, ArrayExpected } from './filter.js'
+import type { ArrayOfExpected, ArrayExpected } from './errors.js'
 
 const optic = O.filter((v: string) => v !== '')
 

@@ -1,11 +1,6 @@
-import type { Optic, OpticError, TryA, TryT, A, B, S, T } from './optic.js'
+import type { Optic, TryA, TryT, A, B, S, T } from './optic.js'
+import type { TupleExpected } from './errors.js'
 import * as I from '../internals.js'
-
-export interface TupleExpected<N, T> extends OpticError {
-  readonly _: unique symbol
-  readonly _n: N
-  readonly _t: T
-}
 
 export type Prec<N> = N extends 6
   ? 5

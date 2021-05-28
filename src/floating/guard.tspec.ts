@@ -1,6 +1,6 @@
 import { expectType } from './test-utils.tspec.js'
 import * as O from '.'
-import { Expected } from './guard.js'
+import type { Expected } from './errors.js'
 
 type Bar = { bar: string }
 type Baz = { baz: number }

@@ -1,6 +1,6 @@
 import { expectType } from './test-utils.tspec.js'
 import * as O from '.'
-import { Expected } from './reread.js'
+import type { Expected } from './errors.js'
 
 const optic = O.reread((x: string) => x.toUpperCase())
 

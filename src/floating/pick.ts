@@ -1,12 +1,7 @@
-import type { Optic, OpticError, A, B, S, T, TryA, TryT } from './optic.js'
+import type { Optic, A, B, S, T, TryA, TryT } from './optic.js'
+import type { InvalidPick } from './errors.js'
 import type { Unnaked } from '../utils.js'
 import * as I from '../internals.js'
-
-export interface InvalidPick<K, A> extends OpticError {
-  readonly _: unique symbol
-  readonly _k: K
-  readonly _a: A
-}
 
 interface PickA<K extends string> extends A {
   // Unnaked<K> is used to work around distributive conditional types

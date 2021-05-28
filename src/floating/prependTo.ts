@@ -1,10 +1,6 @@
-import type { Optic, OpticError, TryT, B, S, T } from './optic.js'
+import type { Optic, TryT, B, S, T } from './optic.js'
 import * as I from '../internals.js'
-
-export interface ArrayExpected<T> extends OpticError {
-  readonly _: unique symbol
-  readonly _t: T
-}
+import type { ArrayExpected } from './errors.js'
 
 interface PrependToT extends T {
   0: TryT<

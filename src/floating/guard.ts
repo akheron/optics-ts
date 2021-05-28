@@ -1,13 +1,8 @@
-import type { Optic, OpticError, TryA, TryT, A, B, S, T } from './optic.js'
+import type { Optic, TryA, TryT, A, B, S, T } from './optic.js'
+import type { Expected } from './errors.js'
 import type { Eq } from '../utils.js'
 import * as I from '../internals.js'
 import { Apply, HKT } from '../hkt.js'
-
-export interface Expected<T, U> extends OpticError {
-  readonly _: unique symbol
-  readonly _t: T
-  readonly _u: U
-}
 
 interface GuardA<ValueType, SubType extends ValueType> extends A {
   0: TryA<
