@@ -1,16 +1,31 @@
 import * as O from '.'
 import { expectType } from './test-utils.tspec.js'
-import { DisallowedTypeChange } from './iso.js'
+import { Expected } from './iso.js'
+
+const optic = O.iso(
+  (x: string) => x.split(''),
+  (x: string[]) => x.join('')
+)
 
 describe('iso', () => {
-  const optic = O.iso(
-    (x: string) => x.split(''),
-    (x: string[]) => x.join('')
-  )
+  it('get - source not of the correct type', () => {
+    const result = O.get(optic, true)
+    expectType<Expected<string, boolean>>()(result)()
 
-  it('disallowed type change', () => {
-    expectType<DisallowedTypeChange<string[], number>>()(
-      O.set(optic, 123, 'foo')
-    )()
+    const result2 = O.get(optic, null)
+    expectType<Expected<string, null>>()(result2)()
+
+    const result3 = O.get(optic, undefined)
+    expectType<Expected<string, undefined>>()(result3)()
+  })
+
+  it('set - source not of the correct type', () => {
+    const result = O.set(optic, 'foo', 123)
+    expectType<Expected<string, number>>()(result)()
+  })
+
+  it('set - value not of the correct type', () => {
+    const result = O.set(optic, 123, 'foo')
+    expectType<Expected<string[], number>>()(result)()
   })
 })
