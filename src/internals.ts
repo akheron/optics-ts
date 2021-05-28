@@ -486,7 +486,7 @@ export const rewrite = (fn: (value: any) => any): OpticFn =>
     ([value, _]) => fn(value)
   )
 
-const prependTo: OpticFn = lens(
+export const prependTo: OpticFn = lens(
   (_source: any[]) => undefined,
   ([value, source]: [any, any[]]) => {
     if (value === undefined) return source
