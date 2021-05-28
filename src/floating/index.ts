@@ -1,6 +1,7 @@
 export { HKT } from '../hkt.js'
 export { compose } from './compose.js'
 export { get, preview, collect, set, modify, remove } from './operations.js'
+export { appendTo } from './appendTo.js'
 export { at } from './at.js'
 export { chars } from './chars.js'
 export { elems } from './elems.js'

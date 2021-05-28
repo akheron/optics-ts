@@ -494,7 +494,7 @@ export const prependTo: OpticFn = lens(
   }
 )
 
-const appendTo: OpticFn = lens(
+export const appendTo: OpticFn = lens(
   (_source: any[]) => undefined,
   ([value, source]: [any, any[]]) => {
     if (value === undefined) return source
