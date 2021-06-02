@@ -28,7 +28,6 @@
     "lint": "eslint --max-warnings 0 '**/*.ts' && prettier --check \"**/*.{json,md}\"",
     "lint:fix": "eslint --fix '**/*.ts' && prettier --write '**/*.{json,md}'",
     "prepublishOnly": "yarn run clean && yarn run build",
-    "doctoc": "doctoc README.md --title '## Table of Contents' && prettier --write README.md",
     "generate-index": "ts-node ./scripts/generate-index.ts > src/index.ts && prettier --write src/index.ts"
   },
   "devDependencies": {
@@ -36,7 +35,7 @@
     "@types/jest": "^26.0.15",
     "@typescript-eslint/eslint-plugin": "^4.14.0",
     "@typescript-eslint/parser": "^4.14.0",
-    "doctoc": "^2.0.0",
+    "docsify-cli": "^4.4.3",
     "eslint": "^7.18.0",
     "eslint-config-prettier": "^8.1.0",
     "eslint-plugin-prettier": "^3.3.1",
@@ -44,9 +43,5 @@
     "prettier": "^2.2.1",
     "ts-jest": "^26.4.3",
     "typescript": "^4.1.2"
-  },
-  "resolutions": {
-    "doctoc/**/trim": "0.0.3",
-    "doctoc/**/underscore": "1.12.1"
   }
 }
