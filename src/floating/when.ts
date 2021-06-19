@@ -1,6 +1,6 @@
 import type { Optic, A, B, S, T, TryA, TryT } from './optic.js'
 import type { Expected } from './errors.js'
-import * as I from '../internals'
+import * as I from '../internals.js'
 
 interface WhenA<Value> extends A {
   0: TryA<this, S<this> extends Value ? Value : Expected<Value, S<this>>>
