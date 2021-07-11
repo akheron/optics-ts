@@ -48,8 +48,10 @@ export type NextParams<
   R extends Removable = undefined
 > = Params<Compose<C['_T'], T>, R>
 
-export type NextComposeParams<C1 extends OpticParams, C2 extends OpticParams> =
-  Params<Compose<C1['_T'], C2['_T']>, C2['_R']>
+export type NextComposeParams<
+  C1 extends OpticParams,
+  C2 extends OpticParams
+> = Params<Compose<C1['_T'], C2['_T']>, C2['_R']>
 
 export type OpticFor<S> = Equivalence<S, Params<DisallowTypeChange<S>>, S>
 export type OpticFor_<S> = Equivalence<S, Params<Id>, S>
