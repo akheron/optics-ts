@@ -9,6 +9,10 @@ export type ElemType<A> = IfElse<
   A extends (infer Item)[] ? Item : NotAnArrayType<A>
 >
 
+export type EntryType<A> = A extends Record<infer K, infer V> ? [K, V] : never
+export type KeyType<A> = keyof A
+export type ValueType<A> = A extends Record<any, infer V> ? V : never
+
 // Conduct the check through return value types to work around the
 // Distributive Conditional Types feature:
 // https://www.typescriptlang.org/docs/handbook/advanced-types.html#distributive-conditional-types

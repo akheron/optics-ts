@@ -330,6 +330,7 @@ const nth = (n: number): OpticFn =>
   )
 
 const fst = nth(0)
+const snd = nth(1)
 
 const when = (pred: (x: any) => boolean): OpticFn =>
   prism((x: any) => (pred(x) ? Right(x) : Left(x)), id)
@@ -502,6 +503,18 @@ const appendTo: OpticFn = lens(
   }
 )
 
+const entries: OpticFn = compose(
+  iso(
+    (s) => Object.entries(s),
+    (a) => Object.fromEntries(a)
+  ),
+  elems
+)
+
+const keys: OpticFn = compose(entries, fst)
+
+const values: OpticFn = compose(entries, snd)
+
 const chars: OpticFn = compose(
   iso(
     (s) => s.split(''),
@@ -617,6 +630,18 @@ export class Optic {
 
   elems(): Optic {
     return new Optic(compose(this._ref, elems))
+  }
+
+  entries(): Optic {
+    return new Optic(compose(this._ref, entries))
+  }
+
+  keys(): Optic {
+    return new Optic(compose(this._ref, keys))
+  }
+
+  values(): Optic {
+    return new Optic(compose(this._ref, values))
   }
 
   to(fn: (a: any) => any): Optic {

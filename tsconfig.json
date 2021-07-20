@@ -6,6 +6,6 @@
     "declaration": true,
     "strict": true,
     "skipLibCheck": true,
-    "lib": ["ES6", "DOM"]
+    "lib": ["ES2019", "DOM"]
   }
 }
