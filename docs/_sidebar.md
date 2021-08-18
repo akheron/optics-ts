@@ -1,4 +1,0 @@
-- [Home](index.md 'optics-ts documentation')
-- [Installation](installation.md 'Installation - optics-ts documentation')
-- [Tutorial](tutorial.md 'Tutorial - optics-ts documentation')
-- [API reference](apiref.md 'API reference - optics-ts documentation')

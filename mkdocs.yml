@@ -1,0 +1,20 @@
+site_name: optics-ts
+site_url: https://akheron.github.io/optics-ts
+repo_url: https://github.com/akheron/optics-ts
+edit_uri: edit/main/docs/
+theme:
+  name: material
+  features:
+    - navigation.instant
+  icon:
+    repo: fontawesome/brands/github
+markdown_extensions:
+  - toc:
+      permalink: '#'
+  - pymdownx.highlight
+  - pymdownx.superfences
+nav:
+  - Home: 'index.md'
+  - 'installation.md'
+  - 'tutorial.md'
+  - 'apiref.md'
