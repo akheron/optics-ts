@@ -113,12 +113,14 @@ type ClassTable = {
   }
 }
 
-export type ComposeC<C1 extends Class, C2 extends Class> =
-  C1 extends keyof ClassTable
-    ? C2 extends keyof ClassTable[C1]
-      ? ClassTable[C1][C2]
-      : never
+export type ComposeC<
+  C1 extends Class,
+  C2 extends Class
+> = C1 extends keyof ClassTable
+  ? C2 extends keyof ClassTable[C1]
+    ? ClassTable[C1][C2]
     : never
+  : never
 
 type ToOptic<O> = O extends string
   ? Prop<O>
