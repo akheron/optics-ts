@@ -155,13 +155,20 @@ yarn jest dist-test/ --watchAll
 
 ### Documentation
 
-The following runs a live reloading server for the documentation:
+You need Python 3 to build the docs.
 
 ```
-yarn docsify serve docs/
+python3 -m venv venv
+./venv/bin/pip install mkdocs-material
 ```
 
-Open http://localhost:3000/ in the browser.
+Run a live reloading server for the documentation:
+
+```
+./venv/bin/mkdocs serve
+```
+
+Open http://localhost:8000/ in the browser.
 
 ### Releasing
 
