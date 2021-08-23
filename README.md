@@ -16,62 +16,30 @@
 ## Features
 
 `optics-ts` supports lenses, prisms, traversals, removing items from containers,
-and much more! See the [documentation](https://akheron.github.io/optics-ts) for
-a tutorial and a detailed reference of all supported optics.
+and much more!
 
-There are currently two "syntaxes" for defining optics: method chaining and
-standalone optics. Method chaining is still the default syntax and standalone
-syntax is considered experimental, but will probably become the default in the
-future.
+Since optics-ts v2.2.0, there are two syntaxes for defining optics: method
+chaining (the default) and standalone optics (experimental). See
+[the docs](https://akheron.github.io/optics-ts) for more info!
 
-Here's a standalone optics example, demonstrating how to drill in to a nested
-data structure:
+## Getting started
 
-```typescript
-// Import the standalone library
-import * as O from 'optics-ts/floating'
+Installation:
 
-// Create a lens that focuses on author.name. Plain strings works like O.prop().
-const optic = O.compose('author', 'name')
-
-// This is the input data
-const input = {
-  title: "The Hitchhiker's Guide to the Galaxy"
-  isbn: "978-0345391803",
-  author: {
-    name: "Douglas Adams"
-  }
-}
-
-// Read through the optic
-O.get(optic, input)
-// "Douglas Adams"
-
-// Write through the optic
-O.set(optic, "Arthur Dent", input)
-// {
-//   title: "The Hitchhiker’s Guide to the Galaxy"
-//   isbn: "978-0345391803",
-//   author: {
-//     name: "Arthur Dent"
-//   }
-// }
-
-// Update the existing value through the optic, while also changing the data type
-O.modify(optic, str => str.length + 29, input)
-// {
-//   title: "The Hitchhiker’s Guide to the Galaxy"
-//   isbn: "978-0345391803",
-//   author: {
-//     name: 42
-//   }
-// }
+```
+npm install optics-ts
 ```
 
-Here's the same example with optics defined by method chaining:
+or
+
+```
+yarn add optics-ts
+```
+
+Here's a simple example demonstrating how lenses can be used to drill into a
+nested data structure:
 
 ```typescript
-// Importing from the top-level gives method chaining optics
 import * as O from 'optics-ts'
 
 type Book = {
@@ -121,21 +89,20 @@ O.modify(optic)(str => str.length + 29)(input)
 // }
 ```
 
-Another example with standalone optics that converts all words longer than 5
-characters to upper case:
+Another example that converts all words longer than 5 characters to upper case:
 
 ```typescript
 import * as O from 'optics-ts/floating'
 
-const optic = O.compose(
-  O.words,
-  O.when((s: string) => s.length >= 5)
-)
+const optic = O.optic<string>().words().when(s => s.length >= 5)
 
 const input = 'This is a string with some shorter and some longer words'
-O.modify(optic, (s) => s.toUpperCase(), input)
+O.modify(optic)((s) => s.toUpperCase()(input)
 // "This is a STRING with some SHORTER and some LONGER WORDS"
 ```
+
+See the [documentation](https://akheron.github.io/optics-ts) for a tutorial and
+a detailed reference of all supported optics.
 
 ## Development
 
