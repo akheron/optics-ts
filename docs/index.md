@@ -1,31 +1,114 @@
-# optics-ts <!-- {docsify-ignore-all} -->
+# optics-ts
 
-`optics-ts` provides type-safe, ergonomic, polymorphic optics for TypeScript:
+`optics-ts` provides type-safe, ergonomic, polymorphic optics for TypeScript
 
-- **Optics** allow you to read or modify values from deeply nested data
-  structures, while keeping all data immutable.
-- **Ergonomic**: Optics are composed with method chaining, making it easy and
-  fun!
-- **Polymorphic**: When writing through the optics, you can change the data
-  types in the nested structure.
-- **Type-safe**: The compiler will type check all operations you do. No `any`,
-  ever.
+- Many optic types: lens, prism, traversal, getter, affine fold, fold, setter
+- Optics for operating on multiple data types: objects, arrays, discriminated
+  unions, strings.
+- Removable optics: Allow removing items from containers.
+- Ergonomic API: No boilerplate, concise naming.
+- Type-safe: The compiler will type check all operations you do. No `any`, ever.
+- Most optics are fully polymorphic: You can write a different data type and
+  still get full type safety.
+- Supports both ES6 and CommonJS modules in a single code base.
+- Tree shaking support with standalone optics (see
+  [The Two Syntaxes](two-syntaxes.md)).
 
-## Contents
+## Example
 
-- [Installation](installation.md)
-- [Tutorial](tutorial.md)
-- [API reference](apiref.md)
+=== "Method chaining"
 
-## Prior art
+    ```typescript
+    import * as O from 'optics-ts'
 
-There are many existing optics libraries of varying degree for JavaScript, but
-only few for TypeScript. It's generally hard to create good typings for optics
-in TypeScript, and the task becomes impossible if one tried to retrofit types on
-an existing JavaScript implementation.
+    type Book = {
+      title: string
+      isbn: string
+      author: {
+        name: string
+      }
+    }
 
-- [monocle-ts](https://github.com/gcanti/monocle-ts) is probably the most
-  popular TypeScript optics library.
+    // Create a lens that focuses on author.name
+    const optic = O.optic_<Book>()
+      .prop('author')
+      .prop('name')
 
-- [@grammarly/focal](https://github.com/grammarly/focal) is not an optics
-  library per se, rather an UI framework for TypeScript.
+    // This is the input data
+    const input: Book = {
+      title: "The Hitchhiker's Guide to the Galaxy"
+      isbn: "978-0345391803",
+      author: {
+        name: "Douglas Adams"
+      }
+    }
+
+    // Read through the optic
+    O.get(optic)(input)
+    // "Douglas Adams"
+
+    // Write through the optic
+    O.set(optic)("Arthur Dent")(input)
+    // {
+    //   title: "The Hitchhiker’s Guide to the Galaxy"
+    //   isbn: "978-0345391803",
+    //   author: {
+    //     name: "Arthur Dent"
+    //   }
+    // }
+
+    // Update the existing value through the optic, while also changing the data type
+    O.modify(optic)(str => str.length + 29)(input)
+    // {
+    //   title: "The Hitchhiker’s Guide to the Galaxy"
+    //   isbn: "978-0345391803",
+    //   author: {
+    //     name: 42
+    //   }
+    // }
+    ```
+
+=== "Standalone"
+
+    ```typescript
+    import * as O from 'optics-ts/floating'
+
+    // Create a lens that focuses on author.name
+    const optic = O.compose('author', 'name')
+
+    // This is the input data
+    const input = {
+      title: "The Hitchhiker's Guide to the Galaxy"
+      isbn: "978-0345391803",
+      author: {
+        name: "Douglas Adams"
+      }
+    }
+
+    // Read through the optic
+    O.get(optic, input)
+    // "Douglas Adams"
+
+    // Write through the optic
+    O.set(optic, "Arthur Dent", input)
+    // {
+    //   title: "The Hitchhiker’s Guide to the Galaxy"
+    //   isbn: "978-0345391803",
+    //   author: {
+    //     name: "Arthur Dent"
+    //   }
+    // }
+
+    // Update the existing value through the optic, while also changing the data type
+    O.modify(optic, (str) => str.length + 29, input)
+    // {
+    //   title: "The Hitchhiker’s Guide to the Galaxy"
+    //   isbn: "978-0345391803",
+    //   author: {
+    //     name: 42
+    //   }
+    // }
+    ```
+
+For more information about the differences between the method chaining and
+standalone (floating) syntaxes, see [The Two Syntaxes](two-syntaxes.md).

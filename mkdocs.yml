@@ -9,12 +9,18 @@ theme:
   icon:
     repo: fontawesome/brands/github
 markdown_extensions:
-  - toc:
-      permalink: '#'
+  - pymdownx.emoji:
+      emoji_index: !!python/name:materialx.emoji.twemoji
+      emoji_generator: !!python/name:materialx.emoji.to_svg
   - pymdownx.highlight
   - pymdownx.superfences
+  - pymdownx.tabbed
+  - toc:
+      permalink: '#'
 nav:
   - Home: 'index.md'
   - 'installation.md'
   - 'tutorial.md'
   - 'apiref.md'
+  - 'two-syntaxes.md'
+  - 'prior-art.md'
