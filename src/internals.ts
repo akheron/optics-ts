@@ -236,7 +236,7 @@ function compose(optic1: OpticFn, optic2: OpticFn, optic3?: OpticFn): OpticFn {
   }
 }
 
-const eq: OpticFn = withTag('Equivalence', (_P: any, optic: any) => optic)
+export const eq: OpticFn = withTag('Equivalence', (_P: any, optic: any) => optic)
 
 export const iso = (there: (x: any) => any, back: (x: any) => any): OpticFn =>
   withTag('Iso', (P: any, optic: any): Optic => P.dimap(there, back, optic))
