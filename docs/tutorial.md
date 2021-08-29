@@ -247,16 +247,16 @@ the sense that you can match on any branch of a union type instead of just the
 non-`undefined` part:
 
 ```typescript
-interface Square {
-  kind: 'square'
-  size: number
+interface Circle {
+  kind: 'circle'
+  radius: number
 }
 interface Rectangle {
   kind: 'rectangle'
   width: number
   height: number
 }
-type Shape = Square | Rectangle
+type Shape = Circle | Rectangle
 
 function isRectangle(s: Shape): s is Rectangle {
   return s.kind === 'rectangle'
@@ -268,7 +268,7 @@ function isRectangle(s: Shape): s is Rectangle {
     ```typescript
     const rectWidth = O.optic<Shape>().guard(isRectangle).prop('width')
 
-    O.preview(rectWidth)({ kind: 'square', size: 10 })
+    O.preview(rectWidth)({ kind: 'circle', radius: 10 })
     // ==> undefined
 
     O.preview(rectWidth)({ kind: 'rectangle', width: 5, height: 7 })
@@ -283,7 +283,7 @@ function isRectangle(s: Shape): s is Rectangle {
     ```typescript
     const rectWidth = O.compose(O.guard(isRectangle), 'width')
 
-    O.preview(rectWidth, { kind: 'square', size: 10 })
+    O.preview(rectWidth, { kind: 'circle', radius: 10 })
     // ==> undefined
 
     O.preview(rectWidth, { kind: 'rectangle', width: 5, height: 7 })
@@ -295,7 +295,7 @@ function isRectangle(s: Shape): s is Rectangle {
 
 Notice how above we composed the `guard` prism with the `prop` lens. This yields
 a prism, so we used `preview` to read through it. See
-[Types of optics](apiref.md#types-of-optics) for the rules of composition.
+[Rules of composition](reference-intro.md#rules-of-composition) for more info.
 
 ## Removable optics
 
@@ -449,7 +449,7 @@ Writing through a traversal writes to all focused values:
 
 Note again how we used `prop`, `elems` and `prop`, composing a lens with a
 traversal, and then with a lens again. This yields a traversal. See
-[Types of optics](apiref.md#types-of-optics) for more info.
+[Rules of composition](reference-intro.md#rules-of-composition) for more info.
 
 It's sometimes useful to further focus on certain elements of a traversal. This
 can be done by composing a traversal with a prism like `when` that skips items

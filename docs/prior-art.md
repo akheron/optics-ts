@@ -10,3 +10,6 @@ an existing JavaScript implementation.
 
 - [@grammarly/focal](https://github.com/grammarly/focal) is not an optics
   library per se, rather an UI framework for TypeScript.
+
+The naming of optic classes was inspired by
+[Glassery](http://oleg.fi/gists/posts/2017-04-18-glassery.html) by Oleg Grenrus.

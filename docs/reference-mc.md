@@ -1,57 +1,14 @@
-# API reference
+# Method chaining API
 
-## Types of optics
+!!! note
 
-The supported optic classes are Equivalence, Iso (isomorphism), Lens, Prism,
-Traversal, Getter, AffineFold, Fold and Setter.
+    Since optics-ts v2.2.0, there are two syntaxes for optics: **method chaining**
+    and **standalone optics**. For more information about the differences between
+    them, see [The Two Syntaxes](two-syntaxes.md).
 
-Equivalence, Iso, Lens, Prism and Traversal are read-write, i.e. you can read
-and write through them. Getter, AffineFold and Fold are read-only. Setter is
-write-only.
-
-Equivalence, Iso, Lens and Getter have one focus, i.e. you can always read and
-write through them (Getter doesn't support writing). Prism and AffineFold have
-zero or one focus, i.e. reading may yield no value and writing may have no
-effect if there's no focus. Traversal and Fold have zero or more focuses,
-meaning that reading yields zero or more values, and writing modifies zero or
-more values.
-
-Any read-write and read-only optic can be composed with another read-write and
-read-only optic. The type of the resulting optic can be determined from this
-diagram:
-
+```typescript
+import * as O from 'optics-ts'
 ```
-Equivalence -> Iso -> Lens ---> Prism ------> Traversal
-                      |         |             |
-                      v         v             v
-                      Getter -> AffineFold -> Fold
-```
-
-When you compose two optics A and B, the result is the nearest optic that you
-get by following the arrows starting from both A and B.
-
-For example, composing a Getter with a Traversal yields a Fold. Composing an Iso
-with a Prism yields a Prism.
-
-```
-Setter
-```
-
-Setter is special. You can only compose writable optics with setters. Setters
-cannot be further composed with any other optic.
-
-```
-RemovablePrism
-```
-
-RemovablePrism behaves like a regular prism, but it can be removed from its
-containing container. When composed with other optics, composes like a regular
-Prism.
-
-The naming of the optic classes was inspired by
-[Glassery](http://oleg.fi/gists/posts/2017-04-18-glassery.html) by Oleg Grenrus.
-
-## Method chaining
 
 Optics are composed with method chaining. This means that each optic type has
 most of the methods documented below, regardless of the type of the optic that
@@ -69,10 +26,10 @@ const newOptic = myLens.optional()
 prism, i.e. a prism.
 
 Which methods each optic type has depends on the composition rules presented in
-[Types of optics](#types-of-optics). For example, the `.prop()` method creates a
-lens, so a getter has that method because you can compose a getter and a lens.
-On the other hand, the `.appendTo()` method, which creates a setter, is not
-available in a getter, because getters cannot be composed with setters.
+[Rules of composition](#rules-of-composition). For example, the `.prop()` method
+creates a lens, so a getter has that method because you can compose a getter and
+a lens. On the other hand, the `.appendTo()` method, which creates a setter, is
+not available in a getter, because getters cannot be composed with setters.
 
 ## Type parameters
 
@@ -186,7 +143,7 @@ Signature:
 Compose two optics. If the first optic is from `S` to `A1`, and the second optic
 is from `A1` to `A2`, the result is from `S` to `A2`.
 
-See [Types of optics](#types-of-optics) for the rules of composition.
+See [Rules of composition](#rules-of-composition) for the rules of composition.
 
 ## Creating optics
 

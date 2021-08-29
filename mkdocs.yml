@@ -6,9 +6,11 @@ theme:
   name: material
   features:
     - navigation.instant
+    - navigation.expand
   icon:
     repo: fontawesome/brands/github
 markdown_extensions:
+  - admonition
   - pymdownx.emoji:
       emoji_index: !!python/name:materialx.emoji.twemoji
       emoji_generator: !!python/name:materialx.emoji.to_svg
@@ -21,6 +23,8 @@ nav:
   - Home: 'index.md'
   - 'installation.md'
   - 'tutorial.md'
-  - 'apiref.md'
   - 'two-syntaxes.md'
+  - Reference:
+    - 'reference-intro.md'
+    - 'reference-mc.md'
   - 'prior-art.md'
