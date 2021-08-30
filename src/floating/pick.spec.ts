@@ -80,4 +80,15 @@ describe('pick', () => {
       xyzzy: 999,
     })
   })
+
+  it('get - empty', () => {
+    const result: Record<string, never> = O.get(O.pick(), { foo: 42 })
+    expect(result).toEqual({})
+  })
+
+  it('set - empty', () => {
+    type T = { foo: number; bar: boolean }
+    const result: T = O.set(O.pick(), { foo: 42 }, { bar: true })
+    expect(result).toEqual({ foo: 42, bar: true })
+  })
 })

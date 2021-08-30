@@ -30,7 +30,11 @@ interface PickA<K extends string> extends A {
 interface PickT<K extends string> extends T {
   0: TryT<this, Omit<S<this>, K> & { [KK in keyof B<this>]: B<this>[KK] }>
 }
-export const pick: <K extends string>(
+
+export function pick(): Optic<'Lens', PickA<never>, PickT<never>>
+export function pick<K extends string>(
   ...keys: K[]
-) => Optic<'Lens', PickA<K>, PickT<K>> = (...args: string[]): any =>
-  I.pick(args)
+): Optic<'Lens', PickA<K>, PickT<K>>
+export function pick(...args: any): any {
+  return I.pick(args)
+}
