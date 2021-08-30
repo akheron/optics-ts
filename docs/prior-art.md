@@ -5,6 +5,10 @@ only few for TypeScript. It's generally hard to create good typings for optics
 in TypeScript, and the task becomes impossible if one tried to retrofit types on
 an existing JavaScript implementation.
 
+- [partial.lenses](https://github.com/calmm-js/partial.lenses) is arguably the
+  most comprehensive and elegant optics library for JavaScript, and the source
+  of inspiration for optics-ts.
+
 - [monocle-ts](https://github.com/gcanti/monocle-ts) is probably the most
   popular TypeScript optics library.
 
