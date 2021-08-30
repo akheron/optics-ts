@@ -27,4 +27,5 @@ nav:
   - Reference:
     - 'reference-intro.md'
     - 'reference-mc.md'
+    - 'reference-floating.md'
   - 'prior-art.md'

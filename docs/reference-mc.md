@@ -6,6 +6,8 @@
     and **standalone optics**. For more information about the differences between
     them, see [The Two Syntaxes](two-syntaxes.md).
 
+Everything below assumes the following import:
+
 ```typescript
 import * as O from 'optics-ts'
 ```
@@ -26,10 +28,11 @@ const newOptic = myLens.optional()
 prism, i.e. a prism.
 
 Which methods each optic type has depends on the composition rules presented in
-[Rules of composition](#rules-of-composition). For example, the `.prop()` method
-creates a lens, so a getter has that method because you can compose a getter and
-a lens. On the other hand, the `.appendTo()` method, which creates a setter, is
-not available in a getter, because getters cannot be composed with setters.
+[Rules of composition](reference-intro.md#rules-of-composition). For example,
+the `.prop()` method creates a lens, so a getter has that method because you can
+compose a getter and a lens. On the other hand, the `.appendTo()` method, which
+creates a setter, is not available in a getter, because getters cannot be
+composed with setters.
 
 ## Type parameters
 
@@ -143,7 +146,8 @@ Signature:
 Compose two optics. If the first optic is from `S` to `A1`, and the second optic
 is from `A1` to `A2`, the result is from `S` to `A2`.
 
-See [Rules of composition](#rules-of-composition) for the rules of composition.
+See [Rules of composition](reference-intro.md#rules-of-composition) for the
+rules of composition.
 
 ## Creating optics
 
