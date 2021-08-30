@@ -39,7 +39,7 @@ data.
 
 ### `compose`
 
-Signature: `compose(optic, ...optics) => Optic`
+`compose :: (optic, ...optics) => Optic`
 
 Compose optics to create a more complex optic. Using a string as an optic is a
 shorthand for [prop](#prop).
