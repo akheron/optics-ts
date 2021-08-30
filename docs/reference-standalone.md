@@ -9,7 +9,7 @@
 Everything below assumes the following import:
 
 ```typescript
-import * as O from 'optics-ts/floating'
+import * as O from 'optics-ts/standalone'
 ```
 
 ## TypeScript types

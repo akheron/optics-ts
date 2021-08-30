@@ -8,10 +8,10 @@ Method chaining:
 import * as O from 'optics-ts'
 ```
 
-Standalone (floating):
+Standalone:
 
 ```typescript
-import * as O from 'optics-ts/floating'
+import * as O from 'optics-ts/standalone'
 ```
 
 See [The Two Syntaxes](two-syntaxes.md) for the difference between the two, and

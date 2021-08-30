@@ -19,16 +19,12 @@
       "import": "./dist/mjs/index.js",
       "require": "./dist/cjs/index.js"
     },
-    "./floating": {
-      "import": "./dist/mjs/floating/index.js",
-      "require": "./dist/cjs/floating/index.js"
+    "./standalone": {
+      "import": "./dist/mjs/standalone/index.js",
+      "require": "./dist/cjs/standalone/index.js"
     }
   },
-  "files": [
-    "dist",
-    "floating",
-    "*.d.ts"
-  ],
+  "files": ["dist", "standalone", "*.d.ts"],
   "scripts": {
     "typecheck": "tsc --noEmit",
     "build": "yarn build:cjs && yarn build:mjs && yarn build:typings && scripts/fixup",
@@ -37,7 +33,7 @@
     "build:typings": "tsc -p tsconfig.typings.json",
     "build:test": "tsc -p tsconfig.test.json",
     "test": "yarn build:test && jest",
-    "clean": "rm -rf dist/ dist-test/ floating/ *.d.ts",
+    "clean": "rm -rf dist/ dist-test/ standalone/ *.d.ts",
     "lint": "eslint --max-warnings 0 '**/*.ts' && prettier --check \"**/*.{json,md}\"",
     "lint:fix": "eslint --fix '**/*.ts' && prettier --write '**/*.{json,md}'",
     "prepublishOnly": "yarn run clean && yarn run build",

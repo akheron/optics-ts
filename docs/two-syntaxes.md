@@ -2,8 +2,8 @@
 
 Since optics-ts v2.2.0, there are two syntaxes for optics: **method chaining**
 and **standalone optics**. Method chaining is the default, tried and tested
-syntax. Standalone (or floating) syntax is still experimental, but it's likely
-to become the default in the future.
+syntax. Standalone syntax is still experimental, but it's likely to become the
+default in the future.
 
 In the other parts of the documentation, all examples are given in terms of both
 syntaxes. There are also slight semantic differences in certain optics, which
@@ -22,7 +22,7 @@ import * as O from 'optics-ts'
 **Standalone**
 
 ```typescript
-import * as O from 'optics-ts/floating'
+import * as O from 'optics-ts/standalone'
 ```
 
 ## Composing
@@ -45,9 +45,9 @@ O.optic<MyType>()
 **Standalone**
 
 The name of this syntax comes from the fact that optics are _standalone_
-functions, i.e. they "float" in existence without being tied to any concrete
-type. They of course require the data to be of a specific shape, but you don't
-need to explicitly state the type in your code.
+functions and values, i.e. they "float" without being tied to any concrete type.
+They of course require the data to be of a specific shape, but you don't need to
+explicitly state the type in your code.
 
 The implication of not tying the optics to any particular type beforehand means
 that you need to add type annotations to some places, like

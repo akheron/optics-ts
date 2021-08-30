@@ -92,7 +92,7 @@ O.modify(optic)(str => str.length + 29)(input)
 Another example that converts all words longer than 5 characters to upper case:
 
 ```typescript
-import * as O from 'optics-ts/floating'
+import * as O from 'optics-ts/standalone'
 
 const optic = O.optic<string>().words().when(s => s.length >= 5)
 

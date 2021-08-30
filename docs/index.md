@@ -71,7 +71,7 @@
 === "Standalone"
 
     ```typescript
-    import * as O from 'optics-ts/floating'
+    import * as O from 'optics-ts/standalone'
 
     // Create a lens that focuses on author.name
     const optic = O.compose('author', 'name')
@@ -111,4 +111,4 @@
     ```
 
 For more information about the differences between the method chaining and
-standalone (floating) syntaxes, see [The Two Syntaxes](two-syntaxes.md).
+standalone syntaxes, see [The Two Syntaxes](two-syntaxes.md).
