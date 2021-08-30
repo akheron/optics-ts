@@ -1,6 +1,6 @@
 # optics-ts
 
-![Build](https://github.com/akheron/optics-ts/workflows/tests/badge.svg)
+[![Build](https://github.com/akheron/optics-ts/workflows/tests/badge.svg)](https://github.com/akheron/optics-ts/actions/workflows/tests.yml)
 
 `optics-ts` provides type-safe, ergonomic, polymorphic optics for TypeScript:
 
