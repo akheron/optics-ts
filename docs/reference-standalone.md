@@ -221,7 +221,7 @@ You can also just simply pass a string to [`compose`](#compose) instead of using
 
 Example:
 
-```
+```typescript
 O.set(O.prop('foo'), 42, { foo: null })
 // { foo: 42 }
 ```
@@ -256,7 +256,7 @@ const data = {
   baz: true,
 }
 
-O.get(O.pick('foo', 'bar', data)
+O.get(O.pick('foo', 'bar'), data)
 // {
 //  foo: 'something',
 //  baz: true,

@@ -258,13 +258,13 @@ const data = {
 const lens = O.optic_<typeof data>().pick(['foo', 'bar'])
 
 O.get(lens)(data)
-// ==> {
+// {
 //  foo: 'something',
 //  baz: true,
 // }
 
 O.set(lens)({ quux: null })(data)
-// ==> {
+// {
 //   quux: null,
 //   baz: true,
 // }
@@ -273,7 +273,7 @@ O.set(lens)({ quux: null })(data)
 const monoLens = O.optic<typeof data>().compose(lens)
 
 O.set(monoLens)({ quux: null })(data)
-// ==> DisallowedTypeChange
+// DisallowedTypeChange
 ```
 
 ### `filter`
@@ -292,13 +292,16 @@ type guard of `B`, narrow the type of the focus to `B[]`.
 const l = O.optic_<number[]>().filter((x) => x % 2 === 1)
 
 // Writing an array of the same length replaces elements
-O.set(l)(['a', 'b', 'c'])([1, 2, 3, 5, 6]) // => ['a', 2, 'b', 'c', 6]
+O.set(l)(['a', 'b', 'c'])([1, 2, 3, 5, 6])
+// ['a', 2, 'b', 'c', 6]
 
 // Writing a shorter array removes elements
-O.set(l)(['a', 'b'])([1, 2, 3, 5, 6]) // => ['a', 2, 'b', 6]
+O.set(l)(['a', 'b'])([1, 2, 3, 5, 6])
+// ['a', 2, 'b', 6]
 
 // Writing a longer array adds elements to the end
-O.set(l)(['a', 'b', 'c', 'd', 'e'])([1, 2, 3, 5, 6]) // => ['a', 2, 'b', 'c', 6, 'd', 'e']
+O.set(l)(['a', 'b', 'c', 'd', 'e'])([1, 2, 3, 5, 6])
+// ['a', 2, 'b', 'c', 6, 'd', 'e']
 ```
 
 When a different type `U extends any[]` is written, the result will have the

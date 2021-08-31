@@ -57,20 +57,20 @@ of both syntaxes.
     }
 
     O.get(bar)(data)
-    // => 42
+    // 42
     ```
 
     Use `set` or `modify` to write the focused value through the lens:
 
     ```typescript
     O.set(bar)(99)(data)
-    // => {
+    // {
     //   foo: { bar: 99 },
     //   other: 'stuff'
     // }
 
     O.modify(bar, (x) => x * 100, data)
-    // => {
+    // {
     //   foo: { bar: 4200 },
     //   other: 'stuff'
     // }
@@ -112,20 +112,20 @@ of both syntaxes.
     }
 
     O.get(bar, data)
-    // => 42
+    // 42
     ```
 
     Use `set` or `modify` to write the focused value through the lens:
 
     ```typescript
     O.set(bar, 99, data)
-    // => {
+    // {
     //   foo: { bar: 99 },
     //   other: 'stuff'
     // }
 
     O.modify(bar, (x) => x * 100, data)
-    // => {
+    // {
     //   foo: { bar: 4200 },
     //   other: 'stuff'
     // }
@@ -179,14 +179,14 @@ match, it returns `undefined`.
       age: 42,
     }
     O.preview(age)(userWithAge)
-    // ==> 42
+    // 42
 
     const userWithoutAge: User = {
       name: 'Max',
       age: undefined,
     }
     O.preview(age)(userWithoutAge)
-    // ==> undefined
+    // undefined
     ```
 
 === "Standalone"
@@ -197,14 +197,14 @@ match, it returns `undefined`.
       age: 42,
     }
     O.preview(age, userWithAge)
-    // ==> 42
+    // 42
 
     const userWithoutAge: User = {
       name: 'Max',
       age: undefined,
     }
     O.preview(age, userWithoutAge)
-    // ==> undefined
+    // undefined
     ```
 
 You can write through a prism normally with `set` and `modify`. If the prism
@@ -214,13 +214,13 @@ doesn't match, the value is unchanged:
 
     ```typescript
     O.modify(age)((n) => n + 1)(userWithAge)
-    // ==> {
+    // {
     //   name: 'Betty',
     //   age: 43,
     // }
 
     O.set(age)(60)(userWithoutAge)
-    // ==> {
+    // {
     //   name: 'Max',
     //   age: undefined,
     // }
@@ -230,13 +230,13 @@ doesn't match, the value is unchanged:
 
     ```typescript
     O.modify(age, (n) => n + 1, userWithAge)
-    // ==> {
+    // {
     //   name: 'Betty',
     //   age: 43,
     // }
 
     O.set(age, 60, userWithoutAge)
-    // ==> {
+    // {
     //   name: 'Max',
     //   age: undefined,
     // }
@@ -269,13 +269,13 @@ function isRectangle(s: Shape): s is Rectangle {
     const rectWidth = O.optic<Shape>().guard(isRectangle).prop('width')
 
     O.preview(rectWidth)({ kind: 'circle', radius: 10 })
-    // ==> undefined
+    // undefined
 
     O.preview(rectWidth)({ kind: 'rectangle', width: 5, height: 7 })
-    // ==> 5
+    // 5
 
     O.modify(rectWidth)((w) => w * 2)({ kind: 'rectangle', width: 5, height: 7 })
-    // ==> { kind: 'rectangle', width: 10, height: 7 })
+    // { kind: 'rectangle', width: 10, height: 7 })
     ```
 
 === "Standalone"
@@ -284,13 +284,13 @@ function isRectangle(s: Shape): s is Rectangle {
     const rectWidth = O.compose(O.guard(isRectangle), 'width')
 
     O.preview(rectWidth, { kind: 'circle', radius: 10 })
-    // ==> undefined
+    // undefined
 
     O.preview(rectWidth, { kind: 'rectangle', width: 5, height: 7 })
-    // ==> 5
+    // 5
 
     O.modify(rectWidth, (w) => w * 2, { kind: 'rectangle', width: 5, height: 7 })
-    // ==> { kind: 'rectangle', width: 10, height: 7 })
+    // { kind: 'rectangle', width: 10, height: 7 })
     ```
 
 Notice how above we composed the `guard` prism with the `prop` lens. This yields
@@ -320,7 +320,7 @@ remove that index:
 
     const secondUser = O.optic<User[]>().at(1)
     O.remove(secondUser)(threeUsers)
-    // ==> [{ name: 'Max' }, { name: 'Alice' }]
+    // [{ name: 'Max' }, { name: 'Alice' }]
     ```
 
 === "Standalone"
@@ -337,7 +337,7 @@ remove that index:
     ]
 
     O.remove(O.at(1), threeUsers)
-    // ==> [{ name: 'Max' }, { name: 'Alice' }]
+    // [{ name: 'Max' }, { name: 'Alice' }]
     ```
 
 If the optic doesn't match, removing has no effect:
@@ -348,7 +348,7 @@ If the optic doesn't match, removing has no effect:
     const oneUser: User[] = [{ name: 'Max' }]
 
     O.remove(secondUser)(oneUser)
-    // ==> [{ name: 'Max' }]
+    // [{ name: 'Max' }]
     ```
 
 === "Standalone"
@@ -357,7 +357,7 @@ If the optic doesn't match, removing has no effect:
     const oneUser: User[] = [{ name: 'Max' }]
 
     O.remove(O.at(1), oneUser)
-    // ==> [{ name: 'Max' }]
+    // [{ name: 'Max' }]
     ```
 
 ## Traversal
@@ -405,7 +405,7 @@ an array:
     const amy = { name: 'Amy', friends: [john, bruce] }
 
     O.collect(friendsNames)(amy)
-    // ==> [ 'John', 'Bruce' ]
+    // [ 'John', 'Bruce' ]
     ```
 
 === "Standalone"
@@ -416,7 +416,7 @@ an array:
     const amy = { name: 'Amy', friends: [john, bruce] }
 
     O.collect(friendsNames, amy)
-    // ==> [ 'John', 'Bruce' ]
+    // [ 'John', 'Bruce' ]
     ```
 
 Writing through a traversal writes to all focused values:
@@ -425,7 +425,7 @@ Writing through a traversal writes to all focused values:
 
     ```typescript
     O.modify(friendsNames)((name) => `${name} Wayne`)(amy)
-    // ==> {
+    // {
     //   name: 'Amy',
     //   friends: [
     //     { name: 'John Wayne', friends: [] },
@@ -438,7 +438,7 @@ Writing through a traversal writes to all focused values:
 
     ```typescript
     O.modify(friendsNames, (name) => `${name} Wayne`, amy)
-    // ==> {
+    // {
     //   name: 'Amy',
     //   friends: [
     //     { name: 'John Wayne', friends: [] },
@@ -463,7 +463,7 @@ that don't match a predicate:
       .when((n) => n % 2 === 0)
 
     O.modify(even)((n) => -n)([1, 2, 3, 4, 5])
-    // ==> [1, -2, 3, -4, 5]
+    // [1, -2, 3, -4, 5]
     ```
 
 === "Standalone"
@@ -475,7 +475,7 @@ that don't match a predicate:
     )
 
     O.modify(even, (n) => -n, [1, 2, 3, 4, 5])
-    // ==> [1, -2, 3, -4, 5]
+    // [1, -2, 3, -4, 5]
     ```
 
 ## Polymorphism
@@ -519,7 +519,7 @@ Let's modify `bar` to contain the length of the original string instead:
     }
 
     const updated = O.modify(bar)((str) => str.length)(data)
-    // ==> {
+    // {
     //   foo: { bar: 11 },
     //   other: true
     // }
@@ -541,7 +541,7 @@ Let's modify `bar` to contain the length of the original string instead:
     }
 
     const updated = O.modify(bar, (str) => str.length, data)
-    // ==> {
+    // {
     //   foo: { bar: 11 },
     //   other: true
     // }
