@@ -25,10 +25,10 @@ export interface Optic<
   T extends HKT2,
   R extends Removable = undefined
 > {
-  readonly _C: C
+  readonly _tag: C
   readonly _A: A
   readonly _T: T
-  readonly _R: R
+  readonly _removable: R
 }
 
 export type Try<P, U> = P extends OpticError ? P : U
