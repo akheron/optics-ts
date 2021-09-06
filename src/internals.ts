@@ -236,7 +236,7 @@ function compose(optic1: OpticFn, optic2: OpticFn, optic3?: OpticFn): OpticFn {
   }
 }
 
-export const eq: OpticFn = withTag(
+export const eq = /* @__PURE__ */ withTag(
   'Equivalence',
   (_P: any, optic: any) => optic
 )
@@ -254,7 +254,7 @@ const prism = (match: (x: any) => any, build: (x: any) => any): OpticFn =>
     P.dimap(match, (x: any) => either(id, build, x), P.right(optic))
   )
 
-export const elems = withTag(
+export const elems = /* @__PURE__ */ withTag(
   'Traversal',
   (P: any, optic: any): OpticFn => P.dimap(id, id, P.wander(optic))
 )
@@ -284,7 +284,7 @@ export const collect = (optic: any, source: any): any =>
 
 /////////////////////////////////////////////////////////////////////////////
 
-export const indexed = iso(
+export const indexed = /* @__PURE__ */ iso(
   (value: any[]) => value.map((v, k) => [k, v]),
   (value: [number, any][]) => {
     const sorted = [...value].sort((a, b) => a[0] - b[0])
@@ -332,16 +332,16 @@ export const nth = (n: number): OpticFn =>
     }
   )
 
-const fst = nth(0)
+const fst = /* @__PURE__ */ nth(0)
 
 export const when = (pred: (x: any) => boolean): OpticFn =>
   prism((x: any) => (pred(x) ? Right(x) : Left(x)), id)
 
-const noMatch: unique symbol = Symbol('__no_match__')
+const noMatch = /* @__PURE__ */ Symbol('__no_match__')
 
-const mustMatch = when((source: any) => source !== noMatch)
+const mustMatch = /* @__PURE__ */ when((source: any) => source !== noMatch)
 
-const removeMe: unique symbol = Symbol('__remove_me__')
+const removeMe = /* @__PURE__ */ Symbol('__remove_me__')
 
 export const at = (i: number): OpticFn =>
   removable(
@@ -380,7 +380,7 @@ export const at = (i: number): OpticFn =>
     )
   )
 
-export const optional: OpticFn = prism(
+export const optional = /* @__PURE__ */ prism(
   (source: any) => (source === undefined ? Left(undefined) : Right(source)),
   id
 )
@@ -489,7 +489,7 @@ export const rewrite = (fn: (value: any) => any): OpticFn =>
     ([value, _]) => fn(value)
   )
 
-export const prependTo: OpticFn = lens(
+export const prependTo = /* @__PURE__ */ lens(
   (_source: any[]) => undefined,
   ([value, source]: [any, any[]]) => {
     if (value === undefined) return source
@@ -497,7 +497,7 @@ export const prependTo: OpticFn = lens(
   }
 )
 
-export const appendTo: OpticFn = lens(
+export const appendTo = /* @__PURE__ */ lens(
   (_source: any[]) => undefined,
   ([value, source]: [any, any[]]) => {
     if (value === undefined) return source
@@ -505,7 +505,7 @@ export const appendTo: OpticFn = lens(
   }
 )
 
-export const chars: OpticFn = compose(
+export const chars = /* @__PURE__ */ compose(
   iso(
     (s) => s.split(''),
     (a) => a.join('')
@@ -513,7 +513,7 @@ export const chars: OpticFn = compose(
   elems
 )
 
-export const words: OpticFn = compose(
+export const words = /* @__PURE__ */ compose(
   iso(
     (s) => s.split(/\b/),
     (a) => a.join('')
@@ -647,4 +647,4 @@ export class Optic {
   }
 }
 
-export const optic = new Optic(eq)
+export const optic = /* @__PURE__ */ new Optic(eq)
