@@ -14,6 +14,7 @@
     "immutable",
     "functional-programming"
   ],
+  "main": "./dist/cjs/index.js",
   "exports": {
     ".": {
       "import": "./dist/mjs/index.js",
