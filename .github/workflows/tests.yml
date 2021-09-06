@@ -22,4 +22,4 @@ jobs:
         node-version: ${{ matrix.node-version }}
     - run: yarn
     - run: yarn lint
-    - run: yarn test
+    - run: NODE_OPTIONS=--max_old_space_size=4096 yarn test
