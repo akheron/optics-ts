@@ -6,6 +6,11 @@
     and **standalone optics**. For more information about the differences between
     them, see [The Two Syntaxes](two-syntaxes.md).
 
+!!! danger "Experimental"
+
+    This module is experimental and may receive backwards incompatible changes
+    without a corresponding semver bump.
+
 Everything below assumes the following import:
 
 ```typescript

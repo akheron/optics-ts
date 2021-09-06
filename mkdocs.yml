@@ -25,7 +25,8 @@ nav:
   - 'tutorial.md'
   - 'two-syntaxes.md'
   - Reference:
-    - 'reference-intro.md'
-    - 'reference-mc.md'
-    - 'reference-standalone.md'
+      - 'reference-intro.md'
+      - 'reference-mc.md'
+      - 'reference-standalone.md'
+      - 'reference-interop.md'
   - 'prior-art.md'
