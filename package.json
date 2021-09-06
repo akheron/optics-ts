@@ -23,6 +23,10 @@
     "./standalone": {
       "import": "./dist/mjs/standalone/index.js",
       "require": "./dist/cjs/standalone/index.js"
+    },
+    "./interop": {
+      "import": "./dist/mjs/interop.js",
+      "require": "./dist/cjs/interop.js"
     }
   },
   "files": ["dist", "standalone", "*.d.ts"],
