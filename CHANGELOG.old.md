@@ -1,10 +1,7 @@
-# Changelog
+# Changelog (not updated)
 
-## 2.1.0 (unreleased)
-
-- **New features**
-  - Add `.indexed()`
-  - Add `.reread()` and `.rewrite()`
+Change logs for new releases can be found from
+https://github.com/akheron/optics-ts/releases.
 
 ## 2.0.0
 
