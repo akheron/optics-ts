@@ -1,6 +1,6 @@
 {
   "name": "optics-ts",
-  "version": "2.1.0",
+  "version": "2.2.0-pre.0",
   "description": "Type-safe, ergonomic, polymorphic optics for TypeScript",
   "repository": "https://github.com/akheron/optics-ts",
   "author": "Petri Lehtinen <petri@digip.org>",
@@ -29,7 +29,11 @@
       "require": "./dist/cjs/interop.js"
     }
   },
-  "files": ["dist", "standalone", "*.d.ts"],
+  "files": [
+    "dist",
+    "standalone",
+    "*.d.ts"
+  ],
   "scripts": {
     "typecheck": "tsc --noEmit",
     "build": "yarn build:cjs && yarn build:mjs && yarn build:typings && scripts/fixup",
