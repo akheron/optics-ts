@@ -688,3 +688,21 @@ O.modify(O.words, (word) => word.split('').reverse().join(''), 'foo, bar')
 `eq :: Equivalence`
 
 Equivalence is a no-op that does nothing. Acts as an identity wrt. composition.
+
+### `pipe`
+
+`pipe :: (a, f1, f2, ...) => v`
+
+Pipe the value of an expression (`a`) into a pipeline of at most 9 unary
+functions (`f1`, `f2`, ...).
+
+Example:
+
+```typescript
+pipe(
+  { foo: 1, bar: { baz: 2 } },
+  O.set(O.prop('foo'), 3),
+  O.modify(O.compose('bar', 'baz'), (v: number) => -v)
+)
+// { foo: 3, bar: { baz: -2 } }
+```

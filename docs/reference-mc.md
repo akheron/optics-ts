@@ -149,6 +149,14 @@ is from `A1` to `A2`, the result is from `S` to `A2`.
 See [Rules of composition](reference-intro.md#rules-of-composition) for the
 rules of composition.
 
+### `pipe`
+
+Signature:
+`pipe<A, B, C, ..., V>(a: A, ab: (a: A) => B, bc: (b: B) => C, ...): V`
+
+Pipe the value of an expression (`a`) into a pipeline of at most 9 unary
+functions (`ab`, `bc`, ...).
+
 ## Creating optics
 
 The methods documented below are available on all optics types: `Equivalence`,
