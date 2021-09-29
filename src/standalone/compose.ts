@@ -146,7 +146,7 @@ export type Compose<T extends [any, ...any]> = T extends [
 ]
   ? Compose1<First, Compose<[Second, ...Rest]>>
   : T extends [infer First]
-  ? First
+  ? ToOptic<First>
   : never
 
 function compose1(optic1: any, optic2: any) {
