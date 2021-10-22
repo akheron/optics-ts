@@ -107,4 +107,4 @@ affect compilation speeds dramatically.
 ## Runtime performance
 
 There should be no performance difference between the two, although there's no
-benchmark demonstating this either, yet.
+benchmark demonstrating this either, yet.
