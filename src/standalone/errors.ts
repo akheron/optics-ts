@@ -47,6 +47,11 @@ export interface NoSuchProperty<K extends string, A> extends OpticError {
   readonly _a: A
 }
 
+export interface RecordExpected<T> extends OpticError {
+  readonly _: unique symbol
+  readonly _t: T
+}
+
 export interface StringExpected<T> extends OpticError {
   readonly _: unique symbol
   readonly _t: T

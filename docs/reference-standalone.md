@@ -231,6 +231,8 @@ O.set(O.prop('foo'), 42, { foo: null })
 // { foo: 42 }
 ```
 
+See [`atKey`](#atKey) for a similar prism that works on records.
+
 ### `nth`
 
 `nth :: (n) => Lens`
@@ -543,6 +545,33 @@ O.remove(O.at(1), 'abc')
 `head :: Prism`
 
 A shorthand for `at(0)`.
+
+### `atKey`
+
+`atKey :: (key) => RemovablePrism`
+
+_Only works on records (`Record<string, T>`). Removable._
+
+Create a prism that focuses on the key of a record.
+
+Example:
+
+```typescript
+O.preview(O.atKey('foo'), { foo: 'bar' })
+// 'bar'
+
+O.preview(O.at('foo'), { hello: 'world' })
+// undefined
+
+O.set(O.atKey('foo'), 123, { foo: 'bar', hello: 'world' })
+// { foo: 123, hello: 'world' }
+
+O.set(O.at('foo'), 123, { hello: 'world' })
+// { hello: 'world' }
+
+O.remove(O.at('foo'), { foo: 'bar', hello: 'world' })
+// { hello: 'world' }
+```
 
 ### `find`
 
