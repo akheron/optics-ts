@@ -380,6 +380,32 @@ export const at = (i: number): OpticFn =>
     )
   )
 
+export const atKey = (key: string): OpticFn =>
+  removable(
+    compose(
+      lens(
+        (source: Record<string, any>) => {
+          const value = source[key]
+          return value !== undefined ? value : noMatch
+        },
+        ([value, source]: [any, Record<string, any>]) => {
+          if (value === noMatch) {
+            return source
+          }
+
+          if (value === removeMe) {
+            // eslint-disable-next-line @typescript-eslint/no-unused-vars
+            const { [key]: _, ...rest } = source
+            return rest
+          }
+
+          return { ...source, [key]: value }
+        }
+      ),
+      mustMatch
+    )
+  )
+
 export const optional = /* @__PURE__ */ prism(
   (source: any) => (source === undefined ? Left(undefined) : Right(source)),
   id

@@ -51,7 +51,7 @@ describe('at (on array)', () => {
 
   it('remove undefined', () => {
     const result: Source = O.remove(prism, source2)
-    expect(result).toEqual(['foo'])
+    expect(result).toEqual(source2)
   })
 })
 
@@ -88,6 +88,6 @@ describe('at (on string)', () => {
 
   it('remove undefined', () => {
     const result: Source = O.remove(prism, source2)
-    expect(result).toEqual('foo')
+    expect(result).toEqual(source2)
   })
 })
