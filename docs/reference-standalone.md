@@ -560,16 +560,16 @@ Example:
 O.preview(O.atKey('foo'), { foo: 'bar' })
 // 'bar'
 
-O.preview(O.at('foo'), { hello: 'world' })
+O.preview(O.atKey('foo'), { hello: 'world' })
 // undefined
 
 O.set(O.atKey('foo'), 123, { foo: 'bar', hello: 'world' })
 // { foo: 123, hello: 'world' }
 
-O.set(O.at('foo'), 123, { hello: 'world' })
+O.set(O.atKey('foo'), 123, { hello: 'world' })
 // { hello: 'world' }
 
-O.remove(O.at('foo'), { foo: 'bar', hello: 'world' })
+O.remove(O.atKey('foo'), { foo: 'bar', hello: 'world' })
 // { hello: 'world' }
 ```
 
