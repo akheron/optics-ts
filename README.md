@@ -51,17 +51,15 @@ type Book = {
 }
 
 // Create a lens that focuses on author.name
-const optic = O.optic_<Book>()
-  .prop('author')
-  .prop('name')
+const optic = O.optic_<Book>().prop('author').prop('name')
 
 // This is the input data
 const input: Book = {
   title: "The Hitchhiker's Guide to the Galaxy",
-  isbn: "978-0345391803",
+  isbn: '978-0345391803',
   author: {
-    name: "Douglas Adams"
-  }
+    name: 'Douglas Adams',
+  },
 }
 
 // Read through the optic
@@ -69,7 +67,7 @@ O.get(optic)(input)
 // "Douglas Adams"
 
 // Write through the optic
-O.set(optic)("Arthur Dent")(input)
+O.set(optic)('Arthur Dent')(input)
 // {
 //   title: "The Hitchhiker’s Guide to the Galaxy"
 //   isbn: "978-0345391803",
@@ -79,7 +77,7 @@ O.set(optic)("Arthur Dent")(input)
 // }
 
 // Update the existing value through the optic, while also changing the data type
-O.modify(optic)(str => str.length + 29)(input)
+O.modify(optic)((str) => str.length + 29)(input)
 // {
 //   title: "The Hitchhiker’s Guide to the Galaxy"
 //   isbn: "978-0345391803",
