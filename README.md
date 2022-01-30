@@ -57,7 +57,7 @@ const optic = O.optic_<Book>()
 
 // This is the input data
 const input: Book = {
-  title: "The Hitchhiker's Guide to the Galaxy"
+  title: "The Hitchhiker's Guide to the Galaxy",
   isbn: "978-0345391803",
   author: {
     name: "Douglas Adams"
