@@ -462,18 +462,25 @@ type Some<T> = { type: 'some'; value: T }
 type None = { type: 'none' }
 type Option<T> = Some<T> | None
 
-function isSome<T>(value: Option<T>): value is Some<T> {
+// O.HKT is a "type transform" or a "higher-kinded type". this[1] is the input
+// type, and the output is taken from prop 0.
+//
+// The SomeF type transform just checks that the input type in this[1] has the
+// shape of a Some, and passes it through as-is. In other words, the writer
+// can change the type of the 'value' prop, but nothing else.
+//
+interface SomeF extends O.HKT {
+  0: this[1] extends Some<any> ? this[1] : never
+}
+
+function isSomeNumber(value: Option<number>): value is Some<number> {
   return value.type === 'some'
 }
 
-interface SomeF extends O.HKT {
-  0: Some<this[1]>
-}
+const someValue = O.compose(O.guard<SomeF>()(isSomeNumber), 'value')
 
-const someValue = O.compose(O.guard<SomeF>()(isSome), 'value')
-
-const some: Some<number> = { type: 'some', value: 42 }
-const none: None = { type: 'none' }
+const some: Option<number> = { type: 'some', value: 42 }
+const none: Option<number> = { type: 'none' }
 
 O.preview(someValue, none)
 // undefined
@@ -481,10 +488,10 @@ O.preview(someValue, none)
 O.preview(someValue, some)
 // 42
 
-const result: Option<string> = O.set(someValue, 'foo', none)
+const result1: Option<string> = O.set(someValue, 'foo', none)
 // { type: 'none' }
 
-const result: Option<string> = O.set(someValue, 'foo', some)
+const result2: Option<string> = O.set(someValue, 'foo', some)
 // { type: 'some', value: 'foo' }
 ```
 
