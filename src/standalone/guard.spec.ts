@@ -4,7 +4,7 @@ type Bar = { bar: string }
 type Baz = { baz: boolean }
 
 function isBar(v: Bar | Baz): v is Bar {
-  return Object.prototype.hasOwnProperty.call(v, 'bar')
+  return 'bar' in v
 }
 
 describe('lens/guard (polymorphic)', () => {
