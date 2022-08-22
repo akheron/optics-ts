@@ -636,9 +636,9 @@
     lodash "^4.17.13"
 
 "@babel/types@^7.0.0", "@babel/types@^7.12.1", "@babel/types@^7.14.5", "@babel/types@^7.14.8", "@babel/types@^7.15.0", "@babel/types@^7.16.7", "@babel/types@^7.3.0", "@babel/types@^7.3.3", "@babel/types@^7.8.3", "@babel/types@^7.8.6", "@babel/types@^7.9.0", "@babel/types@^7.9.5", "@babel/types@^7.9.6":
-  version "7.18.10"
-  resolved "https://registry.yarnpkg.com/@babel/types/-/types-7.18.10.tgz#4908e81b6b339ca7c6b7a555a5fc29446f26dde6"
-  integrity sha512-MJvnbEiiNkpjo+LknnmRrqbY1GPUUggjv+wQVjetM/AONoupqRALB7I6jGqNUAZsKcRIEu2J6FRFvsczljjsaQ==
+  version "7.18.13"
+  resolved "https://registry.yarnpkg.com/@babel/types/-/types-7.18.13.tgz#30aeb9e514f4100f7c1cb6e5ba472b30e48f519a"
+  integrity sha512-ePqfTihzW0W6XAU+aMw2ykilisStJfDnsejDCXRchCcMJ4O0+8DhPXf2YUbZ6wjBlsEmZwLK/sPweWtu8hcJYQ==
   dependencies:
     "@babel/helper-string-parser" "^7.18.10"
     "@babel/helper-validator-identifier" "^7.18.6"
