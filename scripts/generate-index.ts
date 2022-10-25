@@ -113,6 +113,10 @@ const iso = (composition: Composition) => `\
 `
 
 const lens = (composition: Composition) => `\
+  lens<U>(
+    view: (a: A) => U,
+    update: (a: A, v: U) => A
+  ): ${composition.optic('Adapt<A, U>', 'U')}
   prop<K extends keyof A>(key: K): ${composition.optic('Prop<A, K>', 'A[K]')}
   path<K extends keyof any>(path: K): ${composition.optic(
     'SetDottedPath<A, K>',
