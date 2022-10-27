@@ -569,6 +569,15 @@ export class Optic {
     return new Optic(compose(this._ref, iso(there, back)))
   }
 
+  lens(view: (x: any) => any, set: (x: any, y: any) => any): Optic {
+    return new Optic(
+      compose(
+        this._ref,
+        lens(view, ([value, source]: [any, any]) => set(source, value))
+      )
+    )
+  }
+
   indexed(): Optic {
     return new Optic(compose(this._ref, indexed))
   }
