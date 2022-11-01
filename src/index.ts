@@ -79,6 +79,10 @@ export interface Equivalence<S, T extends OpticParams, A> {
   compose<T2 extends OpticParams, A2>(
     optic: Lens<A, T2, A2>
   ): Lens<S, NextComposeParams<T, T2>, A2>
+  lens<U>(
+    view: (a: A) => U,
+    update: (a: A, v: U) => A
+  ): Lens<S, NextParams<T, Adapt<A, U>>, U>
   prop<K extends keyof A>(key: K): Lens<S, NextParams<T, Prop<A, K>>, A[K]>
   path<K extends keyof any>(
     path: K
@@ -203,6 +207,10 @@ export interface Iso<S, T extends OpticParams, A> {
   compose<T2 extends OpticParams, A2>(
     optic: Lens<A, T2, A2>
   ): Lens<S, NextComposeParams<T, T2>, A2>
+  lens<U>(
+    view: (a: A) => U,
+    update: (a: A, v: U) => A
+  ): Lens<S, NextParams<T, Adapt<A, U>>, U>
   prop<K extends keyof A>(key: K): Lens<S, NextParams<T, Prop<A, K>>, A[K]>
   path<K extends keyof any>(
     path: K
@@ -327,6 +335,10 @@ export interface Lens<S, T extends OpticParams, A> {
   compose<T2 extends OpticParams, A2>(
     optic: Lens<A, T2, A2>
   ): Lens<S, NextComposeParams<T, T2>, A2>
+  lens<U>(
+    view: (a: A) => U,
+    update: (a: A, v: U) => A
+  ): Lens<S, NextParams<T, Adapt<A, U>>, U>
   prop<K extends keyof A>(key: K): Lens<S, NextParams<T, Prop<A, K>>, A[K]>
   path<K extends keyof any>(
     path: K
@@ -451,6 +463,10 @@ export interface Prism<S, T extends OpticParams, A> {
   compose<T2 extends OpticParams, A2>(
     optic: Lens<A, T2, A2>
   ): Prism<S, NextComposeParams<T, T2>, A2>
+  lens<U>(
+    view: (a: A) => U,
+    update: (a: A, v: U) => A
+  ): Prism<S, NextParams<T, Adapt<A, U>>, U>
   prop<K extends keyof A>(key: K): Prism<S, NextParams<T, Prop<A, K>>, A[K]>
   path<K extends keyof any>(
     path: K
@@ -575,6 +591,10 @@ export interface Traversal<S, T extends OpticParams, A> {
   compose<T2 extends OpticParams, A2>(
     optic: Lens<A, T2, A2>
   ): Traversal<S, NextComposeParams<T, T2>, A2>
+  lens<U>(
+    view: (a: A) => U,
+    update: (a: A, v: U) => A
+  ): Traversal<S, NextParams<T, Adapt<A, U>>, U>
   prop<K extends keyof A>(key: K): Traversal<S, NextParams<T, Prop<A, K>>, A[K]>
   path<K extends keyof any>(
     path: K
@@ -695,6 +715,7 @@ export interface Getter<S, A> {
 
   // Getter · Lens => Getter
   compose<T2 extends OpticParams, A2>(optic: Lens<A, T2, A2>): Getter<S, A2>
+  lens<U>(view: (a: A) => U, update: (a: A, v: U) => A): Getter<S, U>
   prop<K extends keyof A>(key: K): Getter<S, A[K]>
   path<K extends keyof any>(path: K): Getter<S, DottedPath<A, K>>
   path<K extends (keyof any)[]>(...path: K): Getter<S, TuplePath<A, K>>
@@ -770,6 +791,7 @@ export interface AffineFold<S, A> {
 
   // AffineFold · Lens => AffineFold
   compose<T2 extends OpticParams, A2>(optic: Lens<A, T2, A2>): AffineFold<S, A2>
+  lens<U>(view: (a: A) => U, update: (a: A, v: U) => A): AffineFold<S, U>
   prop<K extends keyof A>(key: K): AffineFold<S, A[K]>
   path<K extends keyof any>(path: K): AffineFold<S, DottedPath<A, K>>
   path<K extends (keyof any)[]>(...path: K): AffineFold<S, TuplePath<A, K>>
@@ -845,6 +867,7 @@ export interface Fold<S, A> {
 
   // Fold · Lens => Fold
   compose<T2 extends OpticParams, A2>(optic: Lens<A, T2, A2>): Fold<S, A2>
+  lens<U>(view: (a: A) => U, update: (a: A, v: U) => A): Fold<S, U>
   prop<K extends keyof A>(key: K): Fold<S, A[K]>
   path<K extends keyof any>(path: K): Fold<S, DottedPath<A, K>>
   path<K extends (keyof any)[]>(...path: K): Fold<S, TuplePath<A, K>>
