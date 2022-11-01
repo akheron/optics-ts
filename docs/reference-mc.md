@@ -367,6 +367,17 @@ invariants in some cases.
 
 Note that both `reread` and `rewrite` are monomorphic.
 
+### `lens`
+
+Signature:
+`lens<U>(view: (a: A) => U, update: (a: A, u: U) => A): Lens<S, _, U>`
+
+Create a lens from functions `view` and `update`. `view` takes the current focus
+and returns a new focus. `update` takes the orginal focus and a value, and
+updates the original focus with that value.
+
+Note that `lens` is monomorphic. There's no polymorphic alternative (yet).
+
 ## Prisms
 
 Prisms have the type `Prism<S, T, A>`. In the following, we omit the exact
