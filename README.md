@@ -13,6 +13,8 @@
 - **Type-safe**: The compiler will type check all operations you do. No `any`,
   ever.
 
+➡ [Documentation](https://akheron.github.io/optics-ts) ⬅
+
 ## Features
 
 `optics-ts` supports lenses, prisms, traversals, removing items from containers,
