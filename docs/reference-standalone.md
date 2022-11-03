@@ -386,10 +386,36 @@ O.get(write, 'foo')
 // foo
 
 O.set(read, null, 'foo')
-// bar
+// foo
 
 O.set(write, null, 'foo')
 // FOO
+```
+
+### `lens`
+
+`lens :: (view: (v) => u, update: (v, u) => v) => Lens`
+
+Create a lens from functions `view` and `update`. `view` takes the current focus
+and returns a new focus. `update` takes the orginal focus and a value, and
+updates the original focus with that value.
+
+Note that `lens` is monomorphic, i.e. you cannot change the value type when
+writing. There's no polymorphic alternative (yet).
+
+Example:
+
+```typescript
+const lens = O.lens<number | string, number>(
+  (v) => (typeof v === 'string' ? 0 : v),
+  (_, u) => u
+)
+
+O.get(lens, 100)
+// 100
+
+O.get(lens, 'foo')
+// 0
 ```
 
 ## Prisms
