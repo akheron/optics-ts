@@ -244,7 +244,7 @@ export const eq = /* @__PURE__ */ withTag(
 export const iso = (there: (x: any) => any, back: (x: any) => any): OpticFn =>
   withTag('Iso', (P: any, optic: any): Optic => P.dimap(there, back, optic))
 
-const lens = (view: (x: any) => any, update: (x: any) => any): OpticFn =>
+export const lens = (view: (x: any) => any, update: (x: any) => any): OpticFn =>
   withTag('Lens', (P: Profunctor, optic: OpticFn): any =>
     P.dimap((x: any) => [view(x), x], update, P.first(optic))
   )
