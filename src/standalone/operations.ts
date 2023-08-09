@@ -7,11 +7,11 @@ import * as I from '../internals.js'
 export function get<
   C extends 'Equivalence' | 'Iso' | 'Lens' | 'Getter',
   A extends HKT,
-  S
+  S,
 >(optic: Optic<C, A, any, any>, source: S): Apply<A, S>
 export function get<
   C extends 'Equivalence' | 'Iso' | 'Lens' | 'Getter',
-  A extends HKT
+  A extends HKT,
 >(optic: Optic<C, A, any, any>): <S>(source: S) => Apply<A, S>
 export function get(...args: any[]): any {
   switch (args.length) {
@@ -29,11 +29,11 @@ type Preview<A extends HKT, S> = Apply<A, S> extends infer AU
 export function preview<
   C extends 'Prism' | 'Traversal' | 'AffineFold' | 'Fold',
   A extends HKT,
-  S
+  S,
 >(optic: Optic<C, A, any, any>, source: S): Preview<A, S>
 export function preview<
   C extends 'Prism' | 'Traversal' | 'AffineFold' | 'Fold',
-  A extends HKT
+  A extends HKT,
 >(optic: Optic<C, A, any, any>): <S>(source: S) => Preview<A, S>
 export function preview(...args: any[]): any {
   switch (args.length) {
@@ -51,11 +51,11 @@ type Collect<A extends HKT, S> = Apply<A, S> extends infer AU
 export function collect<
   C extends 'Prism' | 'Traversal' | 'Fold',
   A extends HKT,
-  S
+  S,
 >(optic: Optic<C, A, any, any>, source: S): Collect<A, S>
 export function collect<
   C extends 'Prism' | 'Traversal' | 'Fold',
-  A extends HKT
+  A extends HKT,
 >(optic: Optic<C, A, any, any>): <S>(source: S) => Collect<A, S>
 export function collect(...args: any[]): any {
   switch (args.length) {
@@ -90,7 +90,7 @@ export function modify<
   A extends HKT,
   B,
   S,
-  T extends HKT2
+  T extends HKT2,
 >(
   optic: Optic<C, A, T, any>,
   f: (a: Apply<A, S>) => B,
@@ -101,7 +101,7 @@ export function modify<
   A extends HKT,
   B,
   T extends HKT2,
-  Ac
+  Ac,
 >(
   optic: Optic<C, A, T, any>,
   f: (a: Ac) => B
@@ -109,7 +109,7 @@ export function modify<
 export function modify<
   C extends 'Equivalence' | 'Iso' | 'Lens' | 'Prism' | 'Traversal',
   A extends HKT,
-  T extends HKT2
+  T extends HKT2,
 >(
   optic: Optic<C, A, T, any>
 ): <Ac, B>(f: (a: Ac) => B) => <S>(source: S) => ModifyPartial<A, Ac, B, S, T>
@@ -132,16 +132,16 @@ export function set<
   C extends 'Equivalence' | 'Iso' | 'Lens' | 'Prism' | 'Traversal' | 'Setter',
   T extends HKT2,
   B,
-  S
+  S,
 >(optic: Optic<C, any, T, any>, value: B, source: S): Set<B, S, T>
 export function set<
   C extends 'Equivalence' | 'Iso' | 'Lens' | 'Prism' | 'Traversal' | 'Setter',
   T extends HKT2,
-  B
+  B,
 >(optic: Optic<C, any, T, any>, value: B): <S>(source: S) => Set<B, S, T>
 export function set<
   C extends 'Equivalence' | 'Iso' | 'Lens' | 'Prism' | 'Traversal' | 'Setter',
-  T extends HKT2
+  T extends HKT2,
 >(optic: Optic<C, any, T, any>): <B>(value: B) => <S>(source: S) => Set<B, S, T>
 export function set(...args: any[]): any {
   switch (args.length) {

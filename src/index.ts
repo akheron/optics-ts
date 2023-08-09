@@ -45,12 +45,12 @@ export type OpticParams = Params<any, any>
 export type NextParams<
   C extends OpticParams,
   T extends HKT,
-  R extends Removable = undefined
+  R extends Removable = undefined,
 > = Params<Compose<C['_T'], T>, R>
 
 export type NextComposeParams<
   C1 extends OpticParams,
-  C2 extends OpticParams
+  C2 extends OpticParams,
 > = Params<Compose<C1['_T'], C2['_T']>, C2['_R']>
 
 export type OpticFor<S> = Equivalence<S, Params<DisallowTypeChange<S>>, S>
@@ -925,7 +925,7 @@ export function compose<
   T extends OpticParams,
   A,
   T2 extends OpticParams,
-  A2
+  A2,
 >(
   optic1: Equivalence<S, T, A>,
   optic2: Equivalence<A, T2, A2>
@@ -936,7 +936,7 @@ export function compose<
   T extends OpticParams,
   A,
   T2 extends OpticParams,
-  A2
+  A2,
 >(
   optic1: Equivalence<S, T, A>,
   optic2: Iso<A, T2, A2>
@@ -947,7 +947,7 @@ export function compose<
   T extends OpticParams,
   A,
   T2 extends OpticParams,
-  A2
+  A2,
 >(
   optic1: Equivalence<S, T, A>,
   optic2: Lens<A, T2, A2>
@@ -958,7 +958,7 @@ export function compose<
   T extends OpticParams,
   A,
   T2 extends OpticParams,
-  A2
+  A2,
 >(
   optic1: Equivalence<S, T, A>,
   optic2: Prism<A, T2, A2>
@@ -969,7 +969,7 @@ export function compose<
   T extends OpticParams,
   A,
   T2 extends OpticParams,
-  A2
+  A2,
 >(
   optic1: Equivalence<S, T, A>,
   optic2: Traversal<A, T2, A2>
@@ -995,7 +995,7 @@ export function compose<
   T extends OpticParams,
   A,
   T2 extends OpticParams,
-  A2
+  A2,
 >(
   optic1: Equivalence<S, T, A>,
   optic2: Setter<A, T2, A2>
@@ -1006,7 +1006,7 @@ export function compose<
   T extends OpticParams,
   A,
   T2 extends OpticParams,
-  A2
+  A2,
 >(
   optic1: Iso<S, T, A>,
   optic2: Equivalence<A, T2, A2>
@@ -1017,7 +1017,7 @@ export function compose<
   T extends OpticParams,
   A,
   T2 extends OpticParams,
-  A2
+  A2,
 >(
   optic1: Iso<S, T, A>,
   optic2: Iso<A, T2, A2>
@@ -1028,7 +1028,7 @@ export function compose<
   T extends OpticParams,
   A,
   T2 extends OpticParams,
-  A2
+  A2,
 >(
   optic1: Iso<S, T, A>,
   optic2: Lens<A, T2, A2>
@@ -1039,7 +1039,7 @@ export function compose<
   T extends OpticParams,
   A,
   T2 extends OpticParams,
-  A2
+  A2,
 >(
   optic1: Iso<S, T, A>,
   optic2: Prism<A, T2, A2>
@@ -1050,7 +1050,7 @@ export function compose<
   T extends OpticParams,
   A,
   T2 extends OpticParams,
-  A2
+  A2,
 >(
   optic1: Iso<S, T, A>,
   optic2: Traversal<A, T2, A2>
@@ -1076,7 +1076,7 @@ export function compose<
   T extends OpticParams,
   A,
   T2 extends OpticParams,
-  A2
+  A2,
 >(
   optic1: Iso<S, T, A>,
   optic2: Setter<A, T2, A2>
@@ -1087,7 +1087,7 @@ export function compose<
   T extends OpticParams,
   A,
   T2 extends OpticParams,
-  A2
+  A2,
 >(
   optic1: Lens<S, T, A>,
   optic2: Equivalence<A, T2, A2>
@@ -1098,7 +1098,7 @@ export function compose<
   T extends OpticParams,
   A,
   T2 extends OpticParams,
-  A2
+  A2,
 >(
   optic1: Lens<S, T, A>,
   optic2: Iso<A, T2, A2>
@@ -1109,7 +1109,7 @@ export function compose<
   T extends OpticParams,
   A,
   T2 extends OpticParams,
-  A2
+  A2,
 >(
   optic1: Lens<S, T, A>,
   optic2: Lens<A, T2, A2>
@@ -1120,7 +1120,7 @@ export function compose<
   T extends OpticParams,
   A,
   T2 extends OpticParams,
-  A2
+  A2,
 >(
   optic1: Lens<S, T, A>,
   optic2: Prism<A, T2, A2>
@@ -1131,7 +1131,7 @@ export function compose<
   T extends OpticParams,
   A,
   T2 extends OpticParams,
-  A2
+  A2,
 >(
   optic1: Lens<S, T, A>,
   optic2: Traversal<A, T2, A2>
@@ -1157,7 +1157,7 @@ export function compose<
   T extends OpticParams,
   A,
   T2 extends OpticParams,
-  A2
+  A2,
 >(
   optic1: Lens<S, T, A>,
   optic2: Setter<A, T2, A2>
@@ -1168,7 +1168,7 @@ export function compose<
   T extends OpticParams,
   A,
   T2 extends OpticParams,
-  A2
+  A2,
 >(
   optic1: Prism<S, T, A>,
   optic2: Equivalence<A, T2, A2>
@@ -1179,7 +1179,7 @@ export function compose<
   T extends OpticParams,
   A,
   T2 extends OpticParams,
-  A2
+  A2,
 >(
   optic1: Prism<S, T, A>,
   optic2: Iso<A, T2, A2>
@@ -1190,7 +1190,7 @@ export function compose<
   T extends OpticParams,
   A,
   T2 extends OpticParams,
-  A2
+  A2,
 >(
   optic1: Prism<S, T, A>,
   optic2: Lens<A, T2, A2>
@@ -1201,7 +1201,7 @@ export function compose<
   T extends OpticParams,
   A,
   T2 extends OpticParams,
-  A2
+  A2,
 >(
   optic1: Prism<S, T, A>,
   optic2: Prism<A, T2, A2>
@@ -1212,7 +1212,7 @@ export function compose<
   T extends OpticParams,
   A,
   T2 extends OpticParams,
-  A2
+  A2,
 >(
   optic1: Prism<S, T, A>,
   optic2: Traversal<A, T2, A2>
@@ -1238,7 +1238,7 @@ export function compose<
   T extends OpticParams,
   A,
   T2 extends OpticParams,
-  A2
+  A2,
 >(
   optic1: Prism<S, T, A>,
   optic2: Setter<A, T2, A2>
@@ -1249,7 +1249,7 @@ export function compose<
   T extends OpticParams,
   A,
   T2 extends OpticParams,
-  A2
+  A2,
 >(
   optic1: Traversal<S, T, A>,
   optic2: Equivalence<A, T2, A2>
@@ -1260,7 +1260,7 @@ export function compose<
   T extends OpticParams,
   A,
   T2 extends OpticParams,
-  A2
+  A2,
 >(
   optic1: Traversal<S, T, A>,
   optic2: Iso<A, T2, A2>
@@ -1271,7 +1271,7 @@ export function compose<
   T extends OpticParams,
   A,
   T2 extends OpticParams,
-  A2
+  A2,
 >(
   optic1: Traversal<S, T, A>,
   optic2: Lens<A, T2, A2>
@@ -1282,7 +1282,7 @@ export function compose<
   T extends OpticParams,
   A,
   T2 extends OpticParams,
-  A2
+  A2,
 >(
   optic1: Traversal<S, T, A>,
   optic2: Prism<A, T2, A2>
@@ -1293,7 +1293,7 @@ export function compose<
   T extends OpticParams,
   A,
   T2 extends OpticParams,
-  A2
+  A2,
 >(
   optic1: Traversal<S, T, A>,
   optic2: Traversal<A, T2, A2>
@@ -1319,7 +1319,7 @@ export function compose<
   T extends OpticParams,
   A,
   T2 extends OpticParams,
-  A2
+  A2,
 >(
   optic1: Traversal<S, T, A>,
   optic2: Setter<A, T2, A2>

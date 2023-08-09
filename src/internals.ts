@@ -27,8 +27,7 @@ const profunctorFn = {
       g(fn(f(x))),
   first:
     (f: (x: any) => any) =>
-    ([x, y]: [any, any]) =>
-      [f(x), y],
+    ([x, y]: [any, any]) => [f(x), y],
   right:
     (f: (x: any) => any) =>
     (e: Either<any, any>): Either<any, any> =>

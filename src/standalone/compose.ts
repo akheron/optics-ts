@@ -115,7 +115,7 @@ type ClassTable = {
 
 export type ComposeC<
   C1 extends Class,
-  C2 extends Class
+  C2 extends Class,
 > = C1 extends keyof ClassTable
   ? C2 extends keyof ClassTable[C1]
     ? ClassTable[C1][C2]
@@ -142,7 +142,7 @@ type Compose1<O1, O2> = ToOptic<O1> extends Optic<
 export type Compose<T extends [any, ...any]> = T extends [
   infer First,
   infer Second,
-  ...infer Rest
+  ...infer Rest,
 ]
   ? Compose1<First, Compose<[Second, ...Rest]>>
   : T extends [infer First]
