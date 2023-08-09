@@ -1,0 +1,1013 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+      
+      
+        <link rel="canonical" href="https://akheron.github.io/optics-ts/tutorial/">
+      
+      
+        <link rel="prev" href="../installation/">
+      
+      
+        <link rel="next" href="../two-syntaxes/">
+      
+      <link rel="icon" href="../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.5.2, mkdocs-material-9.1.21">
+    
+    
+      
+        <title>Tutorial - optics-ts</title>
+      
+    
+    
+      <link rel="stylesheet" href="../assets/stylesheets/main.eebd395e.min.css">
+      
+      
+
+    
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+    <script>__md_scope=new URL("..",location),__md_hash=e=>[...e].reduce((e,_)=>(e<<5)-e+_.charCodeAt(0),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+    
+  </head>
+  
+  
+    <body dir="ltr">
+  
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&"object"==typeof palette.color)for(var key of Object.keys(palette.color))document.body.setAttribute("data-md-color-"+key,palette.color[key])</script>
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#tutorial" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href=".." title="optics-ts" class="md-header__button md-logo" aria-label="optics-ts" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54Z"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3V6m0 5h18v2H3v-2m0 5h18v2H3v-2Z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            optics-ts
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Tutorial
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+    
+    
+      <label class="md-header__button md-icon" for="__search">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5Z"/></svg>
+      </label>
+      <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5Z"/></svg>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12Z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12 19 6.41Z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/akheron/optics-ts" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 496 512"><!--! Font Awesome Free 6.4.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2023 Fonticons, Inc.--><path d="M165.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6zm-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3zm44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9zM244.8 8C106.1 8 0 113.3 0 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C428.2 457.8 496 362.9 496 252 496 113.3 383.5 8 244.8 8zM97.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1zm-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7zm32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1zm-11.4-14.7c-1.6 1-1.6 3.6 0 5.9 1.6 2.3 4.3 3.3 5.6 2.3 1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2z"/></svg>
+  </div>
+  <div class="md-source__repository">
+    GitHub
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href=".." title="optics-ts" class="md-nav__button md-logo" aria-label="optics-ts" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54Z"/></svg>
+
+    </a>
+    optics-ts
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/akheron/optics-ts" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 496 512"><!--! Font Awesome Free 6.4.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2023 Fonticons, Inc.--><path d="M165.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6zm-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3zm44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9zM244.8 8C106.1 8 0 113.3 0 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C428.2 457.8 496 362.9 496 252 496 113.3 383.5 8 244.8 8zM97.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1zm-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7zm32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1zm-11.4-14.7c-1.6 1-1.6 3.6 0 5.9 1.6 2.3 4.3 3.3 5.6 2.3 1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2z"/></svg>
+  </div>
+  <div class="md-source__repository">
+    GitHub
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href=".." class="md-nav__link">
+        Home
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../installation/" class="md-nav__link">
+        Installation
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+    
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          Tutorial
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        Tutorial
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#lens" class="md-nav__link">
+    Lens
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#prism" class="md-nav__link">
+    Prism
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#removable-optics" class="md-nav__link">
+    Removable optics
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#traversal" class="md-nav__link">
+    Traversal
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#polymorphism" class="md-nav__link">
+    Polymorphism
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../two-syntaxes/" class="md-nav__link">
+        The Two Syntaxes
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+      
+      
+        
+      
+      <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_5" >
+      
+      
+      
+        <label class="md-nav__link" for="__nav_5" id="__nav_5_label" tabindex="0">
+          Reference
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="false">
+        <label class="md-nav__title" for="__nav_5">
+          <span class="md-nav__icon md-icon"></span>
+          Reference
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../reference-intro/" class="md-nav__link">
+        Introduction
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../reference-mc/" class="md-nav__link">
+        Method chaining API
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../reference-standalone/" class="md-nav__link">
+        Standalone API
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../reference-interop/" class="md-nav__link">
+        Interoperability
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../prior-art/" class="md-nav__link">
+        Prior art
+      </a>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#lens" class="md-nav__link">
+    Lens
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#prism" class="md-nav__link">
+    Prism
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#removable-optics" class="md-nav__link">
+    Removable optics
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#traversal" class="md-nav__link">
+    Traversal
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#polymorphism" class="md-nav__link">
+    Polymorphism
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+  
+  
+
+
+<h1 id="tutorial">Tutorial<a class="headerlink" href="#tutorial" title="Permanent link">#</a></h1>
+<p>One of the following imports is assumed in all the examples.</p>
+<p>Method chaining:</p>
+<div class="highlight"><pre><span></span><code><span class="k">import</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="kr">as</span><span class="w"> </span><span class="nx">O</span><span class="w"> </span><span class="kr">from</span><span class="w"> </span><span class="s1">&#39;optics-ts&#39;</span>
+</code></pre></div>
+<p>Standalone:</p>
+<div class="highlight"><pre><span></span><code><span class="k">import</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="kr">as</span><span class="w"> </span><span class="nx">O</span><span class="w"> </span><span class="kr">from</span><span class="w"> </span><span class="s1">&#39;optics-ts/standalone&#39;</span>
+</code></pre></div>
+<p>See <a href="../two-syntaxes/">The Two Syntaxes</a> for the difference between the two, and
+which one to choose. All the descriptions and examples below are given in terms
+of both syntaxes.</p>
+<h2 id="lens">Lens<a class="headerlink" href="#lens" title="Permanent link">#</a></h2>
+<div class="tabbed-set" data-tabs="1:2"><input checked="checked" id="__tabbed_1_1" name="__tabbed_1" type="radio" /><label for="__tabbed_1_1">Method chaining</label><div class="tabbed-content">
+<p>Lens is the most common optic you're going to use. You can create an optic for a
+data structure by calling <code>optic()</code>, and turn in into a lens that focuses on a
+property of an object with <code>prop</code>:</p>
+<div class="highlight"><pre><span></span><code><span class="kr">type</span><span class="w"> </span><span class="nx">Data</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="nx">foo</span><span class="o">:</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nx">bar</span><span class="o">:</span><span class="w"> </span><span class="kt">number</span><span class="w"> </span><span class="p">}</span>
+<span class="w">  </span><span class="nx">other</span><span class="o">:</span><span class="w"> </span><span class="kt">string</span>
+<span class="p">}</span>
+<span class="kd">const</span><span class="w"> </span><span class="nx">foo</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">O</span><span class="p">.</span><span class="nx">optic</span><span class="o">&lt;</span><span class="nx">Data</span><span class="o">&gt;</span><span class="p">().</span><span class="nx">prop</span><span class="p">(</span><span class="s1">&#39;foo&#39;</span><span class="p">)</span>
+</code></pre></div>
+<p><code>foo</code> is now a lens that focuses on <code>Data.foo</code>.</p>
+<p>To dig deeper, just call <code>prop</code> again:</p>
+<div class="highlight"><pre><span></span><code><span class="kd">const</span><span class="w"> </span><span class="nx">bar</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">O</span><span class="p">.</span><span class="nx">optic</span><span class="o">&lt;</span><span class="nx">Data</span><span class="o">&gt;</span><span class="p">().</span><span class="nx">prop</span><span class="p">(</span><span class="s1">&#39;foo&#39;</span><span class="p">).</span><span class="nx">prop</span><span class="p">(</span><span class="s1">&#39;bar&#39;</span><span class="p">)</span>
+<span class="c1">// or from the `foo` lens we defined above</span>
+<span class="kd">const</span><span class="w"> </span><span class="nx">bar</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">foo</span><span class="p">.</span><span class="nx">prop</span><span class="p">(</span><span class="s1">&#39;bar&#39;</span><span class="p">)</span>
+<span class="c1">// or use .path() to compose multiple prop lenses with a single call</span>
+<span class="kd">const</span><span class="w"> </span><span class="nx">bar</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">O</span><span class="p">.</span><span class="nx">optic</span><span class="o">&lt;</span><span class="nx">Data</span><span class="o">&gt;</span><span class="p">().</span><span class="nx">path</span><span class="p">(</span><span class="s1">&#39;foo&#39;</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39;bar&#39;</span><span class="p">)</span>
+<span class="c1">// or use path with a dotted string path</span>
+<span class="kd">const</span><span class="w"> </span><span class="nx">bar</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">O</span><span class="p">.</span><span class="nx">optic</span><span class="o">&lt;</span><span class="nx">Data</span><span class="o">&gt;</span><span class="p">().</span><span class="nx">path</span><span class="p">(</span><span class="s1">&#39;foo.bar&#39;</span><span class="p">)</span>
+</code></pre></div>
+<p>Use <code>get</code> to read a value through the lens:</p>
+<div class="highlight"><pre><span></span><code><span class="kd">const</span><span class="w"> </span><span class="nx">data</span><span class="o">:</span><span class="w"> </span><span class="kt">Data</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="nx">foo</span><span class="o">:</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nx">bar</span><span class="o">:</span><span class="w"> </span><span class="kt">42</span><span class="w"> </span><span class="p">},</span>
+<span class="w">  </span><span class="nx">other</span><span class="o">:</span><span class="w"> </span><span class="s1">&#39;stuff&#39;</span><span class="p">,</span>
+<span class="p">}</span>
+
+<span class="nx">O</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="nx">bar</span><span class="p">)(</span><span class="nx">data</span><span class="p">)</span>
+<span class="c1">// 42</span>
+</code></pre></div>
+<p>Use <code>set</code> or <code>modify</code> to write the focused value through the lens:</p>
+<div class="highlight"><pre><span></span><code><span class="nx">O</span><span class="p">.</span><span class="nx">set</span><span class="p">(</span><span class="nx">bar</span><span class="p">)(</span><span class="mf">99</span><span class="p">)(</span><span class="nx">data</span><span class="p">)</span>
+<span class="c1">// {</span>
+<span class="c1">//   foo: { bar: 99 },</span>
+<span class="c1">//   other: &#39;stuff&#39;</span>
+<span class="c1">// }</span>
+
+<span class="nx">O</span><span class="p">.</span><span class="nx">modify</span><span class="p">(</span><span class="nx">bar</span><span class="p">,</span><span class="w"> </span><span class="p">(</span><span class="nx">x</span><span class="p">)</span><span class="w"> </span><span class="p">=&gt;</span><span class="w"> </span><span class="nx">x</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="mf">100</span><span class="p">,</span><span class="w"> </span><span class="nx">data</span><span class="p">)</span>
+<span class="c1">// {</span>
+<span class="c1">//   foo: { bar: 4200 },</span>
+<span class="c1">//   other: &#39;stuff&#39;</span>
+<span class="c1">// }</span>
+</code></pre></div>
+</div>
+<input id="__tabbed_1_2" name="__tabbed_1" type="radio" /><label for="__tabbed_1_2">Standalone</label><div class="tabbed-content">
+<p>Lens is the most common optic you're going to use. You can create a lens that focuses on a
+property of an object with <code>prop</code>:</p>
+<div class="highlight"><pre><span></span><code><span class="kd">const</span><span class="w"> </span><span class="nx">foo</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">O</span><span class="p">.</span><span class="nx">prop</span><span class="p">(</span><span class="s1">&#39;foo&#39;</span><span class="p">)</span>
+</code></pre></div>
+<p><code>foo</code> is now a lens that focuses on the prop <code>foo</code> of any given object.</p>
+<p>To dig deeper, compose multiple <code>prop</code> lenses:</p>
+<div class="highlight"><pre><span></span><code><span class="kd">const</span><span class="w"> </span><span class="nx">bar</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">O</span><span class="p">.</span><span class="nx">compose</span><span class="p">(</span><span class="nx">O</span><span class="p">.</span><span class="nx">prop</span><span class="p">(</span><span class="s1">&#39;foo&#39;</span><span class="p">),</span><span class="w"> </span><span class="nx">O</span><span class="p">.</span><span class="nx">prop</span><span class="p">(</span><span class="s1">&#39;bar&#39;</span><span class="p">))</span>
+<span class="c1">// or reusing the `foo` lens we defined above</span>
+<span class="kd">const</span><span class="w"> </span><span class="nx">bar</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">O</span><span class="p">.</span><span class="nx">compose</span><span class="p">(</span><span class="nx">foo</span><span class="p">,</span><span class="w"> </span><span class="nx">O</span><span class="p">.</span><span class="nx">prop</span><span class="p">(</span><span class="s1">&#39;bar&#39;</span><span class="p">))</span>
+</code></pre></div>
+<p>Because <code>prop</code> is such an often used lens, you can pass string
+arguments directly to <code>compose</code>, and they will be taken as the
+<code>prop</code> lens:</p>
+<div class="highlight"><pre><span></span><code><span class="kd">const</span><span class="w"> </span><span class="nx">bar</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">O</span><span class="p">.</span><span class="nx">compose</span><span class="p">(</span><span class="s1">&#39;foo&#39;</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39;bar&#39;</span><span class="p">)</span>
+</code></pre></div>
+<p>Use <code>get</code> to read a value through the lens:</p>
+<div class="highlight"><pre><span></span><code><span class="kd">const</span><span class="w"> </span><span class="nx">data</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="nx">foo</span><span class="o">:</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nx">bar</span><span class="o">:</span><span class="w"> </span><span class="kt">42</span><span class="w"> </span><span class="p">},</span>
+<span class="w">  </span><span class="nx">other</span><span class="o">:</span><span class="w"> </span><span class="s1">&#39;stuff&#39;</span><span class="p">,</span>
+<span class="p">}</span>
+
+<span class="nx">O</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="nx">bar</span><span class="p">,</span><span class="w"> </span><span class="nx">data</span><span class="p">)</span>
+<span class="c1">// 42</span>
+</code></pre></div>
+<p>Use <code>set</code> or <code>modify</code> to write the focused value through the lens:</p>
+<div class="highlight"><pre><span></span><code><span class="nx">O</span><span class="p">.</span><span class="nx">set</span><span class="p">(</span><span class="nx">bar</span><span class="p">,</span><span class="w"> </span><span class="mf">99</span><span class="p">,</span><span class="w"> </span><span class="nx">data</span><span class="p">)</span>
+<span class="c1">// {</span>
+<span class="c1">//   foo: { bar: 99 },</span>
+<span class="c1">//   other: &#39;stuff&#39;</span>
+<span class="c1">// }</span>
+
+<span class="nx">O</span><span class="p">.</span><span class="nx">modify</span><span class="p">(</span><span class="nx">bar</span><span class="p">,</span><span class="w"> </span><span class="p">(</span><span class="nx">x</span><span class="p">)</span><span class="w"> </span><span class="p">=&gt;</span><span class="w"> </span><span class="nx">x</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="mf">100</span><span class="p">,</span><span class="w"> </span><span class="nx">data</span><span class="p">)</span>
+<span class="c1">// {</span>
+<span class="c1">//   foo: { bar: 4200 },</span>
+<span class="c1">//   other: &#39;stuff&#39;</span>
+<span class="c1">// }</span>
+</code></pre></div>
+</div>
+</div>
+<p>Writing through optics always creates a new data structure instead of modifying
+the existing one in place, shallowly copying the required parts. In other words,
+data is immutable.</p>
+<h2 id="prism">Prism<a class="headerlink" href="#prism" title="Permanent link">#</a></h2>
+<p>Lenses are great for focusing to a part of a larger structure. Prisms are much
+like lenses, but they don't necessarily match anything, i.e. they can have zero
+focuses.</p>
+<p>A practical example is focusing on a branch of a union type. Here, the
+<code>User.age</code> field can be <code>number</code> or <code>undefined</code>. With the <code>optional</code> prism we
+can focus only when the value is a <code>number</code>, and do nothing when it's
+<code>undefined</code>:</p>
+<div class="tabbed-set" data-tabs="2:2"><input checked="checked" id="__tabbed_2_1" name="__tabbed_2" type="radio" /><label for="__tabbed_2_1">Method chaining</label><div class="tabbed-content">
+<div class="highlight"><pre><span></span><code><span class="kr">type</span><span class="w"> </span><span class="nx">User</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="nx">name</span><span class="o">:</span><span class="w"> </span><span class="kt">string</span>
+<span class="w">  </span><span class="nx">age?</span><span class="o">:</span><span class="w"> </span><span class="kt">number</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="kc">undefined</span>
+<span class="p">}</span>
+
+<span class="kd">const</span><span class="w"> </span><span class="nx">age</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">O</span><span class="p">.</span><span class="nx">optic</span><span class="o">&lt;</span><span class="nx">User</span><span class="o">&gt;</span><span class="p">().</span><span class="nx">prop</span><span class="p">(</span><span class="s1">&#39;age&#39;</span><span class="p">).</span><span class="nx">optional</span><span class="p">()</span>
+</code></pre></div>
+</div>
+<input id="__tabbed_2_2" name="__tabbed_2" type="radio" /><label for="__tabbed_2_2">Standalone</label><div class="tabbed-content">
+<div class="highlight"><pre><span></span><code><span class="kr">type</span><span class="w"> </span><span class="nx">User</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="nx">name</span><span class="o">:</span><span class="w"> </span><span class="kt">string</span>
+<span class="w">  </span><span class="nx">age?</span><span class="o">:</span><span class="w"> </span><span class="kt">number</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="kc">undefined</span>
+<span class="p">}</span>
+
+<span class="kd">const</span><span class="w"> </span><span class="nx">age</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">O</span><span class="p">.</span><span class="nx">compose</span><span class="p">(</span><span class="s1">&#39;age&#39;</span><span class="p">,</span><span class="w"> </span><span class="nx">O</span><span class="p">.</span><span class="nx">optional</span><span class="p">)</span>
+</code></pre></div>
+</div>
+</div>
+<p>You read through a prism using the <code>preview</code> function. When the prism doesn't
+match, it returns <code>undefined</code>.</p>
+<div class="tabbed-set" data-tabs="3:2"><input checked="checked" id="__tabbed_3_1" name="__tabbed_3" type="radio" /><label for="__tabbed_3_1">Method chaining</label><div class="tabbed-content">
+<div class="highlight"><pre><span></span><code><span class="kd">const</span><span class="w"> </span><span class="nx">userWithAge</span><span class="o">:</span><span class="w"> </span><span class="kt">User</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="nx">name</span><span class="o">:</span><span class="w"> </span><span class="s1">&#39;Betty&#39;</span><span class="p">,</span>
+<span class="w">  </span><span class="nx">age</span><span class="o">:</span><span class="w"> </span><span class="kt">42</span><span class="p">,</span>
+<span class="p">}</span>
+<span class="nx">O</span><span class="p">.</span><span class="nx">preview</span><span class="p">(</span><span class="nx">age</span><span class="p">)(</span><span class="nx">userWithAge</span><span class="p">)</span>
+<span class="c1">// 42</span>
+
+<span class="kd">const</span><span class="w"> </span><span class="nx">userWithoutAge</span><span class="o">:</span><span class="w"> </span><span class="kt">User</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="nx">name</span><span class="o">:</span><span class="w"> </span><span class="s1">&#39;Max&#39;</span><span class="p">,</span>
+<span class="w">  </span><span class="nx">age</span><span class="o">:</span><span class="w"> </span><span class="kt">undefined</span><span class="p">,</span>
+<span class="p">}</span>
+<span class="nx">O</span><span class="p">.</span><span class="nx">preview</span><span class="p">(</span><span class="nx">age</span><span class="p">)(</span><span class="nx">userWithoutAge</span><span class="p">)</span>
+<span class="c1">// undefined</span>
+</code></pre></div>
+</div>
+<input id="__tabbed_3_2" name="__tabbed_3" type="radio" /><label for="__tabbed_3_2">Standalone</label><div class="tabbed-content">
+<div class="highlight"><pre><span></span><code><span class="kd">const</span><span class="w"> </span><span class="nx">userWithAge</span><span class="o">:</span><span class="w"> </span><span class="kt">User</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="nx">name</span><span class="o">:</span><span class="w"> </span><span class="s1">&#39;Betty&#39;</span><span class="p">,</span>
+<span class="w">  </span><span class="nx">age</span><span class="o">:</span><span class="w"> </span><span class="kt">42</span><span class="p">,</span>
+<span class="p">}</span>
+<span class="nx">O</span><span class="p">.</span><span class="nx">preview</span><span class="p">(</span><span class="nx">age</span><span class="p">,</span><span class="w"> </span><span class="nx">userWithAge</span><span class="p">)</span>
+<span class="c1">// 42</span>
+
+<span class="kd">const</span><span class="w"> </span><span class="nx">userWithoutAge</span><span class="o">:</span><span class="w"> </span><span class="kt">User</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="nx">name</span><span class="o">:</span><span class="w"> </span><span class="s1">&#39;Max&#39;</span><span class="p">,</span>
+<span class="w">  </span><span class="nx">age</span><span class="o">:</span><span class="w"> </span><span class="kt">undefined</span><span class="p">,</span>
+<span class="p">}</span>
+<span class="nx">O</span><span class="p">.</span><span class="nx">preview</span><span class="p">(</span><span class="nx">age</span><span class="p">,</span><span class="w"> </span><span class="nx">userWithoutAge</span><span class="p">)</span>
+<span class="c1">// undefined</span>
+</code></pre></div>
+</div>
+</div>
+<p>You can write through a prism normally with <code>set</code> and <code>modify</code>. If the prism
+doesn't match, the value is unchanged:</p>
+<div class="tabbed-set" data-tabs="4:2"><input checked="checked" id="__tabbed_4_1" name="__tabbed_4" type="radio" /><label for="__tabbed_4_1">Method chaining</label><div class="tabbed-content">
+<div class="highlight"><pre><span></span><code><span class="nx">O</span><span class="p">.</span><span class="nx">modify</span><span class="p">(</span><span class="nx">age</span><span class="p">)((</span><span class="nx">n</span><span class="p">)</span><span class="w"> </span><span class="p">=&gt;</span><span class="w"> </span><span class="nx">n</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mf">1</span><span class="p">)(</span><span class="nx">userWithAge</span><span class="p">)</span>
+<span class="c1">// {</span>
+<span class="c1">//   name: &#39;Betty&#39;,</span>
+<span class="c1">//   age: 43,</span>
+<span class="c1">// }</span>
+
+<span class="nx">O</span><span class="p">.</span><span class="nx">set</span><span class="p">(</span><span class="nx">age</span><span class="p">)(</span><span class="mf">60</span><span class="p">)(</span><span class="nx">userWithoutAge</span><span class="p">)</span>
+<span class="c1">// {</span>
+<span class="c1">//   name: &#39;Max&#39;,</span>
+<span class="c1">//   age: undefined,</span>
+<span class="c1">// }</span>
+</code></pre></div>
+</div>
+<input id="__tabbed_4_2" name="__tabbed_4" type="radio" /><label for="__tabbed_4_2">Standalone</label><div class="tabbed-content">
+<div class="highlight"><pre><span></span><code><span class="nx">O</span><span class="p">.</span><span class="nx">modify</span><span class="p">(</span><span class="nx">age</span><span class="p">,</span><span class="w"> </span><span class="p">(</span><span class="nx">n</span><span class="p">)</span><span class="w"> </span><span class="p">=&gt;</span><span class="w"> </span><span class="nx">n</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mf">1</span><span class="p">,</span><span class="w"> </span><span class="nx">userWithAge</span><span class="p">)</span>
+<span class="c1">// {</span>
+<span class="c1">//   name: &#39;Betty&#39;,</span>
+<span class="c1">//   age: 43,</span>
+<span class="c1">// }</span>
+
+<span class="nx">O</span><span class="p">.</span><span class="nx">set</span><span class="p">(</span><span class="nx">age</span><span class="p">,</span><span class="w"> </span><span class="mf">60</span><span class="p">,</span><span class="w"> </span><span class="nx">userWithoutAge</span><span class="p">)</span>
+<span class="c1">// {</span>
+<span class="c1">//   name: &#39;Max&#39;,</span>
+<span class="c1">//   age: undefined,</span>
+<span class="c1">// }</span>
+</code></pre></div>
+</div>
+</div>
+<p><code>guard</code> is another way to create a prism. It's a generalization of <code>optional</code> in
+the sense that you can match on any branch of a union type instead of just the
+non-<code>undefined</code> part:</p>
+<div class="highlight"><pre><span></span><code><span class="kd">interface</span><span class="w"> </span><span class="nx">Circle</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="nx">kind</span><span class="o">:</span><span class="w"> </span><span class="s1">&#39;circle&#39;</span>
+<span class="w">  </span><span class="nx">radius</span><span class="o">:</span><span class="w"> </span><span class="kt">number</span>
+<span class="p">}</span>
+<span class="kd">interface</span><span class="w"> </span><span class="nx">Rectangle</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="nx">kind</span><span class="o">:</span><span class="w"> </span><span class="s1">&#39;rectangle&#39;</span>
+<span class="w">  </span><span class="nx">width</span><span class="o">:</span><span class="w"> </span><span class="kt">number</span>
+<span class="w">  </span><span class="nx">height</span><span class="o">:</span><span class="w"> </span><span class="kt">number</span>
+<span class="p">}</span>
+<span class="kr">type</span><span class="w"> </span><span class="nx">Shape</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">Circle</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="nx">Rectangle</span>
+
+<span class="kd">function</span><span class="w"> </span><span class="nx">isRectangle</span><span class="p">(</span><span class="nx">s</span><span class="o">:</span><span class="w"> </span><span class="kt">Shape</span><span class="p">)</span><span class="o">:</span><span class="w"> </span><span class="nx">s</span><span class="w"> </span><span class="nx">is</span><span class="w"> </span><span class="nx">Rectangle</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="k">return</span><span class="w"> </span><span class="nx">s</span><span class="p">.</span><span class="nx">kind</span><span class="w"> </span><span class="o">===</span><span class="w"> </span><span class="s1">&#39;rectangle&#39;</span>
+<span class="p">}</span>
+</code></pre></div>
+<div class="tabbed-set" data-tabs="5:2"><input checked="checked" id="__tabbed_5_1" name="__tabbed_5" type="radio" /><label for="__tabbed_5_1">Method chaining</label><div class="tabbed-content">
+<div class="highlight"><pre><span></span><code><span class="kd">const</span><span class="w"> </span><span class="nx">rectWidth</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">O</span><span class="p">.</span><span class="nx">optic</span><span class="o">&lt;</span><span class="nx">Shape</span><span class="o">&gt;</span><span class="p">().</span><span class="nx">guard</span><span class="p">(</span><span class="nx">isRectangle</span><span class="p">).</span><span class="nx">prop</span><span class="p">(</span><span class="s1">&#39;width&#39;</span><span class="p">)</span>
+
+<span class="nx">O</span><span class="p">.</span><span class="nx">preview</span><span class="p">(</span><span class="nx">rectWidth</span><span class="p">)({</span><span class="w"> </span><span class="nx">kind</span><span class="o">:</span><span class="w"> </span><span class="s1">&#39;circle&#39;</span><span class="p">,</span><span class="w"> </span><span class="nx">radius</span><span class="o">:</span><span class="w"> </span><span class="kt">10</span><span class="w"> </span><span class="p">})</span>
+<span class="c1">// undefined</span>
+
+<span class="nx">O</span><span class="p">.</span><span class="nx">preview</span><span class="p">(</span><span class="nx">rectWidth</span><span class="p">)({</span><span class="w"> </span><span class="nx">kind</span><span class="o">:</span><span class="w"> </span><span class="s1">&#39;rectangle&#39;</span><span class="p">,</span><span class="w"> </span><span class="nx">width</span><span class="o">:</span><span class="w"> </span><span class="kt">5</span><span class="p">,</span><span class="w"> </span><span class="nx">height</span><span class="o">:</span><span class="w"> </span><span class="kt">7</span><span class="w"> </span><span class="p">})</span>
+<span class="c1">// 5</span>
+
+<span class="nx">O</span><span class="p">.</span><span class="nx">modify</span><span class="p">(</span><span class="nx">rectWidth</span><span class="p">)((</span><span class="nx">w</span><span class="p">)</span><span class="w"> </span><span class="p">=&gt;</span><span class="w"> </span><span class="nx">w</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="mf">2</span><span class="p">)({</span><span class="w"> </span><span class="nx">kind</span><span class="o">:</span><span class="w"> </span><span class="s1">&#39;rectangle&#39;</span><span class="p">,</span><span class="w"> </span><span class="nx">width</span><span class="o">:</span><span class="w"> </span><span class="kt">5</span><span class="p">,</span><span class="w"> </span><span class="nx">height</span><span class="o">:</span><span class="w"> </span><span class="kt">7</span><span class="w"> </span><span class="p">})</span>
+<span class="c1">// { kind: &#39;rectangle&#39;, width: 10, height: 7 })</span>
+</code></pre></div>
+</div>
+<input id="__tabbed_5_2" name="__tabbed_5" type="radio" /><label for="__tabbed_5_2">Standalone</label><div class="tabbed-content">
+<div class="highlight"><pre><span></span><code><span class="kd">const</span><span class="w"> </span><span class="nx">rectWidth</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">O</span><span class="p">.</span><span class="nx">compose</span><span class="p">(</span><span class="nx">O</span><span class="p">.</span><span class="nx">guard</span><span class="p">(</span><span class="nx">isRectangle</span><span class="p">),</span><span class="w"> </span><span class="s1">&#39;width&#39;</span><span class="p">)</span>
+
+<span class="nx">O</span><span class="p">.</span><span class="nx">preview</span><span class="p">(</span><span class="nx">rectWidth</span><span class="p">,</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nx">kind</span><span class="o">:</span><span class="w"> </span><span class="s1">&#39;circle&#39;</span><span class="p">,</span><span class="w"> </span><span class="nx">radius</span><span class="o">:</span><span class="w"> </span><span class="kt">10</span><span class="w"> </span><span class="p">})</span>
+<span class="c1">// undefined</span>
+
+<span class="nx">O</span><span class="p">.</span><span class="nx">preview</span><span class="p">(</span><span class="nx">rectWidth</span><span class="p">,</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nx">kind</span><span class="o">:</span><span class="w"> </span><span class="s1">&#39;rectangle&#39;</span><span class="p">,</span><span class="w"> </span><span class="nx">width</span><span class="o">:</span><span class="w"> </span><span class="kt">5</span><span class="p">,</span><span class="w"> </span><span class="nx">height</span><span class="o">:</span><span class="w"> </span><span class="kt">7</span><span class="w"> </span><span class="p">})</span>
+<span class="c1">// 5</span>
+
+<span class="nx">O</span><span class="p">.</span><span class="nx">modify</span><span class="p">(</span><span class="nx">rectWidth</span><span class="p">,</span><span class="w"> </span><span class="p">(</span><span class="nx">w</span><span class="p">)</span><span class="w"> </span><span class="p">=&gt;</span><span class="w"> </span><span class="nx">w</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="mf">2</span><span class="p">,</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nx">kind</span><span class="o">:</span><span class="w"> </span><span class="s1">&#39;rectangle&#39;</span><span class="p">,</span><span class="w"> </span><span class="nx">width</span><span class="o">:</span><span class="w"> </span><span class="kt">5</span><span class="p">,</span><span class="w"> </span><span class="nx">height</span><span class="o">:</span><span class="w"> </span><span class="kt">7</span><span class="w"> </span><span class="p">})</span>
+<span class="c1">// { kind: &#39;rectangle&#39;, width: 10, height: 7 })</span>
+</code></pre></div>
+</div>
+</div>
+<p>Notice how above we composed the <code>guard</code> prism with the <code>prop</code> lens. This yields
+a prism, so we used <code>preview</code> to read through it. See
+<a href="../reference-intro/#rules-of-composition">Rules of composition</a> for more info.</p>
+<h2 id="removable-optics">Removable optics<a class="headerlink" href="#removable-optics" title="Permanent link">#</a></h2>
+<p>Some optics are removable. This means that they focus on an element of a
+container (e.g. an array), and you can remove the element from the container.</p>
+<p><code>at</code> is a removable prism. It focuses on an index of an array, and lets you also
+remove that index:</p>
+<div class="tabbed-set" data-tabs="6:2"><input checked="checked" id="__tabbed_6_1" name="__tabbed_6" type="radio" /><label for="__tabbed_6_1">Method chaining</label><div class="tabbed-content">
+<div class="highlight"><pre><span></span><code><span class="kd">interface</span><span class="w"> </span><span class="nx">User</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="nx">name</span><span class="o">:</span><span class="w"> </span><span class="kt">string</span>
+<span class="p">}</span>
+
+<span class="kd">const</span><span class="w"> </span><span class="nx">threeUsers</span><span class="o">:</span><span class="w"> </span><span class="kt">User</span><span class="p">[]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[</span>
+<span class="w">  </span><span class="p">{</span><span class="w"> </span><span class="nx">name</span><span class="o">:</span><span class="w"> </span><span class="s1">&#39;Max&#39;</span><span class="w"> </span><span class="p">},</span>
+<span class="w">  </span><span class="p">{</span><span class="w"> </span><span class="nx">name</span><span class="o">:</span><span class="w"> </span><span class="s1">&#39;Betty&#39;</span><span class="w"> </span><span class="p">},</span>
+<span class="w">  </span><span class="p">{</span><span class="w"> </span><span class="nx">name</span><span class="o">:</span><span class="w"> </span><span class="s1">&#39;Alice&#39;</span><span class="w"> </span><span class="p">},</span>
+<span class="p">]</span>
+
+<span class="kd">const</span><span class="w"> </span><span class="nx">secondUser</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">O</span><span class="p">.</span><span class="nx">optic</span><span class="o">&lt;</span><span class="nx">User</span><span class="p">[]</span><span class="o">&gt;</span><span class="p">().</span><span class="nx">at</span><span class="p">(</span><span class="mf">1</span><span class="p">)</span>
+<span class="nx">O</span><span class="p">.</span><span class="nx">remove</span><span class="p">(</span><span class="nx">secondUser</span><span class="p">)(</span><span class="nx">threeUsers</span><span class="p">)</span>
+<span class="c1">// [{ name: &#39;Max&#39; }, { name: &#39;Alice&#39; }]</span>
+</code></pre></div>
+</div>
+<input id="__tabbed_6_2" name="__tabbed_6" type="radio" /><label for="__tabbed_6_2">Standalone</label><div class="tabbed-content">
+<div class="highlight"><pre><span></span><code><span class="kd">interface</span><span class="w"> </span><span class="nx">User</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="nx">name</span><span class="o">:</span><span class="w"> </span><span class="kt">string</span>
+<span class="p">}</span>
+
+<span class="kd">const</span><span class="w"> </span><span class="nx">threeUsers</span><span class="o">:</span><span class="w"> </span><span class="kt">User</span><span class="p">[]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[</span>
+<span class="w">  </span><span class="p">{</span><span class="w"> </span><span class="nx">name</span><span class="o">:</span><span class="w"> </span><span class="s1">&#39;Max&#39;</span><span class="w"> </span><span class="p">},</span>
+<span class="w">  </span><span class="p">{</span><span class="w"> </span><span class="nx">name</span><span class="o">:</span><span class="w"> </span><span class="s1">&#39;Betty&#39;</span><span class="w"> </span><span class="p">},</span>
+<span class="w">  </span><span class="p">{</span><span class="w"> </span><span class="nx">name</span><span class="o">:</span><span class="w"> </span><span class="s1">&#39;Alice&#39;</span><span class="w"> </span><span class="p">},</span>
+<span class="p">]</span>
+
+<span class="nx">O</span><span class="p">.</span><span class="nx">remove</span><span class="p">(</span><span class="nx">O</span><span class="p">.</span><span class="nx">at</span><span class="p">(</span><span class="mf">1</span><span class="p">),</span><span class="w"> </span><span class="nx">threeUsers</span><span class="p">)</span>
+<span class="c1">// [{ name: &#39;Max&#39; }, { name: &#39;Alice&#39; }]</span>
+</code></pre></div>
+</div>
+</div>
+<p>If the optic doesn't match, removing has no effect:</p>
+<div class="tabbed-set" data-tabs="7:2"><input checked="checked" id="__tabbed_7_1" name="__tabbed_7" type="radio" /><label for="__tabbed_7_1">Method chaining</label><div class="tabbed-content">
+<div class="highlight"><pre><span></span><code><span class="kd">const</span><span class="w"> </span><span class="nx">oneUser</span><span class="o">:</span><span class="w"> </span><span class="kt">User</span><span class="p">[]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[{</span><span class="w"> </span><span class="nx">name</span><span class="o">:</span><span class="w"> </span><span class="s1">&#39;Max&#39;</span><span class="w"> </span><span class="p">}]</span>
+
+<span class="nx">O</span><span class="p">.</span><span class="nx">remove</span><span class="p">(</span><span class="nx">secondUser</span><span class="p">)(</span><span class="nx">oneUser</span><span class="p">)</span>
+<span class="c1">// [{ name: &#39;Max&#39; }]</span>
+</code></pre></div>
+</div>
+<input id="__tabbed_7_2" name="__tabbed_7" type="radio" /><label for="__tabbed_7_2">Standalone</label><div class="tabbed-content">
+<div class="highlight"><pre><span></span><code><span class="kd">const</span><span class="w"> </span><span class="nx">oneUser</span><span class="o">:</span><span class="w"> </span><span class="kt">User</span><span class="p">[]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[{</span><span class="w"> </span><span class="nx">name</span><span class="o">:</span><span class="w"> </span><span class="s1">&#39;Max&#39;</span><span class="w"> </span><span class="p">}]</span>
+
+<span class="nx">O</span><span class="p">.</span><span class="nx">remove</span><span class="p">(</span><span class="nx">O</span><span class="p">.</span><span class="nx">at</span><span class="p">(</span><span class="mf">1</span><span class="p">),</span><span class="w"> </span><span class="nx">oneUser</span><span class="p">)</span>
+<span class="c1">// [{ name: &#39;Max&#39; }]</span>
+</code></pre></div>
+</div>
+</div>
+<h2 id="traversal">Traversal<a class="headerlink" href="#traversal" title="Permanent link">#</a></h2>
+<p>The next optic type is the traversal. While lenses have one focus and prisms
+have zero or one focuses (no match or match), traversals have zero <em>or more</em>
+focuses.</p>
+<p>The simplest example of a traversal is to focus on all elements of an array. To
+create such a traversal, use <code>elems</code>:</p>
+<div class="tabbed-set" data-tabs="8:2"><input checked="checked" id="__tabbed_8_1" name="__tabbed_8" type="radio" /><label for="__tabbed_8_1">Method chaining</label><div class="tabbed-content">
+<div class="highlight"><pre><span></span><code><span class="kr">type</span><span class="w"> </span><span class="nx">Person</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="nx">name</span><span class="o">:</span><span class="w"> </span><span class="kt">string</span>
+<span class="w">  </span><span class="nx">friends</span><span class="o">:</span><span class="w"> </span><span class="kt">Person</span><span class="p">[]</span>
+<span class="p">}</span>
+
+<span class="kd">const</span><span class="w"> </span><span class="nx">friendsNames</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">O</span><span class="p">.</span><span class="nx">optic</span><span class="o">&lt;</span><span class="nx">Person</span><span class="o">&gt;</span><span class="p">()</span>
+<span class="w">  </span><span class="p">.</span><span class="nx">prop</span><span class="p">(</span><span class="s1">&#39;friends&#39;</span><span class="p">)</span>
+<span class="w">  </span><span class="p">.</span><span class="nx">elems</span><span class="p">()</span>
+<span class="w">  </span><span class="p">.</span><span class="nx">prop</span><span class="p">(</span><span class="s1">&#39;name&#39;</span><span class="p">)</span>
+</code></pre></div>
+</div>
+<input id="__tabbed_8_2" name="__tabbed_8" type="radio" /><label for="__tabbed_8_2">Standalone</label><div class="tabbed-content">
+<div class="highlight"><pre><span></span><code><span class="kr">type</span><span class="w"> </span><span class="nx">Person</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="nx">name</span><span class="o">:</span><span class="w"> </span><span class="kt">string</span>
+<span class="w">  </span><span class="nx">friends</span><span class="o">:</span><span class="w"> </span><span class="kt">Person</span><span class="p">[]</span>
+<span class="p">}</span>
+
+<span class="kd">const</span><span class="w"> </span><span class="nx">friendsNames</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">O</span><span class="p">.</span><span class="nx">compose</span><span class="p">(</span><span class="s1">&#39;friends&#39;</span><span class="p">,</span><span class="w"> </span><span class="nx">O</span><span class="p">.</span><span class="nx">elems</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39;name&#39;</span><span class="p">)</span>
+</code></pre></div>
+</div>
+</div>
+<p>To read through a traversal, call <code>collect</code> to collect all focused elements into
+an array:</p>
+<div class="tabbed-set" data-tabs="9:2"><input checked="checked" id="__tabbed_9_1" name="__tabbed_9" type="radio" /><label for="__tabbed_9_1">Method chaining</label><div class="tabbed-content">
+<div class="highlight"><pre><span></span><code><span class="kd">const</span><span class="w"> </span><span class="nx">john</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nx">name</span><span class="o">:</span><span class="w"> </span><span class="s1">&#39;John&#39;</span><span class="p">,</span><span class="w"> </span><span class="nx">friends</span><span class="o">:</span><span class="w"> </span><span class="p">[]</span><span class="w"> </span><span class="p">}</span>
+<span class="kd">const</span><span class="w"> </span><span class="nx">bruce</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nx">name</span><span class="o">:</span><span class="w"> </span><span class="s1">&#39;Bruce&#39;</span><span class="p">,</span><span class="w"> </span><span class="nx">friends</span><span class="o">:</span><span class="w"> </span><span class="p">[]</span><span class="w"> </span><span class="p">}</span>
+<span class="kd">const</span><span class="w"> </span><span class="nx">amy</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nx">name</span><span class="o">:</span><span class="w"> </span><span class="s1">&#39;Amy&#39;</span><span class="p">,</span><span class="w"> </span><span class="nx">friends</span><span class="o">:</span><span class="w"> </span><span class="p">[</span><span class="nx">john</span><span class="p">,</span><span class="w"> </span><span class="nx">bruce</span><span class="p">]</span><span class="w"> </span><span class="p">}</span>
+
+<span class="nx">O</span><span class="p">.</span><span class="nx">collect</span><span class="p">(</span><span class="nx">friendsNames</span><span class="p">)(</span><span class="nx">amy</span><span class="p">)</span>
+<span class="c1">// [ &#39;John&#39;, &#39;Bruce&#39; ]</span>
+</code></pre></div>
+</div>
+<input id="__tabbed_9_2" name="__tabbed_9" type="radio" /><label for="__tabbed_9_2">Standalone</label><div class="tabbed-content">
+<div class="highlight"><pre><span></span><code><span class="kd">const</span><span class="w"> </span><span class="nx">john</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nx">name</span><span class="o">:</span><span class="w"> </span><span class="s1">&#39;John&#39;</span><span class="p">,</span><span class="w"> </span><span class="nx">friends</span><span class="o">:</span><span class="w"> </span><span class="p">[]</span><span class="w"> </span><span class="p">}</span>
+<span class="kd">const</span><span class="w"> </span><span class="nx">bruce</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nx">name</span><span class="o">:</span><span class="w"> </span><span class="s1">&#39;Bruce&#39;</span><span class="p">,</span><span class="w"> </span><span class="nx">friends</span><span class="o">:</span><span class="w"> </span><span class="p">[]</span><span class="w"> </span><span class="p">}</span>
+<span class="kd">const</span><span class="w"> </span><span class="nx">amy</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nx">name</span><span class="o">:</span><span class="w"> </span><span class="s1">&#39;Amy&#39;</span><span class="p">,</span><span class="w"> </span><span class="nx">friends</span><span class="o">:</span><span class="w"> </span><span class="p">[</span><span class="nx">john</span><span class="p">,</span><span class="w"> </span><span class="nx">bruce</span><span class="p">]</span><span class="w"> </span><span class="p">}</span>
+
+<span class="nx">O</span><span class="p">.</span><span class="nx">collect</span><span class="p">(</span><span class="nx">friendsNames</span><span class="p">,</span><span class="w"> </span><span class="nx">amy</span><span class="p">)</span>
+<span class="c1">// [ &#39;John&#39;, &#39;Bruce&#39; ]</span>
+</code></pre></div>
+</div>
+</div>
+<p>Writing through a traversal writes to all focused values:</p>
+<div class="tabbed-set" data-tabs="10:2"><input checked="checked" id="__tabbed_10_1" name="__tabbed_10" type="radio" /><label for="__tabbed_10_1">Method chaining</label><div class="tabbed-content">
+<div class="highlight"><pre><span></span><code><span class="nx">O</span><span class="p">.</span><span class="nx">modify</span><span class="p">(</span><span class="nx">friendsNames</span><span class="p">)((</span><span class="nx">name</span><span class="p">)</span><span class="w"> </span><span class="p">=&gt;</span><span class="w"> </span><span class="sb">`</span><span class="si">${</span><span class="nx">name</span><span class="si">}</span><span class="sb"> Wayne`</span><span class="p">)(</span><span class="nx">amy</span><span class="p">)</span>
+<span class="c1">// {</span>
+<span class="c1">//   name: &#39;Amy&#39;,</span>
+<span class="c1">//   friends: [</span>
+<span class="c1">//     { name: &#39;John Wayne&#39;, friends: [] },</span>
+<span class="c1">//     { name: &#39;Bruce Wayne&#39;, friends: [] },</span>
+<span class="c1">//   ],</span>
+<span class="c1">// }</span>
+</code></pre></div>
+</div>
+<input id="__tabbed_10_2" name="__tabbed_10" type="radio" /><label for="__tabbed_10_2">Standalone</label><div class="tabbed-content">
+<div class="highlight"><pre><span></span><code><span class="nx">O</span><span class="p">.</span><span class="nx">modify</span><span class="p">(</span><span class="nx">friendsNames</span><span class="p">,</span><span class="w"> </span><span class="p">(</span><span class="nx">name</span><span class="p">)</span><span class="w"> </span><span class="p">=&gt;</span><span class="w"> </span><span class="sb">`</span><span class="si">${</span><span class="nx">name</span><span class="si">}</span><span class="sb"> Wayne`</span><span class="p">,</span><span class="w"> </span><span class="nx">amy</span><span class="p">)</span>
+<span class="c1">// {</span>
+<span class="c1">//   name: &#39;Amy&#39;,</span>
+<span class="c1">//   friends: [</span>
+<span class="c1">//     { name: &#39;John Wayne&#39;, friends: [] },</span>
+<span class="c1">//     { name: &#39;Bruce Wayne&#39;, friends: [] },</span>
+<span class="c1">//   ],</span>
+<span class="c1">// }</span>
+</code></pre></div>
+</div>
+</div>
+<p>Note again how we used <code>prop</code>, <code>elems</code> and <code>prop</code>, composing a lens with a
+traversal, and then with a lens again. This yields a traversal. See
+<a href="../reference-intro/#rules-of-composition">Rules of composition</a> for more info.</p>
+<p>It's sometimes useful to further focus on certain elements of a traversal. This
+can be done by composing a traversal with a prism like <code>when</code> that skips items
+that don't match a predicate:</p>
+<div class="tabbed-set" data-tabs="11:2"><input checked="checked" id="__tabbed_11_1" name="__tabbed_11" type="radio" /><label for="__tabbed_11_1">Method chaining</label><div class="tabbed-content">
+<div class="highlight"><pre><span></span><code><span class="kd">const</span><span class="w"> </span><span class="nx">even</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">O</span><span class="p">.</span><span class="nx">optic</span><span class="o">&lt;</span><span class="kt">number</span><span class="p">[]</span><span class="o">&gt;</span><span class="p">()</span>
+<span class="w">  </span><span class="p">.</span><span class="nx">elems</span><span class="p">()</span>
+<span class="w">  </span><span class="p">.</span><span class="nx">when</span><span class="p">((</span><span class="nx">n</span><span class="p">)</span><span class="w"> </span><span class="p">=&gt;</span><span class="w"> </span><span class="nx">n</span><span class="w"> </span><span class="o">%</span><span class="w"> </span><span class="mf">2</span><span class="w"> </span><span class="o">===</span><span class="w"> </span><span class="mf">0</span><span class="p">)</span>
+
+<span class="nx">O</span><span class="p">.</span><span class="nx">modify</span><span class="p">(</span><span class="nx">even</span><span class="p">)((</span><span class="nx">n</span><span class="p">)</span><span class="w"> </span><span class="p">=&gt;</span><span class="w"> </span><span class="o">-</span><span class="nx">n</span><span class="p">)([</span><span class="mf">1</span><span class="p">,</span><span class="w"> </span><span class="mf">2</span><span class="p">,</span><span class="w"> </span><span class="mf">3</span><span class="p">,</span><span class="w"> </span><span class="mf">4</span><span class="p">,</span><span class="w"> </span><span class="mf">5</span><span class="p">])</span>
+<span class="c1">// [1, -2, 3, -4, 5]</span>
+</code></pre></div>
+</div>
+<input id="__tabbed_11_2" name="__tabbed_11" type="radio" /><label for="__tabbed_11_2">Standalone</label><div class="tabbed-content">
+<div class="highlight"><pre><span></span><code><span class="kd">const</span><span class="w"> </span><span class="nx">even</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">O</span><span class="p">.</span><span class="nx">compose</span><span class="p">(</span>
+<span class="w">  </span><span class="nx">O</span><span class="p">.</span><span class="nx">elems</span><span class="p">,</span>
+<span class="w">  </span><span class="nx">O</span><span class="p">.</span><span class="nx">when</span><span class="p">((</span><span class="nx">n</span><span class="o">:</span><span class="w"> </span><span class="kt">number</span><span class="p">)</span><span class="w"> </span><span class="p">=&gt;</span><span class="w"> </span><span class="nx">n</span><span class="w"> </span><span class="o">%</span><span class="w"> </span><span class="mf">2</span><span class="w"> </span><span class="o">===</span><span class="w"> </span><span class="mf">0</span><span class="p">)</span>
+<span class="p">)</span>
+
+<span class="nx">O</span><span class="p">.</span><span class="nx">modify</span><span class="p">(</span><span class="nx">even</span><span class="p">,</span><span class="w"> </span><span class="p">(</span><span class="nx">n</span><span class="p">)</span><span class="w"> </span><span class="p">=&gt;</span><span class="w"> </span><span class="o">-</span><span class="nx">n</span><span class="p">,</span><span class="w"> </span><span class="p">[</span><span class="mf">1</span><span class="p">,</span><span class="w"> </span><span class="mf">2</span><span class="p">,</span><span class="w"> </span><span class="mf">3</span><span class="p">,</span><span class="w"> </span><span class="mf">4</span><span class="p">,</span><span class="w"> </span><span class="mf">5</span><span class="p">])</span>
+<span class="c1">// [1, -2, 3, -4, 5]</span>
+</code></pre></div>
+</div>
+</div>
+<h2 id="polymorphism">Polymorphism<a class="headerlink" href="#polymorphism" title="Permanent link">#</a></h2>
+<div class="tabbed-set" data-tabs="12:2"><input checked="checked" id="__tabbed_12_1" name="__tabbed_12" type="radio" /><label for="__tabbed_12_1">Method chaining</label><div class="tabbed-content">
+<p>Optics can be polymorphic, which means you can change the type of the focus when
+you write through an optic. Since this is a relatively rare use case, and may be
+confusing if done by accident, polymorphic optics are created with <code>optic_</code>
+(note the underscore):</p>
+<div class="highlight"><pre><span></span><code><span class="kr">type</span><span class="w"> </span><span class="nx">Data</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="nx">foo</span><span class="o">:</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nx">bar</span><span class="o">:</span><span class="w"> </span><span class="kt">string</span><span class="w"> </span><span class="p">}</span>
+<span class="w">  </span><span class="nx">other</span><span class="o">:</span><span class="w"> </span><span class="kt">boolean</span>
+<span class="p">}</span>
+<span class="kd">const</span><span class="w"> </span><span class="nx">bar</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">O</span><span class="p">.</span><span class="nx">optic_</span><span class="o">&lt;</span><span class="nx">Data</span><span class="o">&gt;</span><span class="p">().</span><span class="nx">path</span><span class="p">(</span><span class="s1">&#39;foo.bar&#39;</span><span class="p">)</span>
+</code></pre></div>
+</div>
+<input id="__tabbed_12_2" name="__tabbed_12" type="radio" /><label for="__tabbed_12_2">Standalone</label><div class="tabbed-content">
+<p>Optics can be polymorphic, which means you can change the type of the focus when
+you write through an optic.</p>
+<div class="highlight"><pre><span></span><code><span class="kr">type</span><span class="w"> </span><span class="nx">Data</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="nx">foo</span><span class="o">:</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nx">bar</span><span class="o">:</span><span class="w"> </span><span class="kt">string</span><span class="w"> </span><span class="p">}</span>
+<span class="w">  </span><span class="nx">other</span><span class="o">:</span><span class="w"> </span><span class="kt">boolean</span>
+<span class="p">}</span>
+<span class="kd">const</span><span class="w"> </span><span class="nx">bar</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">O</span><span class="p">.</span><span class="nx">compose</span><span class="p">(</span><span class="s1">&#39;foo&#39;</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39;bar&#39;</span><span class="p">)</span>
+</code></pre></div>
+</div>
+</div>
+<p>Let's modify <code>bar</code> to contain the length of the original string instead:</p>
+<div class="tabbed-set" data-tabs="13:2"><input checked="checked" id="__tabbed_13_1" name="__tabbed_13" type="radio" /><label for="__tabbed_13_1">Method chaining</label><div class="tabbed-content">
+<div class="highlight"><pre><span></span><code><span class="kd">const</span><span class="w"> </span><span class="nx">data</span><span class="o">:</span><span class="w"> </span><span class="kt">Data</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="nx">foo</span><span class="o">:</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nx">bar</span><span class="o">:</span><span class="w"> </span><span class="s1">&#39;hello there&#39;</span><span class="w"> </span><span class="p">},</span>
+<span class="w">  </span><span class="nx">other</span><span class="o">:</span><span class="w"> </span><span class="kt">true</span><span class="p">,</span>
+<span class="p">}</span>
+
+<span class="kd">const</span><span class="w"> </span><span class="nx">updated</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">O</span><span class="p">.</span><span class="nx">modify</span><span class="p">(</span><span class="nx">bar</span><span class="p">)((</span><span class="nx">str</span><span class="p">)</span><span class="w"> </span><span class="p">=&gt;</span><span class="w"> </span><span class="nx">str</span><span class="p">.</span><span class="nx">length</span><span class="p">)(</span><span class="nx">data</span><span class="p">)</span>
+<span class="c1">// {</span>
+<span class="c1">//   foo: { bar: 11 },</span>
+<span class="c1">//   other: true</span>
+<span class="c1">// }</span>
+</code></pre></div>
+<p>This is a type-safe operation, i.e. the compiler knows that the type of
+<code>updated.foo.bar</code> is <code>number</code>, editor autocomplete works correctly, etc.</p>
+<p>If you ever see a <code>DisallowedTypeChange</code> type being returned from an <code>optics-ts</code>
+function, it means that you tried to change the type when writing through a
+non-polymorphic (monomorphic) optic.</p>
+</div>
+<input id="__tabbed_13_2" name="__tabbed_13" type="radio" /><label for="__tabbed_13_2">Standalone</label><div class="tabbed-content">
+<div class="highlight"><pre><span></span><code><span class="kd">const</span><span class="w"> </span><span class="nx">data</span><span class="o">:</span><span class="w"> </span><span class="kt">Data</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="nx">foo</span><span class="o">:</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nx">bar</span><span class="o">:</span><span class="w"> </span><span class="s1">&#39;hello there&#39;</span><span class="w"> </span><span class="p">},</span>
+<span class="w">  </span><span class="nx">other</span><span class="o">:</span><span class="w"> </span><span class="kt">true</span><span class="p">,</span>
+<span class="p">}</span>
+
+<span class="kd">const</span><span class="w"> </span><span class="nx">updated</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">O</span><span class="p">.</span><span class="nx">modify</span><span class="p">(</span><span class="nx">bar</span><span class="p">,</span><span class="w"> </span><span class="p">(</span><span class="nx">str</span><span class="p">)</span><span class="w"> </span><span class="p">=&gt;</span><span class="w"> </span><span class="nx">str</span><span class="p">.</span><span class="nx">length</span><span class="p">,</span><span class="w"> </span><span class="nx">data</span><span class="p">)</span>
+<span class="c1">// {</span>
+<span class="c1">//   foo: { bar: 11 },</span>
+<span class="c1">//   other: true</span>
+<span class="c1">// }</span>
+</code></pre></div>
+<p>This is a type-safe operation, i.e. the compiler knows that the type of
+<code>updated.foo.bar</code> is <code>number</code>, editor autocomplete works correctly, etc.</p>
+</div>
+</div>
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+        </div>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    <script id="__config" type="application/json">{"base": "..", "features": ["navigation.instant", "navigation.expand"], "search": "../assets/javascripts/workers/search.74e28a9f.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}}</script>
+    
+    
+      <script src="../assets/javascripts/bundle.220ee61c.min.js"></script>
+      
+    
+  </body>
+</html>

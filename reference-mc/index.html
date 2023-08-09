@@ -1,0 +1,1643 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+      
+      
+        <link rel="canonical" href="https://akheron.github.io/optics-ts/reference-mc/">
+      
+      
+        <link rel="prev" href="../reference-intro/">
+      
+      
+        <link rel="next" href="../reference-standalone/">
+      
+      <link rel="icon" href="../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.5.2, mkdocs-material-9.1.21">
+    
+    
+      
+        <title>Method chaining API - optics-ts</title>
+      
+    
+    
+      <link rel="stylesheet" href="../assets/stylesheets/main.eebd395e.min.css">
+      
+      
+
+    
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+    <script>__md_scope=new URL("..",location),__md_hash=e=>[...e].reduce((e,_)=>(e<<5)-e+_.charCodeAt(0),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+    
+  </head>
+  
+  
+    <body dir="ltr">
+  
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&"object"==typeof palette.color)for(var key of Object.keys(palette.color))document.body.setAttribute("data-md-color-"+key,palette.color[key])</script>
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#method-chaining-api" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href=".." title="optics-ts" class="md-header__button md-logo" aria-label="optics-ts" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54Z"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3V6m0 5h18v2H3v-2m0 5h18v2H3v-2Z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            optics-ts
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Method chaining API
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+    
+    
+      <label class="md-header__button md-icon" for="__search">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5Z"/></svg>
+      </label>
+      <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5Z"/></svg>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12Z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12 19 6.41Z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/akheron/optics-ts" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 496 512"><!--! Font Awesome Free 6.4.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2023 Fonticons, Inc.--><path d="M165.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6zm-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3zm44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9zM244.8 8C106.1 8 0 113.3 0 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C428.2 457.8 496 362.9 496 252 496 113.3 383.5 8 244.8 8zM97.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1zm-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7zm32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1zm-11.4-14.7c-1.6 1-1.6 3.6 0 5.9 1.6 2.3 4.3 3.3 5.6 2.3 1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2z"/></svg>
+  </div>
+  <div class="md-source__repository">
+    GitHub
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href=".." title="optics-ts" class="md-nav__button md-logo" aria-label="optics-ts" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54Z"/></svg>
+
+    </a>
+    optics-ts
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/akheron/optics-ts" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 496 512"><!--! Font Awesome Free 6.4.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2023 Fonticons, Inc.--><path d="M165.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6zm-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3zm44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9zM244.8 8C106.1 8 0 113.3 0 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C428.2 457.8 496 362.9 496 252 496 113.3 383.5 8 244.8 8zM97.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1zm-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7zm32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1zm-11.4-14.7c-1.6 1-1.6 3.6 0 5.9 1.6 2.3 4.3 3.3 5.6 2.3 1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2z"/></svg>
+  </div>
+  <div class="md-source__repository">
+    GitHub
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href=".." class="md-nav__link">
+        Home
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../installation/" class="md-nav__link">
+        Installation
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../tutorial/" class="md-nav__link">
+        Tutorial
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../two-syntaxes/" class="md-nav__link">
+        The Two Syntaxes
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+    
+  
+  
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+      
+      
+      
+      
+      <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5" checked>
+      
+      
+      
+        <label class="md-nav__link" for="__nav_5" id="__nav_5_label" tabindex="0">
+          Reference
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="true">
+        <label class="md-nav__title" for="__nav_5">
+          <span class="md-nav__icon md-icon"></span>
+          Reference
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../reference-intro/" class="md-nav__link">
+        Introduction
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+    
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          Method chaining API
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        Method chaining API
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#type-parameters" class="md-nav__link">
+    Type parameters
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#top-level-functions" class="md-nav__link">
+    Top-level functions
+  </a>
+  
+    <nav class="md-nav" aria-label="Top-level functions">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#optic" class="md-nav__link">
+    optic
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#optic_" class="md-nav__link">
+    optic_
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#get" class="md-nav__link">
+    get
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#preview" class="md-nav__link">
+    preview
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#collect" class="md-nav__link">
+    collect
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#modify" class="md-nav__link">
+    modify
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#set" class="md-nav__link">
+    set
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#remove" class="md-nav__link">
+    remove
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#compose" class="md-nav__link">
+    compose
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#pipe" class="md-nav__link">
+    pipe
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#creating-optics" class="md-nav__link">
+    Creating optics
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#isomorphisms" class="md-nav__link">
+    Isomorphisms
+  </a>
+  
+    <nav class="md-nav" aria-label="Isomorphisms">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#iso" class="md-nav__link">
+    iso
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#indexed" class="md-nav__link">
+    indexed
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#lenses" class="md-nav__link">
+    Lenses
+  </a>
+  
+    <nav class="md-nav" aria-label="Lenses">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#prop" class="md-nav__link">
+    prop
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#path" class="md-nav__link">
+    path
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#nth" class="md-nav__link">
+    nth
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#pick" class="md-nav__link">
+    pick
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#filter" class="md-nav__link">
+    filter
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#valueor" class="md-nav__link">
+    valueOr
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#partsof" class="md-nav__link">
+    partsOf
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#reread" class="md-nav__link">
+    reread
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#rewrite" class="md-nav__link">
+    rewrite
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#lens" class="md-nav__link">
+    lens
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#prisms" class="md-nav__link">
+    Prisms
+  </a>
+  
+    <nav class="md-nav" aria-label="Prisms">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#optional" class="md-nav__link">
+    optional
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#guard" class="md-nav__link">
+    guard
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#guard_" class="md-nav__link">
+    guard_
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#at" class="md-nav__link">
+    at
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#head" class="md-nav__link">
+    head
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#index" class="md-nav__link">
+    index
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#find" class="md-nav__link">
+    find
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#when" class="md-nav__link">
+    when
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#traversals" class="md-nav__link">
+    Traversals
+  </a>
+  
+    <nav class="md-nav" aria-label="Traversals">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#elems" class="md-nav__link">
+    elems
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#getters" class="md-nav__link">
+    Getters
+  </a>
+  
+    <nav class="md-nav" aria-label="Getters">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#to" class="md-nav__link">
+    to
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#setters" class="md-nav__link">
+    Setters
+  </a>
+  
+    <nav class="md-nav" aria-label="Setters">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#prependto" class="md-nav__link">
+    prependTo
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#appendto" class="md-nav__link">
+    appendTo
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#composing" class="md-nav__link">
+    Composing
+  </a>
+  
+    <nav class="md-nav" aria-label="Composing">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#compose_1" class="md-nav__link">
+    compose
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#strings" class="md-nav__link">
+    Strings
+  </a>
+  
+    <nav class="md-nav" aria-label="Strings">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#chars" class="md-nav__link">
+    chars
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#words" class="md-nav__link">
+    words
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../reference-standalone/" class="md-nav__link">
+        Standalone API
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../reference-interop/" class="md-nav__link">
+        Interoperability
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../prior-art/" class="md-nav__link">
+        Prior art
+      </a>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#type-parameters" class="md-nav__link">
+    Type parameters
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#top-level-functions" class="md-nav__link">
+    Top-level functions
+  </a>
+  
+    <nav class="md-nav" aria-label="Top-level functions">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#optic" class="md-nav__link">
+    optic
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#optic_" class="md-nav__link">
+    optic_
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#get" class="md-nav__link">
+    get
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#preview" class="md-nav__link">
+    preview
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#collect" class="md-nav__link">
+    collect
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#modify" class="md-nav__link">
+    modify
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#set" class="md-nav__link">
+    set
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#remove" class="md-nav__link">
+    remove
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#compose" class="md-nav__link">
+    compose
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#pipe" class="md-nav__link">
+    pipe
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#creating-optics" class="md-nav__link">
+    Creating optics
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#isomorphisms" class="md-nav__link">
+    Isomorphisms
+  </a>
+  
+    <nav class="md-nav" aria-label="Isomorphisms">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#iso" class="md-nav__link">
+    iso
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#indexed" class="md-nav__link">
+    indexed
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#lenses" class="md-nav__link">
+    Lenses
+  </a>
+  
+    <nav class="md-nav" aria-label="Lenses">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#prop" class="md-nav__link">
+    prop
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#path" class="md-nav__link">
+    path
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#nth" class="md-nav__link">
+    nth
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#pick" class="md-nav__link">
+    pick
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#filter" class="md-nav__link">
+    filter
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#valueor" class="md-nav__link">
+    valueOr
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#partsof" class="md-nav__link">
+    partsOf
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#reread" class="md-nav__link">
+    reread
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#rewrite" class="md-nav__link">
+    rewrite
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#lens" class="md-nav__link">
+    lens
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#prisms" class="md-nav__link">
+    Prisms
+  </a>
+  
+    <nav class="md-nav" aria-label="Prisms">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#optional" class="md-nav__link">
+    optional
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#guard" class="md-nav__link">
+    guard
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#guard_" class="md-nav__link">
+    guard_
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#at" class="md-nav__link">
+    at
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#head" class="md-nav__link">
+    head
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#index" class="md-nav__link">
+    index
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#find" class="md-nav__link">
+    find
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#when" class="md-nav__link">
+    when
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#traversals" class="md-nav__link">
+    Traversals
+  </a>
+  
+    <nav class="md-nav" aria-label="Traversals">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#elems" class="md-nav__link">
+    elems
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#getters" class="md-nav__link">
+    Getters
+  </a>
+  
+    <nav class="md-nav" aria-label="Getters">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#to" class="md-nav__link">
+    to
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#setters" class="md-nav__link">
+    Setters
+  </a>
+  
+    <nav class="md-nav" aria-label="Setters">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#prependto" class="md-nav__link">
+    prependTo
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#appendto" class="md-nav__link">
+    appendTo
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#composing" class="md-nav__link">
+    Composing
+  </a>
+  
+    <nav class="md-nav" aria-label="Composing">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#compose_1" class="md-nav__link">
+    compose
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#strings" class="md-nav__link">
+    Strings
+  </a>
+  
+    <nav class="md-nav" aria-label="Strings">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#chars" class="md-nav__link">
+    chars
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#words" class="md-nav__link">
+    words
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+  
+  
+
+
+<h1 id="method-chaining-api">Method chaining API<a class="headerlink" href="#method-chaining-api" title="Permanent link">#</a></h1>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Since optics-ts v2.2.0, there are two syntaxes for optics: <strong>method chaining</strong>
+and <strong>standalone optics</strong>. For more information about the differences between
+them, see <a href="../two-syntaxes/">The Two Syntaxes</a>.</p>
+</div>
+<p>Everything below assumes the following import:</p>
+<div class="highlight"><pre><span></span><code><span class="k">import</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="kr">as</span><span class="w"> </span><span class="nx">O</span><span class="w"> </span><span class="kr">from</span><span class="w"> </span><span class="s1">&#39;optics-ts&#39;</span>
+</code></pre></div>
+<p>Optics are composed with method chaining. This means that each optic type has
+most of the methods documented below, regardless of the type of the optic that
+the method creates. The only difference is the return type, which is determined
+by the composition rules above.</p>
+<p>For example, assume we have a variable <code>myLens</code> that holds a <code>Lens</code>, and call
+<code>.optional()</code> on it:</p>
+<div class="highlight"><pre><span></span><code><span class="kd">const</span><span class="w"> </span><span class="nx">newOptic</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">myLens</span><span class="p">.</span><span class="nx">optional</span><span class="p">()</span>
+</code></pre></div>
+<p><code>.optional()</code> creates a prism, so <code>newOptic</code> will be a composition of lens and
+prism, i.e. a prism.</p>
+<p>Which methods each optic type has depends on the composition rules presented in
+<a href="../reference-intro/#rules-of-composition">Rules of composition</a>. For example,
+the <code>.prop()</code> method creates a lens, so a getter has that method because you can
+compose a getter and a lens. On the other hand, the <code>.appendTo()</code> method, which
+creates a setter, is not available in a getter, because getters cannot be
+composed with setters.</p>
+<h2 id="type-parameters">Type parameters<a class="headerlink" href="#type-parameters" title="Permanent link">#</a></h2>
+<p>All writable optics have 3 type parameters: <code>&lt;S, T, A&gt;</code>, and all read-only
+optics have 2 type parameters: <code>&lt;S, A&gt;</code>:</p>
+<ul>
+<li>
+<p><code>S</code> is the source on which the optic operates</p>
+</li>
+<li>
+<p><code>A</code> is the type of the focus or focuses</p>
+</li>
+<li>
+<p><code>T</code> is a type that encodes how the output type is constructed with polymorphic
+  writes, as well as info about the optic's removability</p>
+</li>
+</ul>
+<p>Conceptually, when you write a value of type <code>B</code>, the output type will be <code>S</code>
+with <code>A</code> replaced by <code>B</code> at the focus(es) of the optic. <code>T</code> contains a mechanism
+that transforms <code>B</code> to the output type. This construct makes it possible for the
+optics to be polymorphic on the type level. The read-only optics don't need <code>T</code>
+because you cannot write through them or remove their focus.</p>
+<p>In the following, we leave the exact definition of <code>T</code> for each optic out for
+clarity, writing just <code>_</code> in its place. It's usually clear from how the optic
+works what will come out if you write a value of a different type.</p>
+<p>In the documentation of functions that can be used to write through an optic,
+the return type is denoted by <code>T&lt;B&gt;</code>. While not valid TypeScript syntax (because
+<code>T</code> is a type parameter instead of a concrete type), this captures the meaning
+quite well: <code>B</code> is applied to the "higher-kinded" type <code>T</code>, yielding the output
+type.</p>
+<p>Interested readers can refer to
+<a href="https://github.com/akheron/optics-ts/tree/main/src/hkt.ts">hkt.ts</a> to see how
+the higher-kinded types / partially applied type operators are actually
+implemented.</p>
+<h2 id="top-level-functions">Top-level functions<a class="headerlink" href="#top-level-functions" title="Permanent link">#</a></h2>
+<p>These functions are available as top level exports of the <code>optics-ts</code> module.</p>
+<p>Most functions have <code>Optic</code> in their signature. It means that multiple optics
+work with the function. The optic classes that are actually applicable are
+documented in the function description.</p>
+<h3 id="optic"><code>optic</code><a class="headerlink" href="#optic" title="Permanent link">#</a></h3>
+<p>Signature: <code>optic&lt;S&gt;(): Equivalence&lt;S, _, S&gt;</code></p>
+<p>Create a monomorphic equivalence for <code>S</code>. If you ever see the type
+<code>DisallowedTypeChange</code>, it means that you have attempted to change a type with a
+monomorphic optic.</p>
+<h3 id="optic_"><code>optic_</code><a class="headerlink" href="#optic_" title="Permanent link">#</a></h3>
+<p>Signature: <code>optic_&lt;S&gt;(): Equivalence&lt;S, _, S&gt;</code></p>
+<p>Create a polymorphic equivalence for <code>S</code>.</p>
+<h3 id="get"><code>get</code><a class="headerlink" href="#get" title="Permanent link">#</a></h3>
+<p>Signature: <code>get&lt;S, A&gt;(optic: Optic&lt;S, _, A&gt;) =&gt; (source: S) =&gt; A</code></p>
+<p>Read a value through an <code>Equivalence</code>, <code>Iso</code>, <code>Lens</code> or <code>Getter</code>.</p>
+<h3 id="preview"><code>preview</code><a class="headerlink" href="#preview" title="Permanent link">#</a></h3>
+<p>Signature:
+<code>preview&lt;S, A&gt;(optic: Optic&lt;S, _, A&gt;) =&gt; (source: S) =&gt; A | undefined</code></p>
+<p>Read a value through a <code>Prism</code>, <code>Traversal</code>, <code>AffineFold</code> or <code>Fold</code>. For <code>Prism</code>
+and <code>AffineFold</code>, return <code>undefined</code> if the optic doesn't match (has zero
+focuses). For <code>Traversal</code> and <code>Fold</code>, returns the value of the first focus, or
+<code>undefined</code> if there are no focuses.</p>
+<h3 id="collect"><code>collect</code><a class="headerlink" href="#collect" title="Permanent link">#</a></h3>
+<p>Signature: <code>collect&lt;S, A&gt;(optic: Optic&lt;S, _, A&gt;) =&gt; (source: S) =&gt; A[]</code></p>
+<p>Read all focused values through a <code>Prism</code>, <code>Traversal</code>, <code>AffineFold</code> or <code>Fold</code>.
+For <code>Prism</code> and <code>AffineFold</code>, the return value is an array of 0 or 1 elements.
+For <code>Traversal</code> and <code>Fold</code>, the return value is an array of zero or more
+elements.</p>
+<h3 id="modify"><code>modify</code><a class="headerlink" href="#modify" title="Permanent link">#</a></h3>
+<p>Signature:
+<code>modify&lt;S, T, A&gt;(optic: Optic&lt;S, T, A&gt;) =&gt; &lt;B&gt;(f: (a: A) =&gt; B) =&gt; (source: S) =&gt; T&lt;B&gt;</code></p>
+<p>Modify the focused value(s) through an <code>Equivalence</code>, <code>Iso</code>, <code>Lens</code>, <code>Prism</code> or
+<code>Traversal</code>. Returns an updated copy of <code>source</code> with all focuses modified by
+mapping them through the function <code>f</code>.</p>
+<h3 id="set"><code>set</code><a class="headerlink" href="#set" title="Permanent link">#</a></h3>
+<p>Signature:
+<code>set&lt;S, T, A&gt;(optic: Optic&lt;S, T, A&gt;) =&gt; &lt;B&gt;(value: B) =&gt; (source: S) =&gt; T&lt;B&gt;</code></p>
+<p>Write a constant value through an <code>Equivalence</code>, <code>Iso</code>, <code>Lens</code>, <code>Prism</code> or
+<code>Traversal</code>. Returns an updated copy of <code>source</code> with all focuses replaced by
+<code>value</code>.</p>
+<h3 id="remove"><code>remove</code><a class="headerlink" href="#remove" title="Permanent link">#</a></h3>
+<p>Signature: <code>remove&lt;S, T, A&gt;(optic: Optic&lt;S, T, A&gt;) =&gt; (source: S) =&gt; S</code></p>
+<p>Remove the focus of a <code>RemovablePrism</code> from its containing container.</p>
+<h3 id="compose"><code>compose</code><a class="headerlink" href="#compose" title="Permanent link">#</a></h3>
+<p>Signature:
+<code>compose&lt;S, A1, A2&gt;&lt;optic1: Optic&lt;S, _, A1&gt;, optic2: Optic&lt;A1, _, A2&gt;): Optic&lt;S, _, A2&gt;</code></p>
+<p>Compose two optics. If the first optic is from <code>S</code> to <code>A1</code>, and the second optic
+is from <code>A1</code> to <code>A2</code>, the result is from <code>S</code> to <code>A2</code>.</p>
+<p>See <a href="../reference-intro/#rules-of-composition">Rules of composition</a> for the
+rules of composition.</p>
+<h3 id="pipe"><code>pipe</code><a class="headerlink" href="#pipe" title="Permanent link">#</a></h3>
+<p>Signature:
+<code>pipe&lt;A, B, C, ..., V&gt;(a: A, ab: (a: A) =&gt; B, bc: (b: B) =&gt; C, ...): V</code></p>
+<p>Pipe the value of an expression (<code>a</code>) into a pipeline of at most 9 unary
+functions (<code>ab</code>, <code>bc</code>, ...).</p>
+<h2 id="creating-optics">Creating optics<a class="headerlink" href="#creating-optics" title="Permanent link">#</a></h2>
+<p>The methods documented below are available on all optics types: <code>Equivalence</code>,
+<code>Iso</code>, <code>Lens</code>, <code>Prism</code>, <code>Traversal</code>, <code>Getter</code>, <code>AffineFold</code> and <code>Fold</code>. The
+documented return type is the type of the optic that these methods create. The
+actual return type is the composition of the optic on which the method is called
+and on the optic that the method creates.</p>
+<p>Note that there are no functions to create <code>AffineFold</code> or <code>Fold</code> optics. You
+can only get these by composing other types of optics. <code>Equivalence</code> can be
+created by calling the top-level <a href="#optic"><code>optic</code></a> or <a href="#optic_"><code>optic_</code></a>
+functions.</p>
+<h2 id="isomorphisms">Isomorphisms<a class="headerlink" href="#isomorphisms" title="Permanent link">#</a></h2>
+<p>Isomorphisms have the type <code>Iso&lt;S, T, A&gt;</code>. In the following, we omit the exact
+definition of <code>T</code> for clarity, and use <code>_</code> instead. See
+<a href="#type-parameters">Type parameters</a> for the meanings of type parameters.</p>
+<h3 id="iso"><code>iso</code><a class="headerlink" href="#iso" title="Permanent link">#</a></h3>
+<p>Signature: <code>iso&lt;U&gt;(there: (a: A) =&gt; U, back: (u: U) =&gt; A): Iso&lt;S, _, U&gt;</code></p>
+<p>Create an isomorphism from functions <code>there</code> and <code>back</code>. <code>there</code> takes the focus
+and transforms it to another value. <code>back</code> is the inverse of <code>there</code>.</p>
+<p>Note that <code>iso</code> is monomorphic. There's no polymorphic alternative (yet).</p>
+<h3 id="indexed"><code>indexed</code><a class="headerlink" href="#indexed" title="Permanent link">#</a></h3>
+<p>Signature: <code>indexed(): Iso&lt;S, _, [number, ElemType&lt;A&gt;][]&gt;</code></p>
+<p>Only works on arrays. <code>ElemType&lt;A&gt;</code> is the element type of the array type <code>A</code>.</p>
+<p>Ceate an isomorphism from an array of values to an array of index-value pairs,
+i.e. from <code>[a, b, ...]</code> to <code>[[0, a], [1, b], ...]</code>.</p>
+<p>In the write direction, elements are sorted by index, and only the last one of
+duplicate indices are kept.</p>
+<h2 id="lenses">Lenses<a class="headerlink" href="#lenses" title="Permanent link">#</a></h2>
+<p>Lenses have the type <code>Lens&lt;S, T, A&gt;</code>. In the following, we omit the exact
+definition of <code>T</code> for clarity, and use <code>_</code> instead. See
+<a href="#type-parameters">Type parameters</a> for the meanings of type parameters.</p>
+<h3 id="prop"><code>prop</code><a class="headerlink" href="#prop" title="Permanent link">#</a></h3>
+<p>Signature: <code>prop&lt;K extends keyof A&gt;(key: K): Lens&lt;S, _, A[K]&gt;</code></p>
+<p>Create a lens that focuses on the property <code>K</code> of <code>A</code>.</p>
+<p><strong>Note:</strong> <code>prop()</code> only works for string properties, even though TypeScript's
+type system also allows array's numeric indices when using <code>keyof</code>. Use the
+<a href="#at"><code>at</code></a> prism to focus on an array element at a given index.</p>
+<h3 id="path"><code>path</code><a class="headerlink" href="#path" title="Permanent link">#</a></h3>
+<p>Signature: <code>path&lt;K1, K2, ...&gt;(...keys: [K1, K2, ...]): Lens&lt;S, _, A[K1][K2]...&gt;</code></p>
+<p>A shortcut for focusing on chain of properties.</p>
+<div class="highlight"><pre><span></span><code><span class="nx">foo</span><span class="p">.</span><span class="nx">path</span><span class="p">(</span><span class="s1">&#39;a.b.c&#39;</span><span class="p">)</span>
+</code></pre></div>
+<p>is equal to</p>
+<div class="highlight"><pre><span></span><code><span class="nx">foo</span><span class="p">.</span><span class="nx">path</span><span class="p">(</span><span class="s1">&#39;a&#39;</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39;b&#39;</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39;c&#39;</span><span class="p">)</span>
+</code></pre></div>
+<p>which is equal to</p>
+<div class="highlight"><pre><span></span><code><span class="nx">foo</span><span class="p">.</span><span class="nx">prop</span><span class="p">(</span><span class="s1">&#39;a&#39;</span><span class="p">).</span><span class="nx">prop</span><span class="p">(</span><span class="s1">&#39;b&#39;</span><span class="p">).</span><span class="nx">prop</span><span class="p">(</span><span class="s1">&#39;c&#39;</span><span class="p">)</span>
+</code></pre></div>
+<h3 id="nth"><code>nth</code><a class="headerlink" href="#nth" title="Permanent link">#</a></h3>
+<p>Signature: <code>nth&lt;N extends number&gt;(n: N): Lens&lt;S, _, Nth&lt;A, N&gt;&gt;</code></p>
+<p>Only works on tuples whose length is a least <code>N + 1</code>.</p>
+<p>Create a lens that focuses on the index <code>N</code> of <code>A</code>. This is a lens because the
+length of <code>A</code> is checked on type level, so index <code>N</code> is always defined.</p>
+<p>See <a href="#at"><code>at</code></a> below for a similar prism that works on arrays of arbitrary
+length.</p>
+<h3 id="pick"><code>pick</code><a class="headerlink" href="#pick" title="Permanent link">#</a></h3>
+<p>Signature: <code>pick&lt;K extends keyof A&gt;(keys: K[]): Lens&lt;S, _, Pick&lt;A, K&gt;&gt;</code></p>
+<p>Create a lens that focuses on a sub-object of <code>A</code> with the given properties.
+When writing through a polymorphic <code>.pick()</code> lens, you can add or remove
+properties.</p>
+<p>Example:</p>
+<div class="highlight"><pre><span></span><code><span class="kd">const</span><span class="w"> </span><span class="nx">data</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="nx">foo</span><span class="o">:</span><span class="w"> </span><span class="s1">&#39;something&#39;</span><span class="p">,</span>
+<span class="w">  </span><span class="nx">bar</span><span class="o">:</span><span class="w"> </span><span class="kt">42</span><span class="p">,</span>
+<span class="w">  </span><span class="nx">baz</span><span class="o">:</span><span class="w"> </span><span class="kt">true</span><span class="p">,</span>
+<span class="p">}</span>
+<span class="kd">const</span><span class="w"> </span><span class="nx">lens</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">O</span><span class="p">.</span><span class="nx">optic_</span><span class="o">&lt;</span><span class="ow">typeof</span><span class="w"> </span><span class="nx">data</span><span class="o">&gt;</span><span class="p">().</span><span class="nx">pick</span><span class="p">([</span><span class="s1">&#39;foo&#39;</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39;bar&#39;</span><span class="p">])</span>
+
+<span class="nx">O</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="nx">lens</span><span class="p">)(</span><span class="nx">data</span><span class="p">)</span>
+<span class="c1">// {</span>
+<span class="c1">//  foo: &#39;something&#39;,</span>
+<span class="c1">//  baz: true,</span>
+<span class="c1">// }</span>
+
+<span class="nx">O</span><span class="p">.</span><span class="nx">set</span><span class="p">(</span><span class="nx">lens</span><span class="p">)({</span><span class="w"> </span><span class="nx">quux</span><span class="o">:</span><span class="w"> </span><span class="kt">null</span><span class="w"> </span><span class="p">})(</span><span class="nx">data</span><span class="p">)</span>
+<span class="c1">// {</span>
+<span class="c1">//   quux: null,</span>
+<span class="c1">//   baz: true,</span>
+<span class="c1">// }</span>
+
+<span class="c1">// monomorphic version of the same lens</span>
+<span class="kd">const</span><span class="w"> </span><span class="nx">monoLens</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">O</span><span class="p">.</span><span class="nx">optic</span><span class="o">&lt;</span><span class="ow">typeof</span><span class="w"> </span><span class="nx">data</span><span class="o">&gt;</span><span class="p">().</span><span class="nx">compose</span><span class="p">(</span><span class="nx">lens</span><span class="p">)</span>
+
+<span class="nx">O</span><span class="p">.</span><span class="nx">set</span><span class="p">(</span><span class="nx">monoLens</span><span class="p">)({</span><span class="w"> </span><span class="nx">quux</span><span class="o">:</span><span class="w"> </span><span class="kt">null</span><span class="w"> </span><span class="p">})(</span><span class="nx">data</span><span class="p">)</span>
+<span class="c1">// DisallowedTypeChange</span>
+</code></pre></div>
+<h3 id="filter"><code>filter</code><a class="headerlink" href="#filter" title="Permanent link">#</a></h3>
+<p>Signatures:</p>
+<ul>
+<li><code>filter(pred: (item: ElemType&lt;A&gt;) =&gt; boolean): Lens&lt;S, _, A&gt;</code></li>
+<li><code>filter&lt;B&gt;(pred: (item: ElemType&lt;A&gt;) =&gt; item is B): Lens&lt;S, _, B[]&gt;</code></li>
+</ul>
+<p>Only works on arrays. <code>ElemType&lt;A&gt;</code> is the element type of the array type <code>A</code>.</p>
+<p>Create a lens that focuses on the elements matched by <code>pred</code>. If <code>pred</code> is a
+type guard of <code>B</code>, narrow the type of the focus to <code>B[]</code>.</p>
+<div class="highlight"><pre><span></span><code><span class="kd">const</span><span class="w"> </span><span class="nx">l</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">O</span><span class="p">.</span><span class="nx">optic_</span><span class="o">&lt;</span><span class="kt">number</span><span class="p">[]</span><span class="o">&gt;</span><span class="p">().</span><span class="nx">filter</span><span class="p">((</span><span class="nx">x</span><span class="p">)</span><span class="w"> </span><span class="p">=&gt;</span><span class="w"> </span><span class="nx">x</span><span class="w"> </span><span class="o">%</span><span class="w"> </span><span class="mf">2</span><span class="w"> </span><span class="o">===</span><span class="w"> </span><span class="mf">1</span><span class="p">)</span>
+
+<span class="c1">// Writing an array of the same length replaces elements</span>
+<span class="nx">O</span><span class="p">.</span><span class="nx">set</span><span class="p">(</span><span class="nx">l</span><span class="p">)([</span><span class="s1">&#39;a&#39;</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39;b&#39;</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39;c&#39;</span><span class="p">])([</span><span class="mf">1</span><span class="p">,</span><span class="w"> </span><span class="mf">2</span><span class="p">,</span><span class="w"> </span><span class="mf">3</span><span class="p">,</span><span class="w"> </span><span class="mf">5</span><span class="p">,</span><span class="w"> </span><span class="mf">6</span><span class="p">])</span>
+<span class="c1">// [&#39;a&#39;, 2, &#39;b&#39;, &#39;c&#39;, 6]</span>
+
+<span class="c1">// Writing a shorter array removes elements</span>
+<span class="nx">O</span><span class="p">.</span><span class="nx">set</span><span class="p">(</span><span class="nx">l</span><span class="p">)([</span><span class="s1">&#39;a&#39;</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39;b&#39;</span><span class="p">])([</span><span class="mf">1</span><span class="p">,</span><span class="w"> </span><span class="mf">2</span><span class="p">,</span><span class="w"> </span><span class="mf">3</span><span class="p">,</span><span class="w"> </span><span class="mf">5</span><span class="p">,</span><span class="w"> </span><span class="mf">6</span><span class="p">])</span>
+<span class="c1">// [&#39;a&#39;, 2, &#39;b&#39;, 6]</span>
+
+<span class="c1">// Writing a longer array adds elements to the end</span>
+<span class="nx">O</span><span class="p">.</span><span class="nx">set</span><span class="p">(</span><span class="nx">l</span><span class="p">)([</span><span class="s1">&#39;a&#39;</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39;b&#39;</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39;c&#39;</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39;d&#39;</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39;e&#39;</span><span class="p">])([</span><span class="mf">1</span><span class="p">,</span><span class="w"> </span><span class="mf">2</span><span class="p">,</span><span class="w"> </span><span class="mf">3</span><span class="p">,</span><span class="w"> </span><span class="mf">5</span><span class="p">,</span><span class="w"> </span><span class="mf">6</span><span class="p">])</span>
+<span class="c1">// [&#39;a&#39;, 2, &#39;b&#39;, &#39;c&#39;, 6, &#39;d&#39;, &#39;e&#39;]</span>
+</code></pre></div>
+<p>When a different type <code>U extends any[]</code> is written, the result will have the
+type <code>A | U</code>, i.e. <code>(ElemType&lt;A&gt; | ElemType&lt;U&gt;)[]</code>.</p>
+<h3 id="valueor"><code>valueOr</code><a class="headerlink" href="#valueor" title="Permanent link">#</a></h3>
+<p>Signature: <code>valueOr&lt;B&gt;(defaultValue: B): Lens&lt;S, _, Exclude&lt;A, undefined&gt; | B&gt;</code></p>
+<p>Create a lens that, when read through, returns <code>defaultValue</code> when the focused
+value is <code>undefined</code>. If the focus is not <code>undefined</code>, the focus is returned
+unchanged.</p>
+<p>Fully polymorphic in the write direction.</p>
+<h3 id="partsof"><code>partsOf</code><a class="headerlink" href="#partsof" title="Permanent link">#</a></h3>
+<p>Signatures:</p>
+<ul>
+<li><code>partsOf(traversal: Traversal&lt;A, _, B&gt;): Lens&lt;S, _, B[]&gt;</code></li>
+<li><code>partsOf(makeTraversal: (o: Optic&lt;A&gt;) =&gt; Traversal&lt;A, _, B&gt;): Lens&lt;S, _, B[]&gt;</code></li>
+</ul>
+<p>Create a lens from the given traversal, or from the traversal returned by the
+given function. When read through, the result is an array of elements as if
+produced by <a href="#collect"><code>collect</code></a>. When written through, the focuses of the
+traversal are replaced with the values from the written array. For a polymorphic
+write, the focuses of the tarversal get the type of the written array elements.
+If a shorter or longer array is written, <strong>throws an error</strong>. This is to ensure
+that all focuses are replaced and the types are correct.</p>
+<p>For example, this reverses the words of a string:</p>
+<div class="highlight"><pre><span></span><code><span class="kd">const</span><span class="w"> </span><span class="nx">lens</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">O</span><span class="p">.</span><span class="nx">optic</span><span class="o">&lt;</span><span class="kt">string</span><span class="o">&gt;</span><span class="p">().</span><span class="nx">partsOf</span><span class="p">((</span><span class="nx">o</span><span class="p">)</span><span class="w"> </span><span class="p">=&gt;</span><span class="w"> </span><span class="nx">o</span><span class="p">.</span><span class="nx">words</span><span class="p">())</span>
+<span class="nx">O</span><span class="p">.</span><span class="nx">modify</span><span class="p">(</span><span class="nx">lens</span><span class="p">)((</span><span class="nx">words</span><span class="p">)</span><span class="w"> </span><span class="p">=&gt;</span><span class="w"> </span><span class="p">[...</span><span class="nx">words</span><span class="p">].</span><span class="nx">reverse</span><span class="p">())(</span><span class="s1">&#39;this is a test&#39;</span><span class="p">)</span>
+<span class="c1">// &#39;test a is this&#39;</span>
+</code></pre></div>
+<p>Note that composing <code>partsOf</code> with setters (like <code>appendTo</code> or <code>prependTo</code>) or
+removing elements through <code>partsOf</code> will not work, because the extra element
+added by the setter or the removed element will cause <code>partsOf</code> to throw.</p>
+<h3 id="reread"><code>reread</code><a class="headerlink" href="#reread" title="Permanent link">#</a></h3>
+<h3 id="rewrite"><code>rewrite</code><a class="headerlink" href="#rewrite" title="Permanent link">#</a></h3>
+<p>Signatures:</p>
+<ul>
+<li><code>reread(fn: (value: A) =&gt; A): Lens&lt;S, _, A&gt;</code></li>
+<li><code>rewrite(fn: (value: A) =&gt; A): Lens&lt;S, _, A&gt;</code></li>
+</ul>
+<p>Create a lens that can modify the value in the read direction (<code>reread()</code>) or
+write direction (<code>rewrite()</code>). This is useful to e.g. ensure data structure
+invariants in some cases.</p>
+<p>Note that both <code>reread</code> and <code>rewrite</code> are monomorphic.</p>
+<h3 id="lens"><code>lens</code><a class="headerlink" href="#lens" title="Permanent link">#</a></h3>
+<p>Signature:
+<code>lens&lt;U&gt;(view: (a: A) =&gt; U, update: (a: A, u: U) =&gt; A): Lens&lt;S, _, U&gt;</code></p>
+<p>Create a lens from functions <code>view</code> and <code>update</code>. <code>view</code> takes the current focus
+and returns a new focus. <code>update</code> takes the orginal focus and a value, and
+updates the original focus with that value.</p>
+<p>Note that <code>lens</code> is monomorphic. There's no polymorphic alternative (yet).</p>
+<h2 id="prisms">Prisms<a class="headerlink" href="#prisms" title="Permanent link">#</a></h2>
+<p>Prisms have the type <code>Prism&lt;S, T, A&gt;</code>. In the following, we omit the exact
+definition of <code>T</code> for clarity, and use <code>_</code> instead. See
+<a href="#type-parameters">Type parameters</a> for the meanings of type parameters.</p>
+<h3 id="optional"><code>optional</code><a class="headerlink" href="#optional" title="Permanent link">#</a></h3>
+<p>Signature: <code>optional(): Prism&lt;S, _, Exclude&lt;A, undefined&gt;&gt;</code></p>
+<p>Create a prism that focuses on the non-<code>undefined</code> subtype of <code>A</code>.</p>
+<h3 id="guard"><code>guard</code><a class="headerlink" href="#guard" title="Permanent link">#</a></h3>
+<p>Signature: <code>guard&lt;U extends A&gt;(g: (a: A) =&gt; a is U): Prism&lt;S, _, U&gt;</code></p>
+<p>Create a prism that focuses on the subtype <code>U</code> of <code>A</code> that matches the type
+guard <code>g</code>.</p>
+<p>Note that <code>guard()</code> is monomorphic. Use <code>guard_</code> if you want a polymorphic
+guard.</p>
+<h3 id="guard_"><code>guard_</code><a class="headerlink" href="#guard_" title="Permanent link">#</a></h3>
+<p>Signature:
+<code>guard_&lt;F extends HKT&gt;(): &lt;U extends A&gt;(g: (a: A) =&gt; a is U) =&gt; Prism&lt;S, T · F, U&gt;</code></p>
+<p>Create a prism that focuses on the subtype of <code>A</code> that matches the type guard
+<code>g</code>. When written to, uses the higher-kinded type <code>F</code> to construct the output
+type.</p>
+<h3 id="at"><code>at</code><a class="headerlink" href="#at" title="Permanent link">#</a></h3>
+<p>Signature: <code>at(i: number): RemovablePrism&lt;S, _, ElemType&lt;A&gt;&gt;</code></p>
+<p>Only works on arrays and strings. Removable. <code>ElemType&lt;A&gt;</code> is the element type
+of the array type <code>A</code>.</p>
+<p>Create a prism that focuses on the element type of the array <code>A</code>, or on a
+substring of length 1 if <code>A</code> is <code>string</code>.</p>
+<p>When an element of a different type <code>B</code> is written to an array, the resulting
+array will have the type <code>Array&lt;A | B&gt;</code>.</p>
+<p>When writing to a string, only strings can be written. The length of the written
+string can be something else than 1.</p>
+<h3 id="head"><code>head</code><a class="headerlink" href="#head" title="Permanent link">#</a></h3>
+<p>Signature: <code>head(): Prism&lt;S, _, ElemType&lt;A&gt;&gt;</code></p>
+<p>Short for <code>at(0)</code>.</p>
+<h3 id="index"><code>index</code><a class="headerlink" href="#index" title="Permanent link">#</a></h3>
+<p>Signature: <code>index(i: number): RemovablePrism&lt;S, _, ElemType&lt;A&gt;&gt;</code></p>
+<p><strong>Deprecated</strong>. Alias for <a href="#at"><code>at</code></a>.</p>
+<h3 id="find"><code>find</code><a class="headerlink" href="#find" title="Permanent link">#</a></h3>
+<p>Signature:
+<code>find(p: (e: ElemType&lt;A&gt;) =&gt; boolean): RemovablePrism&lt;S, _, ElemType&lt;A&gt;&gt;</code></p>
+<p>Only works on array types. Removable. <code>ElemType&lt;A&gt;</code> is the element type of the
+array type <code>A</code>.</p>
+<p>Like <a href="#at"><code>at</code></a>, but the index to be focused on is determined by finding the
+first element that matches the given predicate.</p>
+<p>When a different type <code>B</code> is written through this optic, the resulting array
+will have the type <code>Array&lt;A | B&gt;</code>.</p>
+<h3 id="when"><code>when</code><a class="headerlink" href="#when" title="Permanent link">#</a></h3>
+<p>Signature: <code>when(f: (a: A) =&gt; boolean): Prism&lt;S, _, A&gt;</code></p>
+<p>Create a prism that skips the focus if it doesn't match the given predicate.
+Especially useful for filtering the focuses of a travesal.</p>
+<p>When a different type <code>B</code> is written through this optic, the resulting value
+will have the type <code>A | B</code>.</p>
+<h2 id="traversals">Traversals<a class="headerlink" href="#traversals" title="Permanent link">#</a></h2>
+<p>Traversals have the type <code>Traversal&lt;S, T, A&gt;</code>. In the following, we omit the
+exact definition of <code>T</code> for clarity, and use <code>_</code> instead. See
+<a href="#type-parameters">Type parameters</a> for the meanings of type parameters.</p>
+<h3 id="elems"><code>elems</code><a class="headerlink" href="#elems" title="Permanent link">#</a></h3>
+<p>Signature: <code>elems(): Traversal&lt;S, _, ElemType&lt;A&gt;&gt;</code></p>
+<p>Only works on array types. <code>ElemType&lt;A&gt;</code> is the element type of the array type
+<code>A</code>.</p>
+<p>Create a traversal that focuses on all the elements of the array.</p>
+<h2 id="getters">Getters<a class="headerlink" href="#getters" title="Permanent link">#</a></h2>
+<p>Getters are read-only optics with a single focus. You can think of them like
+one-way isomorphisms or read-only lenses.</p>
+<p>Getters have the type <code>Getter&lt;S, A&gt;</code>. See <a href="#type-parameters">Type parameters</a>
+for the meanings of type parameters.</p>
+<h3 id="to"><code>to</code><a class="headerlink" href="#to" title="Permanent link">#</a></h3>
+<p>Signature: <code>to&lt;B&gt;(f: (a: A) =&gt; B): Getter&lt;S, B&gt;</code></p>
+<p>Create a getter that applies the function <code>f</code> to its focus.</p>
+<h2 id="setters">Setters<a class="headerlink" href="#setters" title="Permanent link">#</a></h2>
+<p>Setters have the type <code>Setter&lt;S, T, A&gt;</code>. In the following, we omit the exact
+definition of <code>T</code> for clarity, and use <code>_</code> instead. See
+<a href="#type-parameters">Type parameters</a> for the meanings of type parameters.</p>
+<h3 id="prependto"><code>prependTo</code><a class="headerlink" href="#prependto" title="Permanent link">#</a></h3>
+<h3 id="appendto"><code>appendTo</code><a class="headerlink" href="#appendto" title="Permanent link">#</a></h3>
+<p>Signatures:</p>
+<ul>
+<li><code>prependTo(): Setter&lt;S, _, ElemType&lt;A&gt;&gt;</code></li>
+<li><code>appendTo(): Setter&lt;S, _, ElemType&lt;A&gt;&gt;</code></li>
+</ul>
+<p>Only works on arrays. <code>ElemType&lt;A&gt;</code> is the element type of the array type <code>A</code>.</p>
+<p>Create a setter that focuses on the part <em>before the first element</em> or <em>after
+the last element</em> of the focus array. When written through, prepends or appends
+the value to the array.</p>
+<p>When an element of a different type <code>B</code> is written, the resulting array will
+have the type <code>Array&lt;A | B&gt;</code>.</p>
+<h2 id="composing">Composing<a class="headerlink" href="#composing" title="Permanent link">#</a></h2>
+<h3 id="compose_1"><code>compose</code><a class="headerlink" href="#compose_1" title="Permanent link">#</a></h3>
+<p>Signature: <code>compose&lt;B&gt;(other: Optic&lt;A, _, B&gt;): Optic&lt;S, _, B&gt;</code></p>
+<h2 id="strings">Strings<a class="headerlink" href="#strings" title="Permanent link">#</a></h2>
+<p>The following optics only work on strings.</p>
+<h3 id="chars"><code>chars</code><a class="headerlink" href="#chars" title="Permanent link">#</a></h3>
+<p>Signature: <code>chars(): Traversal&lt;S, _, string&gt;</code></p>
+<p>Create a traversal that focuses on all the characters of the current string
+focus.</p>
+<p>When written through, characters can be removed by writing the empty string, or
+changed to longer strings.</p>
+<h3 id="words"><code>words</code><a class="headerlink" href="#words" title="Permanent link">#</a></h3>
+<p>Signature: <code>words(): Traversal&lt;S, _, string&gt;</code></p>
+<p>Create a traversal that focuses on all the words of the current string focus.
+Words are substrings that are separated by whitespace.</p>
+<p>When written through, words can be removed by writing the empty string, or
+changed to longer or shorter strings.</p>
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+        </div>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    <script id="__config" type="application/json">{"base": "..", "features": ["navigation.instant", "navigation.expand"], "search": "../assets/javascripts/workers/search.74e28a9f.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}}</script>
+    
+    
+      <script src="../assets/javascripts/bundle.220ee61c.min.js"></script>
+      
+    
+  </body>
+</html>
