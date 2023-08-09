@@ -23,7 +23,7 @@ export interface Optic<
   C extends Class,
   A extends HKT,
   T extends HKT2,
-  R extends Removable = undefined
+  R extends Removable = undefined,
 > {
   readonly _tag: C
   readonly _A: A

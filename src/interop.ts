@@ -24,7 +24,7 @@ function toOptic(optic: any) {
 export function get<
   C extends 'Equivalence' | 'Iso' | 'Lens' | 'Getter',
   A extends HKT,
-  S
+  S,
 >(optic: Optic<C, A, any, any>, source: S): Apply<A, S>
 export function get<S, A>(
   optic:
@@ -45,7 +45,7 @@ type Preview<A extends HKT, S> = Apply<A, S> extends infer AU
 export function preview<
   C extends 'Prism' | 'Traversal' | 'AffineFold' | 'Fold',
   A extends HKT,
-  S
+  S,
 >(optic: Optic<C, A, any, any>, source: S): Preview<A, S>
 export function preview<S, A>(
   optic:
@@ -66,7 +66,7 @@ type Collect<A extends HKT, S> = Apply<A, S> extends infer AU
 export function collect<
   C extends 'Prism' | 'Traversal' | 'Fold',
   A extends HKT,
-  S
+  S,
 >(optic: Optic<C, A, any, any>, source: S): Collect<A, S>
 export function collect<S, A>(
   optic: Prism<S, any, A> | Traversal<S, any, A> | Fold<S, A>,
@@ -87,7 +87,7 @@ export function modify<
   A extends HKT,
   B,
   S,
-  T extends HKT2
+  T extends HKT2,
 >(
   optic: Optic<C, A, T, any>,
   f: (a: Apply<A, S>) => B,
@@ -115,7 +115,7 @@ export function set<
   C extends 'Equivalence' | 'Iso' | 'Lens' | 'Prism' | 'Traversal' | 'Setter',
   T extends HKT2,
   B,
-  S
+  S,
 >(optic: Optic<C, any, T, any>, value: B, source: S): Set<B, S, T>
 export function set<S, T extends OpticParams, A, B>(
   optic:

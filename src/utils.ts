@@ -26,7 +26,7 @@ type Or<A extends true | false, B extends true | false> = A extends true
 export type IfElse<
   Condition extends true | false,
   Then,
-  Else
+  Else,
 > = Condition extends true ? Then : Else
 
 export type RequireString<A, B> = IfElse<
@@ -79,7 +79,7 @@ export type AnyTuple<N extends number, Acc extends any[] = []> = N extends 0
 export type Nth<A, N extends number> = A extends [
   ...AnyTuple<N>,
   infer U,
-  ...any[]
+  ...any[],
 ]
   ? U
   : never
