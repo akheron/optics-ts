@@ -16,7 +16,7 @@
 
 `optics-ts`支持镜头、棱镜、遍历、从容器中移除项目，等等！
 
-自 optics-ts v2.2.0起，定义光学特性有两种语法：方法链（默认）和独立光学特性（实验性）。查看[文档](https://akheron.github.io/optics-ts)获取更多信息！
+自 optics-ts v2.2.0起，定义光学特性有两种语法：方法链（默认）和独立光学特性（实验性）。查看[文档](https://ouweiya.github.io/optics-ts-zh)获取更多信息！
 
 ## 入门
 
@@ -94,7 +94,7 @@ O.modify(optic)((s) => s.toUpperCase()(input)
 // "This is a STRING with some SHORTER and some LONGER WORDS"
 ```
 
-查看[文档](https://akheron.github.io/optics-ts)获取教程和所有支持的光学特性的详细参考。
+查看[文档](https://ouweiya.github.io/optics-ts-zh)获取教程和所有支持的光学特性的详细参考。
 
 ## 开发
 
