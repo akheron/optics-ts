@@ -136,4 +136,4 @@ $ yarn publish
 $ git push origin main --tags
 ```
 
-打开 https://github.com/akheron/optics-ts/releases，编辑草稿发布，选择最新的版本标签，根据需要调整描述。
+打开 https://github.com/akheron/optics-ts/releases ，编辑草稿发布，选择最新的版本标签，根据需要调整描述。
