@@ -90,7 +90,7 @@ import * as O from 'optics-ts/standalone'
 const optic = O.optic<string>().words().when(s => s.length >= 5)
 
 const input = 'This is a string with some shorter and some longer words'
-O.modify(optic)((s) => s.toUpperCase()(input)
+O.modify(optic)((s) => s.toUpperCase())(input)
 // "This is a STRING with some SHORTER and some LONGER WORDS"
 ```
 
