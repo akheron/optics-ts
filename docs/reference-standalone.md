@@ -2,11 +2,11 @@
 
 !!! 注意
 
-        自 optics-ts v2.2.0 起，光学有两种语法：**方法链**和**独立光学**。有关它们之间的差异的更多信息，请参阅[两种语法](two-syntaxes.md)。
+    自 optics-ts v2.2.0 起，光学有两种语法：**方法链**和**独立光学**。有关它们之间的差异的更多信息，请参阅[两种语法](two-syntaxes.md)。
 
 !!! 危险 "实验性"
 
-        此模块是实验性的，可能会接收到向后不兼容的更改，而不会有相应的 semver bump。
+    此模块是实验性的，可能会接收到向后不兼容的更改，而不会有相应的 semver bump。
 
 以下所有内容都假定有以下导入：
 
@@ -35,7 +35,7 @@ import * as O from 'optics-ts/standalone'
 
 这些函数本身不是光学，而是在光学和数据上操作。
 
-### `compose` {#`compose`}
+### `compose` {#compose}
 
 `compose :: (optic, ...optics) => Optic`
 
@@ -53,7 +53,7 @@ O.preview(fooBar, { foo: { bar: 5 } })
 // 5
 ```
 
-### `get` {#`get`}
+### `get` {#get}
 
 `get :: (optic, source) => value`<br> `get :: (optic) => (source) => value`
 
@@ -66,7 +66,7 @@ O.get(O.pick('foo', 'baz'), { foo: 1, bar: 2, baz: 3 })
 // { foo: 1, baz: 3 }
 ```
 
-### `preview` {#`preview`}
+### `preview` {#preview}
 
 `preview :: (optic, source) => value | undefined`<br>
 `preview :: (optic) => (source) => value | undefined`
@@ -84,7 +84,7 @@ O.preview(O.elems, [])
 // undefined
 ```
 
-### `collect` {#`collect`}
+### `collect` {#collect}
 
 `collect :: (optic, source) => value[]`<br>
 `collect :: (optic) => (source) => value[]`
@@ -103,7 +103,7 @@ O.collect(O.elems, [])
 // []
 ```
 
-### `modify` {#`modify`}
+### `modify` {#modify}
 
 `modify :: (optic, fn, source) => value`<br>
 `modify :: (optic) => (fn, source) => value`<br>
@@ -119,7 +119,7 @@ O.modify(O.prop('foo'), (value) => value.length, { foo: 'bar' })
 // { foo: 3 }
 ```
 
-### `set` {#`set`}
+### `set` {#set}
 
 签名：
 
@@ -137,7 +137,7 @@ O.set(O.prop('foo'), null, { foo: 'bar' })
 // { foo: null }
 ```
 
-### `remove` {#`remove`}
+### `remove` {#remove}
 
 `remove :: (optic, source) => value`<br>
 `remove :: (optic) => (source) => value`
@@ -153,7 +153,7 @@ O.remove(O.at(1), [1, 2, 3])
 
 ## 同构 {#isomorphisms}
 
-### `iso` {#`iso`}
+### `iso` {#iso}
 
 `iso :: (there: (v) => u, back: (u) => v) => Iso`
 
@@ -176,7 +176,7 @@ O.modify(sep, (arr) => [...arr].reverse(), 'foo,bar,baz')
 // 'baz,bar,foo'
 ```
 
-### `indexed` {#`indexed`}
+### `indexed` {#indexed}
 
 `indexed :: Iso`
 
@@ -196,9 +196,9 @@ O.set(O.compose(O.indexed, O.at(1), O.nth(0)), 3, ['a', 'b', 'c'])
 // ['a', 'c', 'b']
 ```
 
-## 透镜 {#lenses}
+## Lenses {#lenses}
 
-### `prop` {#`prop`}
+### `prop` {#prop}
 
 `prop :: (key) => Lens`
 
@@ -215,7 +215,7 @@ O.set(O.prop('foo'), 42, { foo: null })
 
 请参阅 [`atKey`](#atKey) 了解在记录上工作的类似棱镜。
 
-### `nth` {#`nth`}
+### `nth` {#nth}
 
 `nth :: (n) => Lens`
 
@@ -226,7 +226,7 @@ _只适用于长度至少为 `n + 1` 的
 
 请参阅 [`at`](#at) 了解在数组上工作的类似棱镜。
 
-### `pick` {#`pick`}
+### `pick` {#pick}
 
 `pick :: (...keys) => Lens`
 
@@ -262,7 +262,7 @@ O.set(O.pick(), { quux: 'added' }, data)
 // }
 ```
 
-### `filter` {#`filter`}
+### `filter` {#filter}
 
 `filter :: (fn: (elem) => boolean) => Lens`
 
@@ -287,7 +287,7 @@ O.set(l, ['a', 'b', 'c', 'd', 'e'], [1, 2, 3, 5, 6])
 // ['a', 2, 'b', 'c', 6, 'd', 'e']
 ```
 
-### `valueOr` {#`valueor`}
+### `valueOr` {#valueor}
 
 `valueOr :: (defaultValue) => Lens`
 
@@ -306,7 +306,7 @@ O.get(O.compose('maxAge', O.valueOr(100)), { maxAge: undefined })
 // 100
 ```
 
-### `partsOf` {#`partsof`}
+### `partsOf` {#partsof}
 
 `partsOf :: (traversal) => Lens`
 
@@ -328,7 +328,7 @@ O.modify(O.partsOf(O.words), (words) => [...words].reverse(), 'this is a test')
 
 注意，将 `partsOf` 与设置器（如 `appendTo` 或 `prependTo`）组合，或通过 `partsOf` 删除元素将不起作用，因为设置器添加的额外元素或删除的元素将导致 `partsOf` 抛出错误。
 
-### `reread`, `rewrite` {#`reread`,-`rewrite`}
+### `reread`, `rewrite` {#reread`,-`rewrite}
 
 `reread :: (fn: (value) => value) => Lens`<br>
 `rewrite :: (fn: (value) => value) => Lens`
@@ -356,7 +356,7 @@ O.set(write, null, 'foo')
 // FOO
 ```
 
-### `lens` {#`lens`}
+### `lens` {#lens}
 
 `lens :: (view: (v) => u, update: (v, u) => v) => Lens`
 
@@ -381,7 +381,7 @@ O.get(lens, 'foo')
 
 ## Prisms {#prisms}
 
-### `optional` {#`optional`}
+### `optional` {#optional}
 
 `optional :: Prism`
 
@@ -399,7 +399,7 @@ O.preview(prism, { foo: undefined })
 // undefined
 ```
 
-### `guard` {#`guard`}
+### `guard` {#guard}
 
 `guard :: (fn: (value) => boolean) => Prism` (单态)<br>
 `guard :: <F>() => (fn: (value) => boolean) => Prism` (多态)
@@ -478,7 +478,7 @@ const result2: Option<string> = O.set(someValue, 'foo', some)
 // { type: 'some', value: 'foo' }
 ```
 
-### `at` {#`at`}
+### `at` {#at}
 
 `at :: (i) => RemovablePrism`
 
@@ -528,13 +528,13 @@ O.remove(O.at(1), 'abc')
 // 'ac'
 ```
 
-### `head` {#`head`}
+### `head` {#head}
 
 `head :: Prism`
 
 `at(0)`的简写。
 
-### `atKey` {#`atkey`}
+### `atKey` {#atkey}
 
 `atKey :: (key) => RemovablePrism`
 
@@ -561,7 +561,7 @@ O.remove(O.atKey('foo'), { foo: 'bar', hello: 'world' })
 // { hello: 'world' }
 ```
 
-### `find` {#`find`}
+### `find` {#find}
 
 `find :: (fn: (elem) => boolean) => RemovablePrism`
 
@@ -584,7 +584,7 @@ O.preview(negativeElem, [0, 2, 1])
 // undefined
 ```
 
-### `when` {#`when`}
+### `when` {#when}
 
 `when :: (fn: (value) => boolean) => Prism`
 
@@ -608,7 +608,7 @@ O.modify(longWords, (s) => s.toUpperCase(), text)
 
 ## Traversals {#traversals}
 
-### `elems` {#`elems`}
+### `elems` {#elems}
 
 `elems :: Traversal`
 
@@ -628,7 +628,7 @@ O.collect(O.compose(O.elems, 'foo', 'bar'), [
 
 Getters 是具有单一焦点的只读光学元素。你可以将它们视为单向同构或只读镜头。
 
-### `to` {#`to`}
+### `to` {#to}
 
 `to :: (fn: (v) => u) => Getter`
 
@@ -636,7 +636,7 @@ Getters 是具有单一焦点的只读光学元素。你可以将它们视为单
 
 ## Setters {#setters}
 
-### `prependTo`, `appendTo` {#`prependto`,-`appendto`}
+### `prependTo`, `appendTo` {#prependto-appendto}
 
 `prependTo :: Setter`<br> `appendTo :: Setter`
 
@@ -654,7 +654,7 @@ O.set(O.prependTo, 3, [0, 1, 2])
 
 ## String traversals {#string-traversals}
 
-### `chars` {#`chars`}
+### `chars` {#chars}
 
 `chars :: Traversal`
 
@@ -672,7 +672,7 @@ O.modify(O.chars, (c) => (c == 'o' ? '' : c.toUpperCase()), 'foobar')
 // 'FBAR'
 ```
 
-### `words` {#`words`}
+### `words` {#words}
 
 `words :: Traversal`
 
@@ -692,13 +692,13 @@ O.modify(O.words, (word) => word.split('').reverse().join(''), 'foo, bar')
 
 ## Miscellaneous {#miscellaneous}
 
-### `eq` {#`eq`}
+### `eq` {#eq}
 
 `eq :: Equivalence`
 
 Equivalence 是一个不做任何事情的空操作。在组合中充当身份。
 
-### `pipe` {#`pipe`}
+### `pipe` {#pipe}
 
 `pipe :: (a, f1, f2, ...) => v`
 

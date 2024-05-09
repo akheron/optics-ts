@@ -1,10 +1,9 @@
 # 方法链 API {#method-chaining-api}
 
 !!! 注意
-
-        自 optics-ts v2.2.0 起，光学有两种语法：**方法链**
-        和 **独立光学**。关于它们之间的区别的更多信息，
-        请参见 [两种语法](two-syntaxes.md)。
+    自 optics-ts v2.2.0 起，光学有两种语法：**方法链**
+    和 **独立光学**。关于它们之间的区别的更多信息，
+    请参见 [两种语法](two-syntaxes.md)。
 
 以下所有内容都假设有如下导入：
 
@@ -72,7 +71,7 @@ const newOptic = myLens.optional()
 可以与该函数一起工作。实际适用的光学类
 在函数描述中有文档记录。
 
-### `optic` {#`optic`}
+### `optic` {#optic}
 
 签名：`optic<S>(): Equivalence<S, _, S>`
 
@@ -80,19 +79,19 @@ const newOptic = myLens.optional()
 `DisallowedTypeChange`，这意味着你试图用一个
 单态光学改变一个类型。
 
-### `optic_` {#`optic_`}
+### `optic_` {#optic_}
 
 签名：`optic_<S>(): Equivalence<S, _, S>`
 
 为 `S` 创建一个多态等价性。
 
-### `get` {#`get`}
+### `get` {#get}
 
 签名：`get<S, A>(optic: Optic<S, _, A>) => (source: S) => A`
 
 通过 `Equivalence`、`Iso`、`Lens` 或 `Getter` 读取一个值。
 
-### `preview` {#`preview`}
+### `preview` {#preview}
 
 签名：
 `preview<S, A>(optic: Optic<S, _, A>) => (source: S) => A | undefined`
@@ -101,7 +100,7 @@ const newOptic = myLens.optional()
 和 `AffineFold`，如果光学不匹配（没有焦点），返回 `undefined`。对于 `Traversal` 和 `Fold`，返回第一个焦点的值，或
 如果没有焦点，则返回 `undefined`。
 
-### `collect` {#`collect`}
+### `collect` {#collect}
 
 签名：`collect<S, A>(optic: Optic<S, _, A>) => (source: S) => A[]`
 
@@ -110,7 +109,7 @@ const newOptic = myLens.optional()
 对于 `Traversal` 和 `Fold`，返回值是一个包含零个或多个
 元素的数组。
 
-### `modify` {#`modify`}
+### `modify` {#modify}
 
 签名：
 `modify<S, T, A>(optic: Optic<S, T, A>) => <B>(f: (a: A) => B) => (source: S) => T<B>`
@@ -119,20 +118,20 @@ const newOptic = myLens.optional()
 `Traversal` 修改焦点值。返回一个更新的 `source` 副本，所有焦点都通过
 映射它们通过函数 `f` 进行修改。
 
-### `set` {#`set`}
+### `set` {#set}
 
 签名：
 `set<S, T, A>(optic: Optic<S, T, A>) => <B>(value: B) => (source: S) => T<B>`
 
 通过`Equivalence`、`Iso`、`Lens`、`Prism`或`Traversal`写入一个常量值。返回一个更新的`source`副本，所有焦点都被`value`替换。
 
-### `remove` {#`remove`}
+### `remove` {#remove}
 
 签名： `remove<S, T, A>(optic: Optic<S, T, A>) => (source: S) => S`
 
 从其包含的容器中移除`RemovablePrism`的焦点。
 
-### `compose` {#`compose`}
+### `compose` {#compose}
 
 签名：
 `compose<S, A1, A2><optic1: Optic<S, _, A1>, optic2: Optic<A1, _, A2>): Optic<S, _, A2>`
@@ -141,7 +140,7 @@ const newOptic = myLens.optional()
 
 参见[组合规则](reference-intro.md#rules-of-composition)了解组合规则。
 
-### `pipe` {#`pipe`}
+### `pipe` {#pipe}
 
 签名：
 `pipe<A, B, C, ..., V>(a: A, ab: (a: A) => B, bc: (b: B) => C, ...): V`
@@ -158,7 +157,7 @@ const newOptic = myLens.optional()
 
 同构具有类型`Iso<S, T, A>`。在下面，我们为了清晰起见，省略了`T`的确切定义，而使用`_`代替。参见[类型参数](#type-parameters)了解类型参数的含义。
 
-### `iso` {#`iso`}
+### `iso` {#iso}
 
 签名： `iso<U>(there: (a: A) => U, back: (u: U) => A): Iso<S, _, U>`
 
@@ -166,7 +165,7 @@ const newOptic = myLens.optional()
 
 注意，`iso`是单态的。还没有多态替代品（暂时）。
 
-### `indexed` {#`indexed`}
+### `indexed` {#indexed}
 
 签名： `indexed(): Iso<S, _, [number, ElemType<A>][]>`
 
@@ -180,7 +179,7 @@ const newOptic = myLens.optional()
 
 Lenses具有类型`Lens<S, T, A>`。在下面，我们为了清晰起见，省略了`T`的确切定义，而使用`_`代替。参见[类型参数](#type-parameters)了解类型参数的含义。
 
-### `prop` {#`prop`}
+### `prop` {#prop}
 
 签名：`prop<K extends keyof A>(key: K): Lens<S, _, A[K]>`
 
@@ -188,7 +187,7 @@ Lenses具有类型`Lens<S, T, A>`。在下面，我们为了清晰起见，省�
 
 **注意：** `prop()` 仅适用于字符串属性，尽管 TypeScript 的类型系统也允许在使用 `keyof` 时使用数组的数字索引。使用 [`at`](#at) 棱镜聚焦于给定索引的数组元素。
 
-### `path` {#`path`}
+### `path` {#path}
 
 签名：`path<K1, K2, ...>(...keys: [K1, K2, ...]): Lens<S, _, A[K1][K2]...>`
 
@@ -210,7 +209,7 @@ foo.path('a', 'b', 'c')
 foo.prop('a').prop('b').prop('c')
 ```
 
-### `nth` {#`nth`}
+### `nth` {#nth}
 
 签名：`nth<N extends number>(n: N): Lens<S, _, Nth<A, N>>`
 
@@ -220,7 +219,7 @@ foo.prop('a').prop('b').prop('c')
 
 参见下面的 [`at`](#at) ，这是一个类似的棱镜，适用于任意长度的数组。
 
-### `pick` {#`pick`}
+### `pick` {#pick}
 
 签名：`pick<K extends keyof A>(keys: K[]): Lens<S, _, Pick<A, K>>`
 
@@ -255,7 +254,7 @@ O.set(monoLens)({ quux: null })(data)
 // DisallowedTypeChange
 ```
 
-### `filter` {#`filter`}
+### `filter` {#filter}
 
 签名：
 
@@ -284,7 +283,7 @@ O.set(l)(['a', 'b', 'c', 'd', 'e'])([1, 2, 3, 5, 6])
 
 当写入不同类型 `U extends any[]` 时，结果将具有类型 `A | U`，即 `(ElemType<A> | ElemType<U>)[]`。
 
-### `valueOr` {#`valueor`}
+### `valueOr` {#valueor}
 
 签名：`valueOr<B>(defaultValue: B): Lens<S, _, Exclude<A, undefined> | B>`
 
@@ -292,7 +291,7 @@ O.set(l)(['a', 'b', 'c', 'd', 'e'])([1, 2, 3, 5, 6])
 
 在写方向上完全多态。
 
-### `partsOf` {#`partsof`}
+### `partsOf` {#partsof}
 
 签名：
 
@@ -311,9 +310,9 @@ O.modify(lens)((words) => [...words].reverse())('this is a test')
 
 请注意，将 `partsOf` 与设置器（如 `appendTo` 或 `prependTo`）组合，或通过 `partsOf` 删除元素将无法工作，因为设置器添加的额外元素或删除的元素将导致 `partsOf` 抛出。
 
-### `reread` {#`reread`}
+### `reread` {#reread}
 
-### `rewrite` {#`rewrite`}
+### `rewrite` {#rewrite}
 
 签名：
 
@@ -324,7 +323,7 @@ O.modify(lens)((words) => [...words].reverse())('this is a test')
 
 请注意，`reread` 和 `rewrite` 都是单态的。
 
-### `lens` {#`lens`}
+### `lens` {#lens}
 
 签名：
 `lens<U>(view: (a: A) => U, update: (a: A, u: U) => A): Lens<S, _, U>`
@@ -337,13 +336,13 @@ O.modify(lens)((words) => [...words].reverse())('this is a test')
 
 Prisms 的类型为 `Prism<S, T, A>`。在下面，我们为了清晰起见省略了 `T` 的确切定义，并使用 `_` 代替。请参阅 [类型参数](#type-parameters) 了解类型参数的含义。
 
-### `optional` {#`optional`}
+### `optional` {#optional}
 
 签名：`optional(): Prism<S, _, Exclude<A, undefined>>`
 
 创建一个棱镜，聚焦于 `A` 的非 `undefined` 子类型。
 
-### `guard` {#`guard`}
+### `guard` {#guard}
 
 签名：`guard<U extends A>(g: (a: A) => a is U): Prism<S, _, U>`
 
@@ -351,14 +350,14 @@ Prisms 的类型为 `Prism<S, T, A>`。在下面，我们为了清晰起见省�
 
 请注意，`guard()` 是单态的。如果你想要一个多态保护，请使用 `guard_`。
 
-### `guard_` {#`guard_`}
+### `guard_` {#guard_}
 
 签名：
 `guard_<F extends HKT>(): <U extends A>(g: (a: A) => a is U) => Prism<S, T · F, U>`
 
 创建一个棱镜，聚焦于匹配类型保护 `g` 的 `A` 的子类型。写入时，使用更高级别的类型 `F` 构造输出类型。
 
-### `at` {#`at`}
+### `at` {#at}
 
 签名：`at(i: number): RemovablePrism<S, _, ElemType<A>>`
 
@@ -370,19 +369,19 @@ Prisms 的类型为 `Prism<S, T, A>`。在下面，我们为了清晰起见省�
 
 写入字符串时，只能写入字符串。写入的字符串长度可以不是 1。
 
-### `head` {#`head`}
+### `head` {#head}
 
 签名：`head(): Prism<S, _, ElemType<A>>`
 
 相当于 `at(0)`。
 
-### `index` {#`index`}
+### `index` {#index}
 
 签名：`index(i: number): RemovablePrism<S, _, ElemType<A>>`
 
 **已弃用**。别名为 [`at`](#at)。
 
-### `find` {#`find`}
+### `find` {#find}
 
 签名：
 `find(p: (e: ElemType<A>) => boolean): RemovablePrism<S, _, ElemType<A>>`
@@ -393,7 +392,7 @@ Prisms 的类型为 `Prism<S, T, A>`。在下面，我们为了清晰起见省�
 
 当通过此光学元素写入不同类型 `B` 的元素时，结果数组将具有类型 `Array<A | B>`。
 
-### `when` {#`when`}
+### `when` {#when}
 
 签名：`when(f: (a: A) => boolean): Prism<S, _, A>`
 
@@ -405,7 +404,7 @@ Prisms 的类型为 `Prism<S, T, A>`。在下面，我们为了清晰起见省�
 
 遍历的类型为 `Traversal<S, T, A>`。在下面，我们为了清晰起见省略了 `T` 的确切定义，并使用 `_` 代替。请参阅 [类型参数](#type-parameters) 了解类型参数的含义。
 
-### `elems` {#`elems`}
+### `elems` {#elems}
 
 签名：`elems(): Traversal<S, _, ElemType<A>>`
 
@@ -419,7 +418,7 @@ Prisms 的类型为 `Prism<S, T, A>`。在下面，我们为了清晰起见省�
 
 获取器的类型为 `Getter<S, A>`。请参阅 [类型参数](#type-parameters) 了解类型参数的含义。
 
-### `to` {#`to`}
+### `to` {#to}
 
 签名：`to<B>(f: (a: A) => B): Getter<S, B>`
 
@@ -429,9 +428,9 @@ Prisms 的类型为 `Prism<S, T, A>`。在下面，我们为了清晰起见省�
 
 设置器的类型为 `Setter<S, T, A>`。在下面，我们为了清晰起见省略了 `T` 的确切定义，并使用 `_` 代替。请参阅 [类型参数](#type-parameters) 了解类型参数的含义。
 
-### `prependTo` {#`prependto`}
+### `prependTo` {#prependto}
 
-### `appendTo` {#`appendto`}
+### `appendTo` {#appendto}
 
 签名：
 
@@ -446,7 +445,7 @@ Prisms 的类型为 `Prism<S, T, A>`。在下面，我们为了清晰起见省�
 
 ## Composing {#composing}
 
-### `compose` {#`compose`}
+### `compose` {#compose}
 
 签名：`compose<B>(other: Optic<A, _, B>): Optic<S, _, B>`
 
@@ -454,7 +453,7 @@ Prisms 的类型为 `Prism<S, T, A>`。在下面，我们为了清晰起见省�
 
 以下光学元素仅适用于字符串。
 
-### `chars` {#`chars`}
+### `chars` {#chars}
 
 签名：`chars(): Traversal<S, _, string>`
 
@@ -462,7 +461,7 @@ Prisms 的类型为 `Prism<S, T, A>`。在下面，我们为了清晰起见省�
 
 写入时，可以通过写入空字符串来删除字符，或者更改为更长的字符串。
 
-### `words` {#`words`}
+### `words` {#words}
 
 签名：`words(): Traversal<S, _, string>`
 
