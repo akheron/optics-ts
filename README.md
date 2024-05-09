@@ -9,7 +9,8 @@
 - **多态**：通过光学特性写入时，你可以改变嵌套结构中的数据类型。
 - **类型安全**：编译器将对你执行的所有操作进行类型检查。永远不会有 `any`。
 
-➡ [文档](https://akheron.github.io/optics-ts) ⬅
+➡ [官方文档：https://akheron.github.io/optics-ts](https://akheron.github.io/optics-ts) ⬅  
+➡ [中文文档：https://ouweiya.github.io/optics-ts-zh](https://ouweiya.github.io/optics-ts-zh) ⬅  
 
 ## 特性
 
