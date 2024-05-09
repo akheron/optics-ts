@@ -1,55 +1,47 @@
-# Standalone API
+# 独立API {#standalone-api}
 
-!!! note
+!!! 注意
 
-    Since optics-ts v2.2.0, there are two syntaxes for optics: **method chaining**
-    and **standalone optics**. For more information about the differences between
-    them, see [The Two Syntaxes](two-syntaxes.md).
+    自 optics-ts v2.2.0 起，光学有两种语法：**方法链**和**独立光学**。有关它们之间的差异的更多信息，请参阅[两种语法](two-syntaxes.md)。
 
-!!! danger "Experimental"
+!!! 危险 "实验性"
 
-    This module is experimental and may receive backwards incompatible changes
-    without a corresponding semver bump.
+    此模块是实验性的，可能会接收到向后不兼容的更改，而不会有相应的 semver bump。
 
-Everything below assumes the following import:
+以下所有内容都假定有以下导入：
 
 ```typescript
 import * as O from 'optics-ts/standalone'
 ```
 
-## TypeScript types
+## TypeScript 类型 {#typescript-types}
 
-In general, the TypeScript types of optics look like `Optic<C, A, T, R>`.
+通常，光学的 TypeScript 类型看起来像 `Optic<C, A, T, R>`。
 
-- `C` is the optic type as a string, e.g. `'Lens'` or `'Prism'`
+- `C` 是光学类型作为字符串，例如 `'Lens'` 或 `'Prism'`
 
-- `A` and `T` encode the optic's read and write direction transforms as
-  "higher-kinded" types
+- `A` 和 `T` 编码光学的读写方向转换为
+    "更高级别的" 类型
 
-- `R` is `true` if the optic is removable, and `undefined` otherwise.
+- `R` 是 `true` 如果光学是可移除的，否则是 `undefined`。
 
-In the following, we leave the exact type signatures out for clarity, using a
-hand-wavy pseudo syntax instead. The optic descriptions try to make it clear how
-optics and functions operate.
+在下面，我们为了清晰起见，省略了确切的类型签名，而使用了一种手摇式的伪语法。光学描述试图明确光学和函数的操作方式。
 
-Interested readers can refer to
-[hkt.ts](https://github.com/akheron/optics-ts/tree/main/src/hkt.ts) to see how
-the higher-kinded types / partially applied type operators are actually
-implemented.
+感兴趣的读者可以参考
+[hkt.ts](https://github.com/akheron/optics-ts/tree/main/src/hkt.ts) 来看看
+更高级别的类型/部分应用类型运算符实际上是如何实现的。
 
-## Operations
+## 操作 {#operations}
 
-These function are not optics themselves, but instead operate on the optics and
-data.
+这些函数本身不是光学，而是在光学和数据上操作。
 
-### `compose`
+### `compose` {#compose}
 
 `compose :: (optic, ...optics) => Optic`
 
-Compose optics to create a more complex optic. Using a string as an optic is a
-shorthand for [prop](#prop).
+组合光学以创建更复杂的光学。使用字符串作为光学是[prop](#prop)的简写。
 
-Example:
+示例：
 
 ```typescript
 const fooBar = O.compose('foo', O.optional, 'bar')
@@ -61,30 +53,28 @@ O.preview(fooBar, { foo: { bar: 5 } })
 // 5
 ```
 
-### `get`
+### `get` {#get}
 
 `get :: (optic, source) => value`<br> `get :: (optic) => (source) => value`
 
-Read a value through an `Equivalence`, `Iso`, `Lens` or `Getter`.
+通过 `Equivalence`、`Iso`、`Lens` 或 `Getter` 读取值。
 
-Example:
+示例：
 
 ```typescript
 O.get(O.pick('foo', 'baz'), { foo: 1, bar: 2, baz: 3 })
 // { foo: 1, baz: 3 }
 ```
 
-### `preview`
+### `preview` {#preview}
 
 `preview :: (optic, source) => value | undefined`<br>
 `preview :: (optic) => (source) => value | undefined`
 
-Read a value through a `Prism`, `Traversal`, `AffineFold` or `Fold`. For `Prism`
-and `AffineFold`, return `undefined` if the optic doesn't match (has zero
-focuses). For `Traversal` and `Fold`, returns the value of the first focus, or
-`undefined` if there are no focuses.
+通过 `Prism`、`Traversal`、`AffineFold` 或 `Fold` 读取值。对于 `Prism`
+和 `AffineFold`，如果光学不匹配（没有焦点），则返回 `undefined`。对于 `Traversal` 和 `Fold`，返回第一个焦点的值，或者如果没有焦点，则返回 `undefined`。
 
-Example:
+示例：
 
 ```typescript
 O.preview(O.optional, 1)
@@ -94,17 +84,16 @@ O.preview(O.elems, [])
 // undefined
 ```
 
-### `collect`
+### `collect` {#collect}
 
 `collect :: (optic, source) => value[]`<br>
 `collect :: (optic) => (source) => value[]`
 
-Read all focused values through a `Prism`, `Traversal`, `AffineFold` or `Fold`.
-For `Prism` and `AffineFold`, the return value is an array of 0 or 1 elements.
-For `Traversal` and `Fold`, the return value is an array of zero or more
-elements.
+通过 `Prism`、`Traversal`、`AffineFold` 或 `Fold` 读取所有焦点值。
+对于 `Prism` 和 `AffineFold`，返回值是一个包含 0 或 1 个元素的数组。
+对于 `Traversal` 和 `Fold`，返回值是一个包含零个或多个元素的数组。
 
-Example:
+示例：
 
 ```typescript
 O.collect(O.optional, 1)
@@ -114,74 +103,70 @@ O.collect(O.elems, [])
 // []
 ```
 
-### `modify`
+### `modify` {#modify}
 
 `modify :: (optic, fn, source) => value`<br>
 `modify :: (optic) => (fn, source) => value`<br>
 `modify :: (optic) => (fn) => (source) => value`
 
-Modify the focused value(s) through an `Equivalence`, `Iso`, `Lens`, `Prism` or
-`Traversal`. Returns an updated copy of `source` with all focuses modified by
-mapping them through the function `fn`.
+通过 `Equivalence`、`Iso`、`Lens`、`Prism` 或
+`Traversal` 修改焦点值。返回 `source` 的更新副本，所有焦点都通过映射它们通过函数 `fn` 进行修改。
 
-Example:
+示例：
 
 ```typescript
 O.modify(O.prop('foo'), (value) => value.length, { foo: 'bar' })
 // { foo: 3 }
 ```
 
-### `set`
+### `set` {#set}
 
-Signatures:
+签名：
 
 `set :: (optic, newValue, source) => value`<br>
 `set :: (optic) => (newValue, source) => value`<br>
 `set :: (optic) => (newValue) => (source) => value`
 
-Write a constant value through an `Equivalence`, `Iso`, `Lens`, `Prism` or
-`Traversal`. Returns an updated copy of `source` with all focuses replaced by
-`newValue`.
+通过 `Equivalence`、`Iso`、`Lens`、`Prism` 或
+`Traversal` 写入常量值。返回 `source` 的更新副本，所有焦点都被 `newValue` 替换。
 
-Example:
+示例：
 
 ```typescript
 O.set(O.prop('foo'), null, { foo: 'bar' })
 // { foo: null }
 ```
 
-### `remove`
+### `remove` {#remove}
 
 `remove :: (optic, source) => value`<br>
 `remove :: (optic) => (source) => value`
 
-Remove the focus of a `RemovablePrism` from its containing container.
+从其包含的容器中删除 `RemovablePrism` 的焦点。
 
-Example:
+示例：
 
 ```typescript
 O.remove(O.at(1), [1, 2, 3])
 // [1, 3]
 ```
 
-## Isomorphisms
+## 同构 {#isomorphisms}
 
-### `iso`
+### `iso` {#iso}
 
 `iso :: (there: (v) => u, back: (u) => v) => Iso`
 
-Create an isomorphism from functions `there` and `back`. `there` takes the focus
-and transforms it to another value. `back` is the inverse of `there`.
+从函数 `there` 和 `back` 创建一个同构。`there` 接受焦点并将其转换为另一个值。`back` 是 `there` 的逆函数。
 
-Note that `iso` is monomorphic, i.e. you cannot change the value type when
-writing. There's no polymorphic alternative (yet).
+注意，`iso` 是单态的，即你不能在写入时更改值类型。还没有多态的替代品（尚未）。
 
-Example:
+示例：
 
 ```typescript
 const sep = O.iso(
-  (value: string) => value.split(','),
-  (arr: string[]) => arr.join(',')
+    (value: string) => value.split(','),
+    (arr: string[]) => arr.join(',')
 )
 
 O.get(sep, 'foo,bar,baz')
@@ -191,76 +176,69 @@ O.modify(sep, (arr) => [...arr].reverse(), 'foo,bar,baz')
 // 'baz,bar,foo'
 ```
 
-### `indexed`
+### `indexed` {#indexed}
 
 `indexed :: Iso`
 
-_Only works on arrays._
+_只适用于数组。_
 
-`indexed` is an isomorphism from an array of values to an array of index-value
-pairs, i.e. from `[a, b, ...]` to `[[0, a], [1, b], ...]`.
+`indexed` 是从值数组到索引-值对数组的同构，即从 `[a, b, ...]` 到 `[[0, a], [1, b], ...]`。
 
-In the write direction, elements are sorted by index, and only the last one of
-duplicate indices are kept.
+在写入方向，元素按索引排序，只保留重复索引的最后一个。
 
-Example:
+示例：
 
 ```typescript
 O.get(O.indexed, ['a', 'b', 'c'])
-// [[0, 'a'], [1, 'b'], [2, 'c']]
+// [[0, 'a'], [1, 'b'], [2, 'c']] 
 
 O.set(O.compose(O.indexed, O.at(1), O.nth(0)), 3, ['a', 'b', 'c'])
 // ['a', 'c', 'b']
 ```
 
-## Lenses
+## Lenses {#lenses}
 
-### `prop`
+### `prop` {#prop}
 
 `prop :: (key) => Lens`
 
-Create a lens that focuses on the object property `key`.
+创建一个聚焦于对象属性 `key` 的透镜。
 
-You can also just simply pass a string to [`compose`](#compose) instead of using
-`prop`.
+你也可以简单地将字符串传递给 [`compose`](#compose)，而不是使用 `prop`。
 
-Example:
+示例：
 
 ```typescript
 O.set(O.prop('foo'), 42, { foo: null })
 // { foo: 42 }
 ```
 
-See [`atKey`](#atKey) for a similar prism that works on records.
+请参阅 [`atKey`](#atKey) 了解在记录上工作的类似棱镜。
 
-### `nth`
+### `nth` {#nth}
 
 `nth :: (n) => Lens`
 
-_Only works on
-[tuples](https://www.typescriptlang.org/docs/handbook/2/objects.html#tuple-types)
-whose length is a least `n + 1`._
+_只适用于长度至少为 `n + 1` 的
+[元组](https://www.typescriptlang.org/docs/handbook/2/objects.html#tuple-types)。_
 
-Create a lens that focuses on the index `n` of a tuple. This is a lens because
-the length of the focus is checked on type level, so index `n` is always
-defined.
+创建一个聚焦于元组索引 `n` 的透镜。这是一个透镜，因为焦点的长度在类型级别上进行检查，所以索引 `n` 总是已定义的。
 
-See [`at`](#at) for a similar prism that works on arrays.
+请参阅 [`at`](#at) 了解在数组上工作的类似棱镜。
 
-### `pick`
+### `pick` {#pick}
 
 `pick :: (...keys) => Lens`
 
-Create a lens that picks the given properties from an object. When writing
-through the lens, you can add or remove properties.
+创建一个从对象中选择给定属性的透镜。通过透镜写入时，你可以添加或删除属性。
 
-Example:
+示例：
 
 ```typescript
 const data = {
-  foo: 'something',
-  bar: 42,
-  baz: true,
+    foo: 'something',
+    bar: 42,
+    baz: true,
 }
 
 O.get(O.pick('foo', 'bar'), data)
@@ -284,19 +262,17 @@ O.set(O.pick(), { quux: 'added' }, data)
 // }
 ```
 
-### `filter`
+### `filter` {#filter}
 
 `filter :: (fn: (elem) => boolean) => Lens`
 
-_Only works on arrays._
+_只适用于数组。_
 
-Create a lens that focuses on the array elements matched by `fn`. If `fn` is a
-type guard of type `T`, narrow the type of the focus to `T[]`.
+创建一个聚焦于由 `fn` 匹配的数组元素的透镜。如果 `fn` 是类型 `T` 的类型保护，则将焦点的类型缩小为 `T[]`。
 
-Writing a longer/shorter array adds/removes elements. Extraneous elements are
-added to the end of the array.
+写入更长/更短的数组会添加/删除元素。额外的元素被添加到数组的末尾。
 
-Example:
+示例：
 
 ```typescript
 const l = O.filter((x: number) => x % 2 === 1)
@@ -311,15 +287,13 @@ O.set(l, ['a', 'b', 'c', 'd', 'e'], [1, 2, 3, 5, 6])
 // ['a', 2, 'b', 'c', 6, 'd', 'e']
 ```
 
-### `valueOr`
+### `valueOr` {#valueor}
 
 `valueOr :: (defaultValue) => Lens`
 
-Create a lens that, when read through, returns `defaultValue` when the focused
-value is `undefined`. If the focus is not `undefined`, the focus is returned
-unchanged.
+创建一个透镜，当通过它读取时，如果焦点值为 `undefined`，则返回 `defaultValue`。如果焦点不是 `undefined`，则返回未更改的焦点。
 
-Example:
+示例：
 
 ```typescript
 O.get(O.valueOr(0), undefined)
@@ -332,25 +306,19 @@ O.get(O.compose('maxAge', O.valueOr(100)), { maxAge: undefined })
 // 100
 ```
 
-### `partsOf`
+### `partsOf` {#partsof}
 
 `partsOf :: (traversal) => Lens`
 
-Given a traversal, create a lens that focuses on an array of the focuses of the
-traversal. When read through, the result is an array of elements as if produced
-by [`collect`](#collect). When written through, the focuses of the traversal are
-replaced with the values from the written array. For a polymorphic write, the
-focuses of the tarversal get the type of the written array elements. If a
-shorter or longer array is written, **throws an error**. This is to ensure that
-all focuses are replaced and the types are correct.
+给定一个遍历，创建一个聚焦于遍历焦点的数组的透镜。当通过读取时，结果是一个元素数组，就像由 [`collect`](#collect) 生成的那样。当通过写入时，遍历的焦点被替换为来自写入数组的值。对于多态写入，遍历的焦点获取写入数组元素的类型。如果写入了更短或更长的数组，**会抛出错误**。这是为了确保所有焦点都被替换，类型是正确的。
 
-Example:
+示例：
 
 ```typescript
 O.set(
-  O.partsOf(O.compose(O.elems, 'foo')),
-  ['x', 'y', 'z'],
-  [{ foo: 'a' }, { foo: 'b' }, { foo: 'c' }]
+    O.partsOf(O.compose(O.elems, 'foo')),
+    ['x', 'y', 'z'],
+    [{ foo: 'a' }, { foo: 'b' }, { foo: 'c' }]
 )
 // [{ foo: 'x' }, { foo: 'y' }, { foo: 'z' }]
 
@@ -358,22 +326,18 @@ O.modify(O.partsOf(O.words), (words) => [...words].reverse(), 'this is a test')
 // 'test a is this'
 ```
 
-Note that composing `partsOf` with setters, like `appendTo` or `prependTo`, or
-removing elements through `partsOf` will not work, because the extra element
-added by the setter or the removed element will cause `partsOf` to throw.
+注意，将 `partsOf` 与设置器（如 `appendTo` 或 `prependTo`）组合，或通过 `partsOf` 删除元素将不起作用，因为设置器添加的额外元素或删除的元素将导致 `partsOf` 抛出错误。
 
-### `reread`, `rewrite`
+### `reread`, `rewrite` {#reread`,-`rewrite}
 
 `reread :: (fn: (value) => value) => Lens`<br>
 `rewrite :: (fn: (value) => value) => Lens`
 
-Create a lens that can modify the value in the read direction (`reread`) or
-write direction (`rewrite`). This is useful to e.g. ensure data structure
-invariants in some cases.
+创建一个可以在读方向（`reread`）或写方向（`rewrite`）修改值的镜头。这在某些情况下确保数据结构不变性很有用。
 
-Both `reread` and `rewrite` are monomorphic.
+`reread` 和 `rewrite` 都是单态的。
 
-Example:
+示例：
 
 ```typescript
 const read = O.reread((x: string) => x.toUpperCase())
@@ -392,23 +356,20 @@ O.set(write, null, 'foo')
 // FOO
 ```
 
-### `lens`
+### `lens` {#lens}
 
 `lens :: (view: (v) => u, update: (v, u) => v) => Lens`
 
-Create a lens from functions `view` and `update`. `view` takes the current focus
-and returns a new focus. `update` takes the orginal focus and a value, and
-updates the original focus with that value.
+从 `view` 和 `update` 函数创建一个镜头。`view` 接受当前焦点并返回一个新焦点。`update` 接受原始焦点和一个值，并用该值更新原始焦点。
 
-Note that `lens` is monomorphic, i.e. you cannot change the value type when
-writing. There's no polymorphic alternative (yet).
+注意，`lens` 是单态的，即你不能在写入时更改值类型。还没有多态的替代品（暂时）。
 
-Example:
+示例：
 
 ```typescript
 const lens = O.lens<number | string, number>(
-  (v) => (typeof v === 'string' ? 0 : v),
-  (_, u) => u
+    (v) => (typeof v === 'string' ? 0 : v),
+    (_, u) => u
 )
 
 O.get(lens, 100)
@@ -418,16 +379,15 @@ O.get(lens, 'foo')
 // 0
 ```
 
-## Prisms
+## Prisms {#prisms}
 
-### `optional`
+### `optional` {#optional}
 
 `optional :: Prism`
 
-A prism that matches if the value is not `undefined`. Narrows the type to remove
-`undefined`, e.g. `number | undefined` narrows to `number`.
+如果值不是 `undefined`，则匹配的棱镜。将类型缩小以删除 `undefined`，例如 `number | undefined` 缩小为 `number`。
 
-Example:
+示例：
 
 ```typescript
 const prism = O.compose('foo', O.optional, 'bar')
@@ -439,20 +399,18 @@ O.preview(prism, { foo: undefined })
 // undefined
 ```
 
-### `guard`
+### `guard` {#guard}
 
-`guard :: (fn: (value) => boolean) => Prism` (monomorphic)<br>
-`guard :: <F>() => (fn: (value) => boolean) => Prism` (polymorphic)
+`guard :: (fn: (value) => boolean) => Prism` (单态)<br>
+`guard :: <F>() => (fn: (value) => boolean) => Prism` (多态)
 
-Create a prism that matches if the value matches the type guard `fn`.
+创建一个棱镜，如果值匹配类型保护 `fn`，则匹配。
 
-The first, simpler signature returns a monomorphic prism, which can only be used
-for writes that don't change the type of the focus.
+第一个，更简单的签名返回一个单态棱镜，只能用于不改变焦点类型的写入。
 
-The second signature returns a polymorphic prism that uses the type transform
-`F` to construct the result type.
+第二个签名返回一个使用类型转换 `F` 构造结果类型的多态棱镜。
 
-Monomorphic example:
+单态示例：
 
 ```typescript
 type Circle = { type: 'circle'; radius: number }
@@ -460,7 +418,7 @@ type Square = { type: 'square'; size: number }
 type Shape = Circle | Square
 
 function isCircle(value: Shape): value is Circle {
-  return value.type === 'circle'
+    return value.type === 'circle'
 }
 
 const circle = { type: 'circle', radius: 42 }
@@ -481,26 +439,25 @@ O.set(circleRadius, 99, circle)
 // { type: 'circle', radius: 99 }
 ```
 
-Polymorphic example:
+多态示例：
 
 ```typescript
 type Some<T> = { type: 'some'; value: T }
 type None = { type: 'none' }
 type Option<T> = Some<T> | None
 
-// O.HKT is a "type transform" or a "higher-kinded type". this[1] is the input
-// type, and the output is taken from prop 0.
+// O.HKT 是一个 "类型转换" 或 "高阶类型"。this[1] 是输入
+// 类型，输出从 prop 0 取得。
 //
-// The SomeF type transform just checks that the input type in this[1] has the
-// shape of a Some, and passes it through as-is. In other words, the writer
-// can change the type of the 'value' prop, but nothing else.
+// SomeF 类型转换只检查 this[1] 中的输入类型是否具有
+// Some 的形状，并原样通过。换句话说，写入者可以更改 'value' prop 的类型，但不能更改其他任何东西。
 //
 interface SomeF extends O.HKT {
-  0: this[1] extends Some<any> ? this[1] : never
+    0: this[1] extends Some<any> ? this[1] : never
 }
 
 function isSomeNumber(value: Option<number>): value is Some<number> {
-  return value.type === 'some'
+    return value.type === 'some'
 }
 
 const someValue = O.compose(O.guard<SomeF>()(isSomeNumber), 'value')
@@ -521,19 +478,17 @@ const result2: Option<string> = O.set(someValue, 'foo', some)
 // { type: 'some', value: 'foo' }
 ```
 
-### `at`
+### `at` {#at}
 
 `at :: (i) => RemovablePrism`
 
-_Only works on arrays and strings. Removable._
+_只适用于数组和字符串。可移除。_
 
-Create a prism that focuses on the n'th element of an array or the n'th
-character (substring of length 1) of a string.
+创建一个棱镜，专注于数组的第 n 个元素或字符串的第 n 个字符（长度为 1 的子字符串）。
 
-When used on a string, only strings can be written. Writing strings of a
-different length is supported.
+在字符串上使用时，只能写入字符串。支持写入不同长度的字符串。
 
-Example:
+示例：
 
 ```typescript
 O.preview(O.at(1), ['a', 'b', 'c'])
@@ -573,21 +528,21 @@ O.remove(O.at(1), 'abc')
 // 'ac'
 ```
 
-### `head`
+### `head` {#head}
 
 `head :: Prism`
 
-A shorthand for `at(0)`.
+`at(0)`的简写。
 
-### `atKey`
+### `atKey` {#atkey}
 
 `atKey :: (key) => RemovablePrism`
 
-_Only works on records (`Record<string, T>`). Removable._
+_仅适用于记录（`Record<string, T>`）。可移除。_
 
-Create a prism that focuses on the key of a record.
+创建一个聚焦于记录键的棱镜。
 
-Example:
+示例：
 
 ```typescript
 O.preview(O.atKey('foo'), { foo: 'bar' })
@@ -606,16 +561,15 @@ O.remove(O.atKey('foo'), { foo: 'bar', hello: 'world' })
 // { hello: 'world' }
 ```
 
-### `find`
+### `find` {#find}
 
 `find :: (fn: (elem) => boolean) => RemovablePrism`
 
-_Only works on arrays. Removable._
+_仅适用于数组。可移除。_
 
-Create a prism that focuses on the first element of an array which matches the
-predicate `fn`.
+创建一个棱镜，聚焦于数组中第一个匹配谓词 `fn` 的元素。
 
-Example:
+示例：
 
 ```typescript
 const negativeElem = O.find((x: number) => x < 0)
@@ -630,19 +584,18 @@ O.preview(negativeElem, [0, 2, 1])
 // undefined
 ```
 
-### `when`
+### `when` {#when}
 
 `when :: (fn: (value) => boolean) => Prism`
 
-Create a prism that matches it the focus matches the predicate `fn`. Especially
-useful for filtering the focuses of a travesal.
+创建一个棱镜，当焦点匹配谓词 `fn` 时，它会匹配。特别适用于过滤遍历的焦点。
 
-Example:
+示例：
 
 ```typescript
 const longWords = O.compose(
-  O.words,
-  O.when((s: string) => s.length >= 5)
+    O.words,
+    O.when((s: string) => s.length >= 5)
 )
 const text = 'Some shorter and some longer words'
 
@@ -653,46 +606,43 @@ O.modify(longWords, (s) => s.toUpperCase(), text)
 // "Some SHORTER and some LONGER WORDS"
 ```
 
-## Traversals
+## Traversals {#traversals}
 
-### `elems`
+### `elems` {#elems}
 
 `elems :: Traversal`
 
-_Only works on arrays._
+_仅适用于数组。_
 
-A traversal that focuses on all elements of an array.
+一个遍历，聚焦于数组的所有元素。
 
 ```typescript
 O.collect(O.compose(O.elems, 'foo', 'bar'), [
-  { foo: { bar: 1 } },
-  { foo: { bar: 2 } },
+    { foo: { bar: 1 } },
+    { foo: { bar: 2 } },
 ])
 // [1, 2]
 ```
 
-## Getters
+## Getters {#getters}
 
-Getters are read-only optics with a single focus. You can think of them like
-one-way isomorphisms or read-only lenses.
+Getters 是具有单一焦点的只读光学元素。你可以将它们视为单向同构或只读镜头。
 
-### `to`
+### `to` {#to}
 
 `to :: (fn: (v) => u) => Getter`
 
-Create a getter that applies the function `fn` to its focus.
+创建一个 getter，将函数 `fn` 应用于其焦点。
 
-## Setters
+## Setters {#setters}
 
-### `prependTo`, `appendTo`
+### `prependTo`, `appendTo` {#prependto-appendto}
 
 `prependTo :: Setter`<br> `appendTo :: Setter`
 
-_Only work on arrays._
+_仅适用于数组。_
 
-`prependTo` focuses on the part _before the first element_ and `appendTo`
-focuses on the part _after the last element_ of an array. When written through,
-prepends or appends the value to the array.
+`prependTo` 聚焦于数组的第一个元素之前的部分，`appendTo` 聚焦于数组的最后一个元素之后的部分。当通过写入时，将值前置或追加到数组。
 
 ```typescript
 O.set(O.appendTo, 3, [0, 1, 2])
@@ -702,18 +652,17 @@ O.set(O.prependTo, 3, [0, 1, 2])
 // [3, 0, 1, 2]
 ```
 
-## String traversals
+## String traversals {#string-traversals}
 
-### `chars`
+### `chars` {#chars}
 
 `chars :: Traversal`
 
-_Only works on strings._
+_仅适用于字符串。_
 
-A traversal that focuses on all the characters of a string.
+一个遍历，聚焦于字符串的所有字符。
 
-When written through, characters can be removed by writing the empty string, or
-changed to longer strings.
+当通过写入时，可以通过写入空字符串来删除字符，或者更改为更长的字符串。
 
 ```typescript
 O.collect(O.chars, 'foo')
@@ -723,17 +672,15 @@ O.modify(O.chars, (c) => (c == 'o' ? '' : c.toUpperCase()), 'foobar')
 // 'FBAR'
 ```
 
-### `words`
+### `words` {#words}
 
 `words :: Traversal`
 
-_Only works on strings._
+_仅适用于字符串。_
 
-A traversal that focuses on all the words of a string. Words are substrings that
-are separated by whitespace.
+一个遍历，聚焦于字符串的所有单词。单词是由空格分隔的子字符串。
 
-When written through, words can be removed by writing the empty string, or
-changed to longer or shorter strings.
+当通过写入时，可以通过写入空字符串来删除单词，或者更改为更长或更短的字符串。
 
 ```typescript
 O.collect(O.words, 'foo, bar')
@@ -743,22 +690,21 @@ O.modify(O.words, (word) => word.split('').reverse().join(''), 'foo, bar')
 // ',oof rab'
 ```
 
-## Miscellaneous
+## Miscellaneous {#miscellaneous}
 
-### `eq`
+### `eq` {#eq}
 
 `eq :: Equivalence`
 
-Equivalence is a no-op that does nothing. Acts as an identity wrt. composition.
+Equivalence 是一个不做任何事情的空操作。在组合中充当身份。
 
-### `pipe`
+### `pipe` {#pipe}
 
 `pipe :: (a, f1, f2, ...) => v`
 
-Pipe the value of an expression (`a`) into a pipeline of at most 9 unary
-functions (`f1`, `f2`, ...).
+将表达式的值（`a`）传入最多 9 个一元函数（`f1`，`f2`，...）的管道。
 
-Example:
+示例：
 
 ```typescript
 pipe(

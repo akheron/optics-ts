@@ -1,22 +1,19 @@
-# optics-ts
+# optics-ts {#optics-ts}
 
-`optics-ts` provides type-safe, ergonomic, polymorphic optics for TypeScript
+`optics-ts` 为 TypeScript 提供类型安全、符合人体工程学、多态的光学元素
 
-- Many optic types: lens, prism, traversal, getter, affine fold, fold, setter
-- Optics for operating on multiple data types: objects, arrays, discriminated
-  unions, strings.
-- Removable optics: Allow removing items from containers.
-- Ergonomic API: No boilerplate, concise naming.
-- Type-safe: The compiler will type check all operations you do. No `any`, ever.
-- Most optics are fully polymorphic: You can write a different data type and
-  still get full type safety.
-- Supports both ES6 and CommonJS modules in a single code base.
-- Tree shaking support with standalone optics (see
-  [The Two Syntaxes](two-syntaxes.md)).
+- 许多光学类型：镜头、棱镜、遍历、获取器、仿射折叠、折叠、设置器
+- 用于操作多种数据类型的光学元素：对象、数组、辨识联合、字符串。
+- 可移除的光学元素：允许从容器中移除项目。
+- 人体工程学 API：无样板文件，简洁的命名。
+- 类型安全：编译器将对您进行的所有操作进行类型检查。永远不会有 `any`。
+- 大多数光学元素都是完全多态的：您可以编写不同的数据类型并仍然获得完全的类型安全性。
+- 在单一代码库中支持 ES6 和 CommonJS 模块。
+- 通过独立光学元素支持树摇动（请参见[两种语法](two-syntaxes.md)）。
 
-## Example
+## 示例 {#example}
 
-=== "Method chaining"
+=== "方法链"
 
     ```typescript
     import * as O from 'optics-ts'
@@ -29,38 +26,38 @@
       }
     }
 
-    // Create a lens that focuses on author.name
+    // 创建一个聚焦于 author.name 的镜头
     const optic = O.optic_<Book>()
       .prop('author')
       .prop('name')
 
-    // This is the input data
+    // 这是输入数据
     const input: Book = {
-      title: "The Hitchhiker's Guide to the Galaxy"
+      title: "银河系漫游指南"
       isbn: "978-0345391803",
       author: {
-        name: "Douglas Adams"
+        name: "道格拉斯·亚当斯"
       }
     }
 
-    // Read through the optic
+    // 通过光学元素读取
     O.get(optic)(input)
-    // "Douglas Adams"
+    // "道格拉斯·亚当斯"
 
-    // Write through the optic
-    O.set(optic)("Arthur Dent")(input)
+    // 通过光学元素写入
+    O.set(optic)("亚瑟·登特")(input)
     // {
-    //   title: "The Hitchhiker’s Guide to the Galaxy"
+    //   title: "银河系漫游指南"
     //   isbn: "978-0345391803",
     //   author: {
-    //     name: "Arthur Dent"
+    //     name: "亚瑟·登特"
     //   }
     // }
 
-    // Update the existing value through the optic, while also changing the data type
+    // 通过光学元素更新现有值，同时也改变数据类型
     O.modify(optic)(str => str.length + 29)(input)
     // {
-    //   title: "The Hitchhiker’s Guide to the Galaxy"
+    //   title: "银河系漫游指南"
     //   isbn: "978-0345391803",
     //   author: {
     //     name: 42
@@ -68,41 +65,41 @@
     // }
     ```
 
-=== "Standalone"
+=== "独立"
 
     ```typescript
     import * as O from 'optics-ts/standalone'
 
-    // Create a lens that focuses on author.name
+    // 创建一个聚焦于 author.name 的镜头
     const optic = O.compose('author', 'name')
 
-    // This is the input data
+    // 这是输入数据
     const input = {
-      title: "The Hitchhiker's Guide to the Galaxy"
+      title: "银河系漫游指南"
       isbn: "978-0345391803",
       author: {
-        name: "Douglas Adams"
+        name: "道格拉斯·亚当斯"
       }
     }
 
-    // Read through the optic
+    // 通过光学元素读取
     O.get(optic, input)
-    // "Douglas Adams"
+    // "道格拉斯·亚当斯"
 
-    // Write through the optic
-    O.set(optic, "Arthur Dent", input)
+    // 通过光学元素写入
+    O.set(optic, "亚瑟·登特", input)
     // {
-    //   title: "The Hitchhiker’s Guide to the Galaxy"
+    //   title: "银河系漫游指南"
     //   isbn: "978-0345391803",
     //   author: {
-    //     name: "Arthur Dent"
+    //     name: "亚瑟·登特"
     //   }
     // }
 
-    // Update the existing value through the optic, while also changing the data type
+    // 通过光学元素更新现有值，同时也改变数据类型
     O.modify(optic, (str) => str.length + 29, input)
     // {
-    //   title: "The Hitchhiker’s Guide to the Galaxy"
+    //   title: "银河系漫游指南"
     //   isbn: "978-0345391803",
     //   author: {
     //     name: 42
@@ -110,5 +107,4 @@
     // }
     ```
 
-For more information about the differences between the method chaining and
-standalone syntaxes, see [The Two Syntaxes](two-syntaxes.md).
+有关方法链和独立语法之间的差异的更多信息，请参见[两种语法](two-syntaxes.md)。

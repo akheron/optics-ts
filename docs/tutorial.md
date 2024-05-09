@@ -1,30 +1,26 @@
-# Tutorial
+# 教程 {#tutorial}
 
-One of the following imports is assumed in all the examples.
+所有示例都假定了以下的导入。
 
-Method chaining:
+方法链：
 
 ```typescript
 import * as O from 'optics-ts'
 ```
 
-Standalone:
+独立：
 
 ```typescript
 import * as O from 'optics-ts/standalone'
 ```
 
-See [The Two Syntaxes](two-syntaxes.md) for the difference between the two, and
-which one to choose. All the descriptions and examples below are given in terms
-of both syntaxes.
+查看[两种语法](two-syntaxes.md)了解两者之间的区别，以及应该选择哪一种。以下所有的描述和示例都将以两种语法给出。
 
-## Lens
+## Lens {#lens}
 
-=== "Method chaining"
+=== "方法链"
 
-    Lens is the most common optic you're going to use. You can create an optic for a
-    data structure by calling `optic()`, and turn in into a lens that focuses on a
-    property of an object with `prop`:
+    Lens(透镜)是你将要使用的最常见的光学器件。你可以通过调用 `optic()` 为一个数据结构创建一个光学器件，并通过 `prop` 将其转换为一个关注对象属性的镜头：
 
     ```typescript
     type Data = {
@@ -34,21 +30,21 @@ of both syntaxes.
     const foo = O.optic<Data>().prop('foo')
     ```
 
-    `foo` is now a lens that focuses on `Data.foo`.
+    `foo` 现在是一个关注 `Data.foo` 的镜头。
 
-    To dig deeper, just call `prop` again:
+    要深入挖掘，只需再次调用 `prop`：
 
     ```typescript
     const bar = O.optic<Data>().prop('foo').prop('bar')
-    // or from the `foo` lens we defined above
+    // 或者从我们上面定义的 `foo` 镜头开始
     const bar = foo.prop('bar')
-    // or use .path() to compose multiple prop lenses with a single call
+    // 或者使用 .path() 通过一次调用组合多个 prop 镜头
     const bar = O.optic<Data>().path('foo', 'bar')
-    // or use path with a dotted string path
+    // 或者使用带有点分隔的字符串路径的 path
     const bar = O.optic<Data>().path('foo.bar')
     ```
 
-    Use `get` to read a value through the lens:
+    使用 `get` 通过镜头读取一个值：
 
     ```typescript
     const data: Data = {
@@ -60,7 +56,7 @@ of both syntaxes.
     // 42
     ```
 
-    Use `set` or `modify` to write the focused value through the lens:
+    使用 `set` 或 `modify` 通过镜头写入关注的值：
 
     ```typescript
     O.set(bar)(99)(data)
@@ -76,34 +72,31 @@ of both syntaxes.
     // }
     ```
 
-=== "Standalone"
+=== "独立"
 
-    Lens is the most common optic you're going to use. You can create a lens that focuses on a
-    property of an object with `prop`:
+    Lens(透镜)是你将要使用的最常见的光学器件。你可以创建一个关注对象属性的镜头：
 
     ```typescript
     const foo = O.prop('foo')
     ```
 
-    `foo` is now a lens that focuses on the prop `foo` of any given object.
+    `foo` 现在是一个关注任何给定对象的 `foo` 属性的镜头。
 
-    To dig deeper, compose multiple `prop` lenses:
+    要深入挖掘，组合多个 `prop` 镜头：
 
     ```typescript
     const bar = O.compose(O.prop('foo'), O.prop('bar'))
-    // or reusing the `foo` lens we defined above
+    // 或者复用我们上面定义的 `foo` 镜头
     const bar = O.compose(foo, O.prop('bar'))
     ```
 
-    Because `prop` is such an often used lens, you can pass string
-    arguments directly to `compose`, and they will be taken as the
-    `prop` lens:
+    因为 `prop` 是一个经常使用的镜头，你可以直接将字符串参数传递给 `compose`，它们将被视为 `prop` 镜头：
 
     ```typescript
     const bar = O.compose('foo', 'bar')
     ```
 
-    Use `get` to read a value through the lens:
+    使用 `get` 通过镜头读取一个值：
 
     ```typescript
     const data = {
@@ -115,7 +108,7 @@ of both syntaxes.
     // 42
     ```
 
-    Use `set` or `modify` to write the focused value through the lens:
+    使用 `set` 或 `modify` 通过镜头写入关注的值：
 
     ```typescript
     O.set(bar, 99, data)
@@ -131,86 +124,77 @@ of both syntaxes.
     // }
     ```
 
-Writing through optics always creates a new data structure instead of modifying
-the existing one in place, shallowly copying the required parts. In other words,
-data is immutable.
+通过光学器件写入总是会创建一个新的数据结构，而不是就地修改现有的数据结构，只复制所需的部分。**换句话说，数据是不可变的**。
 
-## Prism
+## Prism {#prism}
 
-Lenses are great for focusing to a part of a larger structure. Prisms are much
-like lenses, but they don't necessarily match anything, i.e. they can have zero
-focuses.
+透镜非常适合聚焦到更大结构的一部分。棱镜很像透镜，但它们不一定匹配任何东西，即它们可以有零焦点。
 
-A practical example is focusing on a branch of a union type. Here, the
-`User.age` field can be `number` or `undefined`. With the `optional` prism we
-can focus only when the value is a `number`, and do nothing when it's
-`undefined`:
+一个实际的例子是聚焦到联合类型的一个分支。在这里，`User.age`字段可以是`number`或`undefined`。使用`optional`棱镜，我们只在值为`number`时聚焦，当它为`undefined`时不做任何事情：
 
-=== "Method chaining"
+=== "方法链"
 
     ```typescript
     type User = {
-      name: string
-      age?: number | undefined
+        name: string
+        age?: number | undefined
     }
 
     const age = O.optic<User>().prop('age').optional()
     ```
 
-=== "Standalone"
+=== "独立"
 
     ```typescript
     type User = {
-      name: string
-      age?: number | undefined
+        name: string
+        age?: number | undefined
     }
 
     const age = O.compose('age', O.optional)
     ```
 
-You read through a prism using the `preview` function. When the prism doesn't
-match, it returns `undefined`.
+你可以使用`preview`函数通过棱镜阅读。当棱镜不匹配时，它返回`undefined`。
 
-=== "Method chaining"
+=== "方法链"
 
     ```typescript
     const userWithAge: User = {
-      name: 'Betty',
-      age: 42,
+        name: 'Betty',
+        age: 42,
     }
     O.preview(age)(userWithAge)
     // 42
 
     const userWithoutAge: User = {
-      name: 'Max',
-      age: undefined,
+        name: 'Max',
+        age: undefined,
     }
     O.preview(age)(userWithoutAge)
     // undefined
     ```
 
-=== "Standalone"
+=== "独立"
 
     ```typescript
     const userWithAge: User = {
-      name: 'Betty',
-      age: 42,
+        name: 'Betty',
+        age: 42,
     }
     O.preview(age, userWithAge)
     // 42
 
     const userWithoutAge: User = {
-      name: 'Max',
-      age: undefined,
+        name: 'Max',
+        age: undefined,
     }
     O.preview(age, userWithoutAge)
     // undefined
     ```
 
-You can write through a prism normally with `set` and `modify`. If the prism
-doesn't match, the value is unchanged:
+你可以用`set`和`modify`正常地通过棱镜写入。如果棱镜不匹配，值不变：
 
-=== "Method chaining"
+=== "方法链"
 
     ```typescript
     O.modify(age)((n) => n + 1)(userWithAge)
@@ -226,7 +210,7 @@ doesn't match, the value is unchanged:
     // }
     ```
 
-=== "Standalone"
+=== "独立"
 
     ```typescript
     O.modify(age, (n) => n + 1, userWithAge)
@@ -242,28 +226,26 @@ doesn't match, the value is unchanged:
     // }
     ```
 
-`guard` is another way to create a prism. It's a generalization of `optional` in
-the sense that you can match on any branch of a union type instead of just the
-non-`undefined` part:
+`guard`是创建棱镜的另一种方式。它是`optional`的泛化，意味着你可以匹配联合类型的任何分支，而不仅仅是非`undefined`部分：
 
 ```typescript
 interface Circle {
-  kind: 'circle'
-  radius: number
+    kind: 'circle'
+    radius: number
 }
 interface Rectangle {
-  kind: 'rectangle'
-  width: number
-  height: number
+    kind: 'rectangle'
+    width: number
+    height: number
 }
 type Shape = Circle | Rectangle
 
 function isRectangle(s: Shape): s is Rectangle {
-  return s.kind === 'rectangle'
+    return s.kind === 'rectangle'
 }
 ```
 
-=== "Method chaining"
+=== "方法链"
 
     ```typescript
     const rectWidth = O.optic<Shape>().guard(isRectangle).prop('width')
@@ -278,7 +260,7 @@ function isRectangle(s: Shape): s is Rectangle {
     // { kind: 'rectangle', width: 10, height: 7 })
     ```
 
-=== "Standalone"
+=== "独立"
 
     ```typescript
     const rectWidth = O.compose(O.guard(isRectangle), 'width')
@@ -293,29 +275,25 @@ function isRectangle(s: Shape): s is Rectangle {
     // { kind: 'rectangle', width: 10, height: 7 })
     ```
 
-Notice how above we composed the `guard` prism with the `prop` lens. This yields
-a prism, so we used `preview` to read through it. See
-[Rules of composition](reference-intro.md#rules-of-composition) for more info.
+注意，上面我们如何将`guard`棱镜与`prop`透镜组合。这产生了一个棱镜，所以我们使用`preview`来通过它阅读。查看[组合规则](reference-intro.md#rules-of-composition)以获取更多信息。
 
-## Removable optics
+## 可移除光学器件 {#removable-optics}
 
-Some optics are removable. This means that they focus on an element of a
-container (e.g. an array), and you can remove the element from the container.
+有些光学器件是可移除的。这意味着它们聚焦到容器（例如，数组）的一个元素，并且你可以从容器中删除该元素。
 
-`at` is a removable prism. It focuses on an index of an array, and lets you also
-remove that index:
+`at`是一个可移除的棱镜。它聚焦到数组的一个索引，并且也让你可以删除该索引：
 
-=== "Method chaining"
+=== "方法链"
 
     ```typescript
     interface User {
-      name: string
+        name: string
     }
 
     const threeUsers: User[] = [
-      { name: 'Max' },
-      { name: 'Betty' },
-      { name: 'Alice' },
+        { name: 'Max' },
+        { name: 'Betty' },
+        { name: 'Alice' },
     ]
 
     const secondUser = O.optic<User[]>().at(1)
@@ -323,26 +301,26 @@ remove that index:
     // [{ name: 'Max' }, { name: 'Alice' }]
     ```
 
-=== "Standalone"
+=== "独立"
 
     ```typescript
     interface User {
-      name: string
+        name: string
     }
 
     const threeUsers: User[] = [
-      { name: 'Max' },
-      { name: 'Betty' },
-      { name: 'Alice' },
+        { name: 'Max' },
+        { name: 'Betty' },
+        { name: 'Alice' },
     ]
 
     O.remove(O.at(1), threeUsers)
     // [{ name: 'Max' }, { name: 'Alice' }]
     ```
 
-If the optic doesn't match, removing has no effect:
+如果光学器件不匹配，则移除不会产生任何效果：
 
-=== "Method chaining"
+=== "方法链"
 
     ```typescript
     const oneUser: User[] = [{ name: 'Max' }]
@@ -351,7 +329,7 @@ If the optic doesn't match, removing has no effect:
     // [{ name: 'Max' }]
     ```
 
-=== "Standalone"
+=== "独立"
 
     ```typescript
     const oneUser: User[] = [{ name: 'Max' }]
@@ -360,44 +338,40 @@ If the optic doesn't match, removing has no effect:
     // [{ name: 'Max' }]
     ```
 
-## Traversal
+## 遍历 {#traversal}
 
-The next optic type is the traversal. While lenses have one focus and prisms
-have zero or one focuses (no match or match), traversals have zero _or more_
-focuses.
+下一个光学元素类型是遍历。虽然透镜有一个焦点，棱镜有零个或一个焦点（不匹配或匹配），遍历有零个或更多的焦点。
 
-The simplest example of a traversal is to focus on all elements of an array. To
-create such a traversal, use `elems`:
+遍历的最简单例子是聚焦到数组的所有元素。要创建这样的遍历，使用`elems`：
 
-=== "Method chaining"
+=== "方法链"
 
     ```typescript
     type Person {
-      name: string
-      friends: Person[]
+        name: string
+        friends: Person[]
     }
 
     const friendsNames = O.optic<Person>()
-      .prop('friends')
-      .elems()
-      .prop('name')
+        .prop('friends')
+        .elems()
+        .prop('name')
     ```
 
-=== "Standalone"
+=== "独立"
 
     ```typescript
     type Person {
-      name: string
-      friends: Person[]
+        name: string
+        friends: Person[]
     }
 
     const friendsNames = O.compose('friends', O.elems, 'name')
     ```
 
-To read through a traversal, call `collect` to collect all focused elements into
-an array:
+要通过遍历进行读取，调用`collect`将所有聚焦的元素收集到一个数组中：
 
-=== "Method chaining"
+=== "方法链"
 
     ```typescript
     const john = { name: 'John', friends: [] }
@@ -408,7 +382,7 @@ an array:
     // [ 'John', 'Bruce' ]
     ```
 
-=== "Standalone"
+=== "独立"
 
     ```typescript
     const john = { name: 'John', friends: [] }
@@ -419,9 +393,9 @@ an array:
     // [ 'John', 'Bruce' ]
     ```
 
-Writing through a traversal writes to all focused values:
+通过遍历进行写入会写入到所有聚焦的值：
 
-=== "Method chaining"
+=== "方法链"
 
     ```typescript
     O.modify(friendsNames)((name) => `${name} Wayne`)(amy)
@@ -434,7 +408,7 @@ Writing through a traversal writes to all focused values:
     // }
     ```
 
-=== "Standalone"
+=== "独立"
 
     ```typescript
     O.modify(friendsNames, (name) => `${name} Wayne`, amy)
@@ -447,75 +421,67 @@ Writing through a traversal writes to all focused values:
     // }
     ```
 
-Note again how we used `prop`, `elems` and `prop`, composing a lens with a
-traversal, and then with a lens again. This yields a traversal. See
-[Rules of composition](reference-intro.md#rules-of-composition) for more info.
+再次注意我们如何使用`prop`、`elems`和`prop`，将透镜与遍历组合，然后再与透镜组合。这产生了一个遍历。查看[组合规则](reference-intro.md#rules-of-composition)以获取更多信息。
 
-It's sometimes useful to further focus on certain elements of a traversal. This
-can be done by composing a traversal with a prism like `when` that skips items
-that don't match a predicate:
+有时候，我们需要进一步关注遍历的某些元素。这可以通过将遍历与像`when`这样的棱镜组合来实现，`when`会跳过不符合谓词的项：
 
-=== "Method chaining"
+=== "方法链"
 
     ```typescript
     const even = O.optic<number[]>()
-      .elems()
-      .when((n) => n % 2 === 0)
+        .elems()
+        .when((n) => n % 2 === 0)
 
     O.modify(even)((n) => -n)([1, 2, 3, 4, 5])
     // [1, -2, 3, -4, 5]
     ```
 
-=== "Standalone"
+=== "独立"
 
     ```typescript
     const even = O.compose(
-      O.elems,
-      O.when((n: number) => n % 2 === 0)
+        O.elems,
+        O.when((n: number) => n % 2 === 0)
     )
 
     O.modify(even, (n) => -n, [1, 2, 3, 4, 5])
     // [1, -2, 3, -4, 5]
     ```
 
-## Polymorphism
+## 多态性 {#polymorphism}
 
-=== "Method chaining"
+=== "方法链"
 
-    Optics can be polymorphic, which means you can change the type of the focus when
-    you write through an optic. Since this is a relatively rare use case, and may be
-    confusing if done by accident, polymorphic optics are created with `optic_`
-    (note the underscore):
+    光学元素可以是多态的，这意味着你可以通过光学元素改变焦点的类型。由于这是一个相对罕见的用例，如果不小心进行可能会造成混淆，因此使用`optic_`（注意下划线）创建多态光学元素：
 
     ```typescript
     type Data = {
-      foo: { bar: string }
-      other: boolean
+        foo: { bar: string }
+        other: boolean
     }
     const bar = O.optic_<Data>().path('foo.bar')
     ```
 
-=== "Standalone"
+=== "独立"
 
-    Optics can be polymorphic, which means you can change the type of the focus when
-    you write through an optic.
+    光学元素可以是多态的，这意味着你可以通过光学元素改变焦点的类型。
 
     ```typescript
     type Data = {
-      foo: { bar: string }
-      other: boolean
+        foo: { bar: string }
+        other: boolean
     }
     const bar = O.compose('foo', 'bar')
     ```
 
-Let's modify `bar` to contain the length of the original string instead:
+让我们修改`bar`，使其包含原始字符串的长度：
 
-=== "Method chaining"
+=== "方法链"
 
     ```typescript
     const data: Data = {
-      foo: { bar: 'hello there' },
-      other: true,
+        foo: { bar: 'hello there' },
+        other: true,
     }
 
     const updated = O.modify(bar)((str) => str.length)(data)
@@ -525,19 +491,16 @@ Let's modify `bar` to contain the length of the original string instead:
     // }
     ```
 
-    This is a type-safe operation, i.e. the compiler knows that the type of
-    `updated.foo.bar` is `number`, editor autocomplete works correctly, etc.
+    这是一个类型安全的操作，即编译器知道`updated.foo.bar`的类型是`number`，编辑器自动完成工作正常，等等。
 
-    If you ever see a `DisallowedTypeChange` type being returned from an `optics-ts`
-    function, it means that you tried to change the type when writing through a
-    non-polymorphic (monomorphic) optic.
+    如果你在`optics-ts`函数的返回值中看到了`DisallowedTypeChange`类型，那就意味着你试图通过非多态（单态）光学元素改变类型。
 
-=== "Standalone"
+=== "独立"
 
     ```typescript
     const data: Data = {
-      foo: { bar: 'hello there' },
-      other: true,
+        foo: { bar: 'hello there' },
+        other: true,
     }
 
     const updated = O.modify(bar, (str) => str.length, data)
@@ -547,5 +510,4 @@ Let's modify `bar` to contain the length of the original string instead:
     // }
     ```
 
-    This is a type-safe operation, i.e. the compiler knows that the type of
-    `updated.foo.bar` is `number`, editor autocomplete works correctly, etc.
+    这是一个类型安全的操作，即编译器知道`updated.foo.bar`的类型是`number`，编辑器自动完成工作正常，等等。

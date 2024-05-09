@@ -1,32 +1,48 @@
 site_name: optics-ts
-site_url: https://akheron.github.io/optics-ts
-repo_url: https://github.com/akheron/optics-ts
-edit_uri: edit/main/docs/
+site_url: https://ouweiya.github.io/optics-ts-zh
+repo_url: https://github.com/ouweiya/optics-ts-zh
+edit_uri: edit/translation/zh/docs/
 theme:
   name: material
   features:
     - navigation.instant
     - navigation.expand
+    - content.code.copy
   icon:
     repo: fontawesome/brands/github
+  palette:
+    - scheme: default
+      primary: indigo
+      accent: indigo
+      toggle:
+        icon: material/brightness-7
+        name: Switch to dark mode
+    - scheme: slate
+      primary: indigo
+      accent: indigo
+      toggle:
+        icon: material/brightness-4
+        name: Switch to light mode
 markdown_extensions:
+  - attr_list
   - admonition
   - pymdownx.emoji:
-      emoji_index: !!python/name:materialx.emoji.twemoji
-      emoji_generator: !!python/name:materialx.emoji.to_svg
+      emoji_index: !!python/name:material.extensions.emoji.twemoji
+      emoji_generator: !!python/name:material.extensions.emoji.to_svg
   - pymdownx.highlight
   - pymdownx.superfences
-  - pymdownx.tabbed
+  - pymdownx.tabbed:
+      alternate_style: true
   - toc:
-      permalink: '#'
+      permalink: "#"
 nav:
-  - Home: 'index.md'
-  - 'installation.md'
-  - 'tutorial.md'
-  - 'two-syntaxes.md'
-  - Reference:
-      - 'reference-intro.md'
-      - 'reference-mc.md'
-      - 'reference-standalone.md'
-      - 'reference-interop.md'
-  - 'prior-art.md'
+  - 首页: "index.md"
+  - "installation.md"
+  - "tutorial.md"
+  - "two-syntaxes.md"
+  - 参考:
+      - "reference-intro.md"
+      - "reference-mc.md"
+      - "reference-standalone.md"
+      - "reference-interop.md"
+  - "prior-art.md"

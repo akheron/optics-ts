@@ -1,45 +1,38 @@
 # optics-ts
 
-[![Build](https://github.com/akheron/optics-ts/workflows/tests/badge.svg)](https://github.com/akheron/optics-ts/actions/workflows/tests.yml)
+[![构建](https://github.com/akheron/optics-ts/workflows/tests/badge.svg)](https://github.com/akheron/optics-ts/actions/workflows/tests.yml)
 
-`optics-ts` provides type-safe, ergonomic, polymorphic optics for TypeScript:
+`optics-ts`为TypeScript提供类型安全、人性化、多态的光学特性：
 
-- **Optics** allow you to read or modify values from deeply nested data
-  structures, while keeping all data immutable.
-- **Ergonomic**: Optics are composed with method chaining, making it easy and
-  fun!
-- **Polymorphic**: When writing through the optics, you can change the data
-  types in the nested structure.
-- **Type-safe**: The compiler will type check all operations you do. No `any`,
-  ever.
+- **光学特性**允许你从深层嵌套的数据结构中读取或修改值，同时保持所有数据的不变性。
+- **人性化**：光学特性通过方法链进行组合，使其易用且有趣！
+- **多态**：通过光学特性写入时，你可以改变嵌套结构中的数据类型。
+- **类型安全**：编译器将对你执行的所有操作进行类型检查。永远不会有 `any`。
 
-➡ [Documentation](https://akheron.github.io/optics-ts) ⬅
+➡ [官方文档：https://akheron.github.io/optics-ts](https://akheron.github.io/optics-ts) ⬅  
+➡ [中文文档：https://ouweiya.github.io/optics-ts-zh](https://ouweiya.github.io/optics-ts-zh) ⬅  
 
-## Features
+## 特性
 
-`optics-ts` supports lenses, prisms, traversals, removing items from containers,
-and much more!
+`optics-ts`支持镜头、棱镜、遍历、从容器中移除项目，等等！
 
-Since optics-ts v2.2.0, there are two syntaxes for defining optics: method
-chaining (the default) and standalone optics (experimental). See
-[the docs](https://akheron.github.io/optics-ts) for more info!
+自 optics-ts v2.2.0起，定义光学特性有两种语法：方法链（默认）和独立光学特性（实验性）。查看[文档](https://ouweiya.github.io/optics-ts-zh)获取更多信息！
 
-## Getting started
+## 入门
 
-Installation:
+安装：
 
-```
+```bash
 npm install optics-ts
 ```
 
-or
+或者
 
-```
+```bash
 yarn add optics-ts
 ```
 
-Here's a simple example demonstrating how lenses can be used to drill into a
-nested data structure:
+这是一个简单的示例，演示了如何使用镜头深入到嵌套的数据结构中：
 
 ```typescript
 import * as O from 'optics-ts'
@@ -52,10 +45,10 @@ type Book = {
   }
 }
 
-// Create a lens that focuses on author.name
+// 创建一个聚焦于 author.name 的镜头
 const optic = O.optic_<Book>().prop('author').prop('name')
 
-// This is the input data
+// 这是输入数据
 const input: Book = {
   title: "The Hitchhiker's Guide to the Galaxy",
   isbn: '978-0345391803',
@@ -64,11 +57,11 @@ const input: Book = {
   },
 }
 
-// Read through the optic
+// 通过光学特性读取
 O.get(optic)(input)
 // "Douglas Adams"
 
-// Write through the optic
+// 通过光学特性写入
 O.set(optic)('Arthur Dent')(input)
 // {
 //   title: "The Hitchhiker’s Guide to the Galaxy"
@@ -78,7 +71,7 @@ O.set(optic)('Arthur Dent')(input)
 //   }
 // }
 
-// Update the existing value through the optic, while also changing the data type
+// 通过光学特性更新现有值，同时改变数据类型
 O.modify(optic)((str) => str.length + 29)(input)
 // {
 //   title: "The Hitchhiker’s Guide to the Galaxy"
@@ -89,7 +82,7 @@ O.modify(optic)((str) => str.length + 29)(input)
 // }
 ```
 
-Another example that converts all words longer than 5 characters to upper case:
+另一个示例，将所有长度大于5个字符的单词转换为大写：
 
 ```typescript
 import * as O from 'optics-ts/standalone'
@@ -97,53 +90,50 @@ import * as O from 'optics-ts/standalone'
 const optic = O.optic<string>().words().when(s => s.length >= 5)
 
 const input = 'This is a string with some shorter and some longer words'
-O.modify(optic)((s) => s.toUpperCase()(input)
+O.modify(optic)((s) => s.toUpperCase())(input)
 // "This is a STRING with some SHORTER and some LONGER WORDS"
 ```
 
-See the [documentation](https://akheron.github.io/optics-ts) for a tutorial and
-a detailed reference of all supported optics.
+查看[文档](https://ouweiya.github.io/optics-ts-zh)获取教程和所有支持的光学特性的详细参考。
 
-## Development
+## 开发
 
-Run `yarn` to install dependencies.
+运行 `yarn` 安装依赖。
 
-### Running the test suite
+### 运行测试套件
 
-Run `yarn test`.
+运行 `yarn test`。
 
-For compiling and running the tests when files change, run these commands in
-separate terminals:
+为了在文件更改时编译和运行测试，分别在不同的终端运行以下命令：
 
-```
+```bash
 yarn build:test --watch
 yarn jest dist-test/ --watchAll
 ```
 
-### Documentation
+### 文档
 
-You need Python 3 to build the docs.
+你需要Python 3来构建文档。
 
-```
+```bash
 python3 -m venv venv
 ./venv/bin/pip install mkdocs-material
 ```
 
-Run a live reloading server for the documentation:
+运行一个实时重载的文档服务器：
 
-```
+```bash
 ./venv/bin/mkdocs serve
 ```
 
-Open http://localhost:8000/ in the browser.
+在浏览器中打开 http://localhost:8000/。
 
-### Releasing
+### 发布
 
-```
+```bash
 $ yarn version --new-version <major|minor|patch>
 $ yarn publish
 $ git push origin main --tags
 ```
 
-Open https://github.com/akheron/optics-ts/releases, edit the draft release,
-select the newest version tag, adjust the description as needed.
+打开 https://github.com/akheron/optics-ts/releases ，编辑草稿发布，选择最新的版本标签，根据需要调整描述。
