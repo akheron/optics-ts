@@ -1,4 +1,4 @@
-# Method chaining API
+# Method chaining API {#method-chaining-api}
 
 !!! note
 
@@ -34,7 +34,7 @@ compose a getter and a lens. On the other hand, the `.appendTo()` method, which
 creates a setter, is not available in a getter, because getters cannot be
 composed with setters.
 
-## Type parameters
+## Type parameters {#type-parameters}
 
 All writable optics have 3 type parameters: `<S, T, A>`, and all read-only
 optics have 2 type parameters: `<S, A>`:
@@ -67,7 +67,7 @@ Interested readers can refer to
 the higher-kinded types / partially applied type operators are actually
 implemented.
 
-## Top-level functions
+## Top-level functions {#top-level-functions}
 
 These functions are available as top level exports of the `optics-ts` module.
 
@@ -75,7 +75,7 @@ Most functions have `Optic` in their signature. It means that multiple optics
 work with the function. The optic classes that are actually applicable are
 documented in the function description.
 
-### `optic`
+### `optic` {#`optic`}
 
 Signature: `optic<S>(): Equivalence<S, _, S>`
 
@@ -83,19 +83,19 @@ Create a monomorphic equivalence for `S`. If you ever see the type
 `DisallowedTypeChange`, it means that you have attempted to change a type with a
 monomorphic optic.
 
-### `optic_`
+### `optic_` {#`optic_`}
 
 Signature: `optic_<S>(): Equivalence<S, _, S>`
 
 Create a polymorphic equivalence for `S`.
 
-### `get`
+### `get` {#`get`}
 
 Signature: `get<S, A>(optic: Optic<S, _, A>) => (source: S) => A`
 
 Read a value through an `Equivalence`, `Iso`, `Lens` or `Getter`.
 
-### `preview`
+### `preview` {#`preview`}
 
 Signature:
 `preview<S, A>(optic: Optic<S, _, A>) => (source: S) => A | undefined`
@@ -105,7 +105,7 @@ and `AffineFold`, return `undefined` if the optic doesn't match (has zero
 focuses). For `Traversal` and `Fold`, returns the value of the first focus, or
 `undefined` if there are no focuses.
 
-### `collect`
+### `collect` {#`collect`}
 
 Signature: `collect<S, A>(optic: Optic<S, _, A>) => (source: S) => A[]`
 
@@ -114,7 +114,7 @@ For `Prism` and `AffineFold`, the return value is an array of 0 or 1 elements.
 For `Traversal` and `Fold`, the return value is an array of zero or more
 elements.
 
-### `modify`
+### `modify` {#`modify`}
 
 Signature:
 `modify<S, T, A>(optic: Optic<S, T, A>) => <B>(f: (a: A) => B) => (source: S) => T<B>`
@@ -123,7 +123,7 @@ Modify the focused value(s) through an `Equivalence`, `Iso`, `Lens`, `Prism` or
 `Traversal`. Returns an updated copy of `source` with all focuses modified by
 mapping them through the function `f`.
 
-### `set`
+### `set` {#`set`}
 
 Signature:
 `set<S, T, A>(optic: Optic<S, T, A>) => <B>(value: B) => (source: S) => T<B>`
@@ -132,13 +132,13 @@ Write a constant value through an `Equivalence`, `Iso`, `Lens`, `Prism` or
 `Traversal`. Returns an updated copy of `source` with all focuses replaced by
 `value`.
 
-### `remove`
+### `remove` {#`remove`}
 
 Signature: `remove<S, T, A>(optic: Optic<S, T, A>) => (source: S) => S`
 
 Remove the focus of a `RemovablePrism` from its containing container.
 
-### `compose`
+### `compose` {#`compose`}
 
 Signature:
 `compose<S, A1, A2><optic1: Optic<S, _, A1>, optic2: Optic<A1, _, A2>): Optic<S, _, A2>`
@@ -149,7 +149,7 @@ is from `A1` to `A2`, the result is from `S` to `A2`.
 See [Rules of composition](reference-intro.md#rules-of-composition) for the
 rules of composition.
 
-### `pipe`
+### `pipe` {#`pipe`}
 
 Signature:
 `pipe<A, B, C, ..., V>(a: A, ab: (a: A) => B, bc: (b: B) => C, ...): V`
@@ -157,7 +157,7 @@ Signature:
 Pipe the value of an expression (`a`) into a pipeline of at most 9 unary
 functions (`ab`, `bc`, ...).
 
-## Creating optics
+## Creating optics {#creating-optics}
 
 The methods documented below are available on all optics types: `Equivalence`,
 `Iso`, `Lens`, `Prism`, `Traversal`, `Getter`, `AffineFold` and `Fold`. The
@@ -170,13 +170,13 @@ can only get these by composing other types of optics. `Equivalence` can be
 created by calling the top-level [`optic`](#optic) or [`optic_`](#optic_)
 functions.
 
-## Isomorphisms
+## Isomorphisms {#isomorphisms}
 
 Isomorphisms have the type `Iso<S, T, A>`. In the following, we omit the exact
 definition of `T` for clarity, and use `_` instead. See
 [Type parameters](#type-parameters) for the meanings of type parameters.
 
-### `iso`
+### `iso` {#`iso`}
 
 Signature: `iso<U>(there: (a: A) => U, back: (u: U) => A): Iso<S, _, U>`
 
@@ -185,7 +185,7 @@ and transforms it to another value. `back` is the inverse of `there`.
 
 Note that `iso` is monomorphic. There's no polymorphic alternative (yet).
 
-### `indexed`
+### `indexed` {#`indexed`}
 
 Signature: `indexed(): Iso<S, _, [number, ElemType<A>][]>`
 
@@ -197,13 +197,13 @@ i.e. from `[a, b, ...]` to `[[0, a], [1, b], ...]`.
 In the write direction, elements are sorted by index, and only the last one of
 duplicate indices are kept.
 
-## Lenses
+## Lenses {#lenses}
 
 Lenses have the type `Lens<S, T, A>`. In the following, we omit the exact
 definition of `T` for clarity, and use `_` instead. See
 [Type parameters](#type-parameters) for the meanings of type parameters.
 
-### `prop`
+### `prop` {#`prop`}
 
 Signature: `prop<K extends keyof A>(key: K): Lens<S, _, A[K]>`
 
@@ -213,7 +213,7 @@ Create a lens that focuses on the property `K` of `A`.
 type system also allows array's numeric indices when using `keyof`. Use the
 [`at`](#at) prism to focus on an array element at a given index.
 
-### `path`
+### `path` {#`path`}
 
 Signature: `path<K1, K2, ...>(...keys: [K1, K2, ...]): Lens<S, _, A[K1][K2]...>`
 
@@ -235,7 +235,7 @@ which is equal to
 foo.prop('a').prop('b').prop('c')
 ```
 
-### `nth`
+### `nth` {#`nth`}
 
 Signature: `nth<N extends number>(n: N): Lens<S, _, Nth<A, N>>`
 
@@ -247,7 +247,7 @@ length of `A` is checked on type level, so index `N` is always defined.
 See [`at`](#at) below for a similar prism that works on arrays of arbitrary
 length.
 
-### `pick`
+### `pick` {#`pick`}
 
 Signature: `pick<K extends keyof A>(keys: K[]): Lens<S, _, Pick<A, K>>`
 
@@ -284,7 +284,7 @@ O.set(monoLens)({ quux: null })(data)
 // DisallowedTypeChange
 ```
 
-### `filter`
+### `filter` {#`filter`}
 
 Signatures:
 
@@ -315,7 +315,7 @@ O.set(l)(['a', 'b', 'c', 'd', 'e'])([1, 2, 3, 5, 6])
 When a different type `U extends any[]` is written, the result will have the
 type `A | U`, i.e. `(ElemType<A> | ElemType<U>)[]`.
 
-### `valueOr`
+### `valueOr` {#`valueor`}
 
 Signature: `valueOr<B>(defaultValue: B): Lens<S, _, Exclude<A, undefined> | B>`
 
@@ -325,7 +325,7 @@ unchanged.
 
 Fully polymorphic in the write direction.
 
-### `partsOf`
+### `partsOf` {#`partsof`}
 
 Signatures:
 
@@ -352,9 +352,9 @@ Note that composing `partsOf` with setters (like `appendTo` or `prependTo`) or
 removing elements through `partsOf` will not work, because the extra element
 added by the setter or the removed element will cause `partsOf` to throw.
 
-### `reread`
+### `reread` {#`reread`}
 
-### `rewrite`
+### `rewrite` {#`rewrite`}
 
 Signatures:
 
@@ -367,7 +367,7 @@ invariants in some cases.
 
 Note that both `reread` and `rewrite` are monomorphic.
 
-### `lens`
+### `lens` {#`lens`}
 
 Signature:
 `lens<U>(view: (a: A) => U, update: (a: A, u: U) => A): Lens<S, _, U>`
@@ -378,19 +378,19 @@ updates the original focus with that value.
 
 Note that `lens` is monomorphic. There's no polymorphic alternative (yet).
 
-## Prisms
+## Prisms {#prisms}
 
 Prisms have the type `Prism<S, T, A>`. In the following, we omit the exact
 definition of `T` for clarity, and use `_` instead. See
 [Type parameters](#type-parameters) for the meanings of type parameters.
 
-### `optional`
+### `optional` {#`optional`}
 
 Signature: `optional(): Prism<S, _, Exclude<A, undefined>>`
 
 Create a prism that focuses on the non-`undefined` subtype of `A`.
 
-### `guard`
+### `guard` {#`guard`}
 
 Signature: `guard<U extends A>(g: (a: A) => a is U): Prism<S, _, U>`
 
@@ -400,7 +400,7 @@ guard `g`.
 Note that `guard()` is monomorphic. Use `guard_` if you want a polymorphic
 guard.
 
-### `guard_`
+### `guard_` {#`guard_`}
 
 Signature:
 `guard_<F extends HKT>(): <U extends A>(g: (a: A) => a is U) => Prism<S, T · F, U>`
@@ -409,7 +409,7 @@ Create a prism that focuses on the subtype of `A` that matches the type guard
 `g`. When written to, uses the higher-kinded type `F` to construct the output
 type.
 
-### `at`
+### `at` {#`at`}
 
 Signature: `at(i: number): RemovablePrism<S, _, ElemType<A>>`
 
@@ -425,19 +425,19 @@ array will have the type `Array<A | B>`.
 When writing to a string, only strings can be written. The length of the written
 string can be something else than 1.
 
-### `head`
+### `head` {#`head`}
 
 Signature: `head(): Prism<S, _, ElemType<A>>`
 
 Short for `at(0)`.
 
-### `index`
+### `index` {#`index`}
 
 Signature: `index(i: number): RemovablePrism<S, _, ElemType<A>>`
 
 **Deprecated**. Alias for [`at`](#at).
 
-### `find`
+### `find` {#`find`}
 
 Signature:
 `find(p: (e: ElemType<A>) => boolean): RemovablePrism<S, _, ElemType<A>>`
@@ -451,7 +451,7 @@ first element that matches the given predicate.
 When a different type `B` is written through this optic, the resulting array
 will have the type `Array<A | B>`.
 
-### `when`
+### `when` {#`when`}
 
 Signature: `when(f: (a: A) => boolean): Prism<S, _, A>`
 
@@ -461,13 +461,13 @@ Especially useful for filtering the focuses of a travesal.
 When a different type `B` is written through this optic, the resulting value
 will have the type `A | B`.
 
-## Traversals
+## Traversals {#traversals}
 
 Traversals have the type `Traversal<S, T, A>`. In the following, we omit the
 exact definition of `T` for clarity, and use `_` instead. See
 [Type parameters](#type-parameters) for the meanings of type parameters.
 
-### `elems`
+### `elems` {#`elems`}
 
 Signature: `elems(): Traversal<S, _, ElemType<A>>`
 
@@ -476,7 +476,7 @@ Only works on array types. `ElemType<A>` is the element type of the array type
 
 Create a traversal that focuses on all the elements of the array.
 
-## Getters
+## Getters {#getters}
 
 Getters are read-only optics with a single focus. You can think of them like
 one-way isomorphisms or read-only lenses.
@@ -484,21 +484,21 @@ one-way isomorphisms or read-only lenses.
 Getters have the type `Getter<S, A>`. See [Type parameters](#type-parameters)
 for the meanings of type parameters.
 
-### `to`
+### `to` {#`to`}
 
 Signature: `to<B>(f: (a: A) => B): Getter<S, B>`
 
 Create a getter that applies the function `f` to its focus.
 
-## Setters
+## Setters {#setters}
 
 Setters have the type `Setter<S, T, A>`. In the following, we omit the exact
 definition of `T` for clarity, and use `_` instead. See
 [Type parameters](#type-parameters) for the meanings of type parameters.
 
-### `prependTo`
+### `prependTo` {#`prependto`}
 
-### `appendTo`
+### `appendTo` {#`appendto`}
 
 Signatures:
 
@@ -514,17 +514,17 @@ the value to the array.
 When an element of a different type `B` is written, the resulting array will
 have the type `Array<A | B>`.
 
-## Composing
+## Composing {#composing}
 
-### `compose`
+### `compose` {#`compose`}
 
 Signature: `compose<B>(other: Optic<A, _, B>): Optic<S, _, B>`
 
-## Strings
+## Strings {#strings}
 
 The following optics only work on strings.
 
-### `chars`
+### `chars` {#`chars`}
 
 Signature: `chars(): Traversal<S, _, string>`
 
@@ -534,7 +534,7 @@ focus.
 When written through, characters can be removed by writing the empty string, or
 changed to longer strings.
 
-### `words`
+### `words` {#`words`}
 
 Signature: `words(): Traversal<S, _, string>`
 

@@ -1,4 +1,4 @@
-# Tutorial
+# Tutorial {#tutorial}
 
 One of the following imports is assumed in all the examples.
 
@@ -18,7 +18,7 @@ See [The Two Syntaxes](two-syntaxes.md) for the difference between the two, and
 which one to choose. All the descriptions and examples below are given in terms
 of both syntaxes.
 
-## Lens
+## Lens {#lens}
 
 === "Method chaining"
 
@@ -135,7 +135,7 @@ Writing through optics always creates a new data structure instead of modifying
 the existing one in place, shallowly copying the required parts. In other words,
 data is immutable.
 
-## Prism
+## Prism {#prism}
 
 Lenses are great for focusing to a part of a larger structure. Prisms are much
 like lenses, but they don't necessarily match anything, i.e. they can have zero
@@ -297,7 +297,7 @@ Notice how above we composed the `guard` prism with the `prop` lens. This yields
 a prism, so we used `preview` to read through it. See
 [Rules of composition](reference-intro.md#rules-of-composition) for more info.
 
-## Removable optics
+## Removable optics {#removable-optics}
 
 Some optics are removable. This means that they focus on an element of a
 container (e.g. an array), and you can remove the element from the container.
@@ -360,7 +360,7 @@ If the optic doesn't match, removing has no effect:
     // [{ name: 'Max' }]
     ```
 
-## Traversal
+## Traversal {#traversal}
 
 The next optic type is the traversal. While lenses have one focus and prisms
 have zero or one focuses (no match or match), traversals have zero _or more_
@@ -478,7 +478,7 @@ that don't match a predicate:
     // [1, -2, 3, -4, 5]
     ```
 
-## Polymorphism
+## Polymorphism {#polymorphism}
 
 === "Method chaining"
 

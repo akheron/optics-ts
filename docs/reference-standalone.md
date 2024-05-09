@@ -1,4 +1,4 @@
-# Standalone API
+# Standalone API {#standalone-api}
 
 !!! note
 
@@ -17,7 +17,7 @@ Everything below assumes the following import:
 import * as O from 'optics-ts/standalone'
 ```
 
-## TypeScript types
+## TypeScript types {#typescript-types}
 
 In general, the TypeScript types of optics look like `Optic<C, A, T, R>`.
 
@@ -37,12 +37,12 @@ Interested readers can refer to
 the higher-kinded types / partially applied type operators are actually
 implemented.
 
-## Operations
+## Operations {#operations}
 
 These function are not optics themselves, but instead operate on the optics and
 data.
 
-### `compose`
+### `compose` {#`compose`}
 
 `compose :: (optic, ...optics) => Optic`
 
@@ -61,7 +61,7 @@ O.preview(fooBar, { foo: { bar: 5 } })
 // 5
 ```
 
-### `get`
+### `get` {#`get`}
 
 `get :: (optic, source) => value`<br> `get :: (optic) => (source) => value`
 
@@ -74,7 +74,7 @@ O.get(O.pick('foo', 'baz'), { foo: 1, bar: 2, baz: 3 })
 // { foo: 1, baz: 3 }
 ```
 
-### `preview`
+### `preview` {#`preview`}
 
 `preview :: (optic, source) => value | undefined`<br>
 `preview :: (optic) => (source) => value | undefined`
@@ -94,7 +94,7 @@ O.preview(O.elems, [])
 // undefined
 ```
 
-### `collect`
+### `collect` {#`collect`}
 
 `collect :: (optic, source) => value[]`<br>
 `collect :: (optic) => (source) => value[]`
@@ -114,7 +114,7 @@ O.collect(O.elems, [])
 // []
 ```
 
-### `modify`
+### `modify` {#`modify`}
 
 `modify :: (optic, fn, source) => value`<br>
 `modify :: (optic) => (fn, source) => value`<br>
@@ -131,7 +131,7 @@ O.modify(O.prop('foo'), (value) => value.length, { foo: 'bar' })
 // { foo: 3 }
 ```
 
-### `set`
+### `set` {#`set`}
 
 Signatures:
 
@@ -150,7 +150,7 @@ O.set(O.prop('foo'), null, { foo: 'bar' })
 // { foo: null }
 ```
 
-### `remove`
+### `remove` {#`remove`}
 
 `remove :: (optic, source) => value`<br>
 `remove :: (optic) => (source) => value`
@@ -164,9 +164,9 @@ O.remove(O.at(1), [1, 2, 3])
 // [1, 3]
 ```
 
-## Isomorphisms
+## Isomorphisms {#isomorphisms}
 
-### `iso`
+### `iso` {#`iso`}
 
 `iso :: (there: (v) => u, back: (u) => v) => Iso`
 
@@ -191,7 +191,7 @@ O.modify(sep, (arr) => [...arr].reverse(), 'foo,bar,baz')
 // 'baz,bar,foo'
 ```
 
-### `indexed`
+### `indexed` {#`indexed`}
 
 `indexed :: Iso`
 
@@ -213,9 +213,9 @@ O.set(O.compose(O.indexed, O.at(1), O.nth(0)), 3, ['a', 'b', 'c'])
 // ['a', 'c', 'b']
 ```
 
-## Lenses
+## Lenses {#lenses}
 
-### `prop`
+### `prop` {#`prop`}
 
 `prop :: (key) => Lens`
 
@@ -233,7 +233,7 @@ O.set(O.prop('foo'), 42, { foo: null })
 
 See [`atKey`](#atKey) for a similar prism that works on records.
 
-### `nth`
+### `nth` {#`nth`}
 
 `nth :: (n) => Lens`
 
@@ -247,7 +247,7 @@ defined.
 
 See [`at`](#at) for a similar prism that works on arrays.
 
-### `pick`
+### `pick` {#`pick`}
 
 `pick :: (...keys) => Lens`
 
@@ -284,7 +284,7 @@ O.set(O.pick(), { quux: 'added' }, data)
 // }
 ```
 
-### `filter`
+### `filter` {#`filter`}
 
 `filter :: (fn: (elem) => boolean) => Lens`
 
@@ -311,7 +311,7 @@ O.set(l, ['a', 'b', 'c', 'd', 'e'], [1, 2, 3, 5, 6])
 // ['a', 2, 'b', 'c', 6, 'd', 'e']
 ```
 
-### `valueOr`
+### `valueOr` {#`valueor`}
 
 `valueOr :: (defaultValue) => Lens`
 
@@ -332,7 +332,7 @@ O.get(O.compose('maxAge', O.valueOr(100)), { maxAge: undefined })
 // 100
 ```
 
-### `partsOf`
+### `partsOf` {#`partsof`}
 
 `partsOf :: (traversal) => Lens`
 
@@ -362,7 +362,7 @@ Note that composing `partsOf` with setters, like `appendTo` or `prependTo`, or
 removing elements through `partsOf` will not work, because the extra element
 added by the setter or the removed element will cause `partsOf` to throw.
 
-### `reread`, `rewrite`
+### `reread`, `rewrite` {#`reread`,-`rewrite`}
 
 `reread :: (fn: (value) => value) => Lens`<br>
 `rewrite :: (fn: (value) => value) => Lens`
@@ -392,7 +392,7 @@ O.set(write, null, 'foo')
 // FOO
 ```
 
-### `lens`
+### `lens` {#`lens`}
 
 `lens :: (view: (v) => u, update: (v, u) => v) => Lens`
 
@@ -418,9 +418,9 @@ O.get(lens, 'foo')
 // 0
 ```
 
-## Prisms
+## Prisms {#prisms}
 
-### `optional`
+### `optional` {#`optional`}
 
 `optional :: Prism`
 
@@ -439,7 +439,7 @@ O.preview(prism, { foo: undefined })
 // undefined
 ```
 
-### `guard`
+### `guard` {#`guard`}
 
 `guard :: (fn: (value) => boolean) => Prism` (monomorphic)<br>
 `guard :: <F>() => (fn: (value) => boolean) => Prism` (polymorphic)
@@ -521,7 +521,7 @@ const result2: Option<string> = O.set(someValue, 'foo', some)
 // { type: 'some', value: 'foo' }
 ```
 
-### `at`
+### `at` {#`at`}
 
 `at :: (i) => RemovablePrism`
 
@@ -573,13 +573,13 @@ O.remove(O.at(1), 'abc')
 // 'ac'
 ```
 
-### `head`
+### `head` {#`head`}
 
 `head :: Prism`
 
 A shorthand for `at(0)`.
 
-### `atKey`
+### `atKey` {#`atkey`}
 
 `atKey :: (key) => RemovablePrism`
 
@@ -606,7 +606,7 @@ O.remove(O.atKey('foo'), { foo: 'bar', hello: 'world' })
 // { hello: 'world' }
 ```
 
-### `find`
+### `find` {#`find`}
 
 `find :: (fn: (elem) => boolean) => RemovablePrism`
 
@@ -630,7 +630,7 @@ O.preview(negativeElem, [0, 2, 1])
 // undefined
 ```
 
-### `when`
+### `when` {#`when`}
 
 `when :: (fn: (value) => boolean) => Prism`
 
@@ -653,9 +653,9 @@ O.modify(longWords, (s) => s.toUpperCase(), text)
 // "Some SHORTER and some LONGER WORDS"
 ```
 
-## Traversals
+## Traversals {#traversals}
 
-### `elems`
+### `elems` {#`elems`}
 
 `elems :: Traversal`
 
@@ -671,20 +671,20 @@ O.collect(O.compose(O.elems, 'foo', 'bar'), [
 // [1, 2]
 ```
 
-## Getters
+## Getters {#getters}
 
 Getters are read-only optics with a single focus. You can think of them like
 one-way isomorphisms or read-only lenses.
 
-### `to`
+### `to` {#`to`}
 
 `to :: (fn: (v) => u) => Getter`
 
 Create a getter that applies the function `fn` to its focus.
 
-## Setters
+## Setters {#setters}
 
-### `prependTo`, `appendTo`
+### `prependTo`, `appendTo` {#`prependto`,-`appendto`}
 
 `prependTo :: Setter`<br> `appendTo :: Setter`
 
@@ -702,9 +702,9 @@ O.set(O.prependTo, 3, [0, 1, 2])
 // [3, 0, 1, 2]
 ```
 
-## String traversals
+## String traversals {#string-traversals}
 
-### `chars`
+### `chars` {#`chars`}
 
 `chars :: Traversal`
 
@@ -723,7 +723,7 @@ O.modify(O.chars, (c) => (c == 'o' ? '' : c.toUpperCase()), 'foobar')
 // 'FBAR'
 ```
 
-### `words`
+### `words` {#`words`}
 
 `words :: Traversal`
 
@@ -743,15 +743,15 @@ O.modify(O.words, (word) => word.split('').reverse().join(''), 'foo, bar')
 // ',oof rab'
 ```
 
-## Miscellaneous
+## Miscellaneous {#miscellaneous}
 
-### `eq`
+### `eq` {#`eq`}
 
 `eq :: Equivalence`
 
 Equivalence is a no-op that does nothing. Acts as an identity wrt. composition.
 
-### `pipe`
+### `pipe` {#`pipe`}
 
 `pipe :: (a, f1, f2, ...) => v`
 

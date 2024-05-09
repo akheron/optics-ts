@@ -1,4 +1,4 @@
-# Prior art
+# Prior art {#prior-art}
 
 There are many existing optics libraries of varying degree for JavaScript, but
 only few for TypeScript. It's generally hard to create good typings for optics

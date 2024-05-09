@@ -1,4 +1,4 @@
-# optics-ts
+# optics-ts {#optics-ts}
 
 `optics-ts` provides type-safe, ergonomic, polymorphic optics for TypeScript
 
@@ -14,7 +14,7 @@
 - Tree shaking support with standalone optics (see
   [The Two Syntaxes](two-syntaxes.md)).
 
-## Example
+## Example {#example}
 
 === "Method chaining"
 

@@ -1,25 +1,24 @@
-# Installation
+# 安装 {#installation}
 
-With npm:
+使用 npm:
 
 ```
 npm install --save optics-ts
 ```
 
-With yarn:
+使用 yarn:
 
 ```
 yarn add optics-ts
 ```
 
-## Requirements
+## 要求 {#requirements}
 
-TypeScript >= 4.1 and the
-[`strictNullChecks` compiler option](https://www.typescriptlang.org/tsconfig#strictNullChecks)
-are required.
+需要 TypeScript >= 4.1 和
+[`strictNullChecks` 编译器选项](https://www.typescriptlang.org/tsconfig#strictNullChecks)。
 
-I strongly recommend enabling all strict options in your project's
-`tsconfig.json`:
+我强烈建议在您的项目的
+`tsconfig.json` 中启用所有严格选项：
 
 ```json
 {
@@ -29,8 +28,7 @@ I strongly recommend enabling all strict options in your project's
 }
 ```
 
-If this is not possible for your project, enable only the `strictNullChecks`
-option:
+如果您的项目无法做到这一点，只启用 `strictNullChecks` 选项：
 
 ```json
 {

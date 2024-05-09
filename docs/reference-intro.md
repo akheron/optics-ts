@@ -1,6 +1,6 @@
-# Introduction
+# Introduction {#introduction}
 
-## What are optics?
+## What are optics? {#what-are-optics?}
 
 Optics are a way to describe a "path" into a data structure, i.e. to concentrate
 on a part of the data structure. This is called the optic's focus. However,
@@ -17,7 +17,7 @@ data structure compatible with the optic. It can also be used to modify the
 value in its focus in an _immutable_ way, i.e. leaving the original data
 structure intact.
 
-## Types of optics
+## Types of optics {#types-of-optics}
 
 The optic types supported by optics-ts are are Equivalence, Iso (isomorphism),
 Lens, Prism, Traversal, Getter, AffineFold, Fold and Setter. In addition,
@@ -40,7 +40,7 @@ these properties:
 | Fold           | 0..n    | R          |
 | Setter         | 1       | W          |
 
-## Rules of composition
+## Rules of composition {#rules-of-composition}
 
 Any read-write and read-only optic can be composed with another read-write and
 read-only optic. The type of the resulting optic can be determined from this

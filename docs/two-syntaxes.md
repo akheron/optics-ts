@@ -1,4 +1,4 @@
-# The Two Syntaxes
+# The Two Syntaxes {#the-two-syntaxes}
 
 Since optics-ts v2.2.0, there are two syntaxes for optics: **method chaining**
 and **standalone optics**. Method chaining is the default, tried and tested
@@ -11,7 +11,7 @@ are clearly documented.
 
 The following sections summarize the biggest differences between the syntaxes.
 
-## Importing
+## Importing {#importing}
 
 **Method chaining**
 
@@ -25,7 +25,7 @@ import * as O from 'optics-ts'
 import * as O from 'optics-ts/standalone'
 ```
 
-## Composing
+## Composing {#composing}
 
 **Method chaining**
 
@@ -61,7 +61,7 @@ O.compose(
 )
 ```
 
-## Currying
+## Currying {#currying}
 
 **Method chaining**
 
@@ -86,7 +86,7 @@ O.modify(myOptic)((value) => value + 1, myData)
 O.modify(myOptic)((value) => value + 1)(myData)
 ```
 
-## Tree shaking
+## Tree shaking {#tree-shaking}
 
 **Method chaining**
 
@@ -97,14 +97,14 @@ bundle.
 
 Fully tree shakeable. Only the features you use are included in the bundle.
 
-## Compilation speed
+## Compilation speed {#compilation-speed}
 
 It seems that compiling large programs using the standalone syntax is somewhat
 slower compared to method chaining. However, a good, repeatable benchmark is
 still on the TODO list. Also, future improvements in the TypeScript compiler may
 affect compilation speeds dramatically.
 
-## Runtime performance
+## Runtime performance {#runtime-performance}
 
 There should be no performance difference between the two, although there's no
 benchmark demonstrating this either, yet.
