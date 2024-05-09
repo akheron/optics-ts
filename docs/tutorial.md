@@ -277,11 +277,11 @@ function isRectangle(s: Shape): s is Rectangle {
 
 注意，上面我们如何将`guard`棱镜与`prop`透镜组合。这产生了一个棱镜，所以我们使用`preview`来通过它阅读。查看[组合规则](reference-intro.md#rules-of-composition)以获取更多信息。
 
-## 可拆卸光学器件 {#removable-optics}
+## 可移除光学器件 {#removable-optics}
 
-有些光学器件是可拆卸的。这意味着它们聚焦到容器（例如，数组）的一个元素，并且你可以从容器中移除该器件。
+有些光学器件是可移除的。这意味着它们聚焦到容器（例如，数组）的一个元素，并且你可以从容器中删除该元素。
 
-`at`是一个可移除的棱镜。它聚焦到数组的一个索引，并且也让你可以移除该索引：
+`at`是一个可移除的棱镜。它聚焦到数组的一个索引，并且也让你可以删除该索引：
 
 === "方法链"
 
@@ -318,7 +318,7 @@ function isRectangle(s: Shape): s is Rectangle {
     // [{ name: 'Max' }, { name: 'Alice' }]
     ```
 
-如果光学元素不匹配，移除操作没有效果：
+如果光学器件不匹配，则移除不会产生任何效果：
 
 === "方法链"
 
