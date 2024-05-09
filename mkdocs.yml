@@ -1,6 +1,6 @@
 site_name: optics-ts
-site_url: https://akheron.github.io/optics-ts
-repo_url: https://github.com/akheron/optics-ts
+site_url: https://ouweiya.github.io/optics-ts-zh
+repo_url: https://github.com/ouweiya/optics-ts-zh
 edit_uri: edit/main/docs/
 theme:
   name: material
@@ -10,6 +10,7 @@ theme:
   icon:
     repo: fontawesome/brands/github
 markdown_extensions:
+  - attr_list
   - admonition
   - pymdownx.emoji:
       emoji_index: !!python/name:materialx.emoji.twemoji
