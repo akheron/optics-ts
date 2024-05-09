@@ -7,6 +7,7 @@ theme:
   features:
     - navigation.instant
     - navigation.expand
+    - content.code.copy
   icon:
     repo: fontawesome/brands/github
   palette:
@@ -33,15 +34,15 @@ markdown_extensions:
   - pymdownx.tabbed:
       alternate_style: true
   - toc:
-      permalink: '#'
+      permalink: "#"
 nav:
-  - 首页: 'index.md'
-  - 'installation.md'
-  - 'tutorial.md'
-  - 'two-syntaxes.md'
+  - 首页: "index.md"
+  - "installation.md"
+  - "tutorial.md"
+  - "two-syntaxes.md"
   - 参考:
-      - 'reference-intro.md'
-      - 'reference-mc.md'
-      - 'reference-standalone.md'
-      - 'reference-interop.md'
-  - 'prior-art.md'
+      - "reference-intro.md"
+      - "reference-mc.md"
+      - "reference-standalone.md"
+      - "reference-interop.md"
+  - "prior-art.md"

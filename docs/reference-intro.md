@@ -1,67 +1,47 @@
-# Introduction {#introduction}
+# 介绍 {#introduction}
 
-## What are optics? {#what-are-optics?}
+## 什么是光学? {#what-are-optics?}
 
-Optics are a way to describe a "path" into a data structure, i.e. to concentrate
-on a part of the data structure. This is called the optic's focus. However,
-optics are not tied to any specific value of a data structure, but are
-standalone values themselves.
+光学是一种描述数据结构中的"路径"的方式，即集中关注数据结构的一部分。这被称为光学的焦点。然而，光学并不绑定到数据结构的任何特定值，而是自身的独立值。
 
-Optics are composable in the sense that you can combine two optics together to
-construct another optic that combines the semantics of the two. This makes it
-possible to construct complex optics from basic optics, making them usable for a
-wide range of different data structures.
+光学是可组合的，意味着你可以将两个光学组合在一起构造出另一个光学，该光学结合了前两者的语义。这使得可以从基本光学构造复杂的光学，使它们适用于各种不同的数据结构。
 
-Ultimately, an optic can be used to read the value in its focus from a given a
-data structure compatible with the optic. It can also be used to modify the
-value in its focus in an _immutable_ way, i.e. leaving the original data
-structure intact.
+最终，光学可以用于从与光学兼容的给定数据结构中读取其焦点中的值。它也可以用于以_不可变_的方式修改其焦点中的值，即保持原始数据结构不变。
 
-## Types of optics {#types-of-optics}
+## 光学的类型 {#types-of-optics}
 
-The optic types supported by optics-ts are are Equivalence, Iso (isomorphism),
-Lens, Prism, Traversal, Getter, AffineFold, Fold and Setter. In addition,
-there's RemovablePrism, which is a special case of Prism.
+optics-ts支持的光学类型有等价性(Equivalence)、同构(Iso)、镜头(Lens)、棱镜(Prism)、遍历(Traversal)、获取器(Getter)、仿射折叠(AffineFold)、折叠(Fold)和设置器(Setter)。此外，还有可移除棱镜(RemovablePrism)，这是棱镜的一个特例。
 
-The types differ mainly on the possible number of focuses they have, and whether
-they are read-write, read-only or write-only. The following table summarizes
-these properties:
+这些类型主要在它们可能有的焦点数量以及它们是读/写、只读还是只写上有所不同。下表总结了这些属性：
 
-| Type           | Focuses | Read/Write |
+| 类型           | 焦点 | 读/写 |
 | -------------- | ------- | ---------- |
-| Equivalence    | 1       | R/W        |
-| Iso            | 1       | R/W        |
-| Lens           | 1       | R/W        |
-| Prism          | 0..1    | R/W        |
-| RemovablePrism | 0..1    | R/W        |
-| Traversal      | 0..n    | R/W        |
-| Getter         | 1       | R          |
-| AffineFold     | 0..1    | R          |
-| Fold           | 0..n    | R          |
-| Setter         | 1       | W          |
+| 等价性(Equivalence)    | 1       | R/W        |
+| 同构(Iso)            | 1       | R/W        |
+| 镜头(Lens)           | 1       | R/W        |
+| 棱镜(Prism)          | 0..1    | R/W        |
+| 可移除棱镜(RemovablePrism) | 0..1    | R/W        |
+| 遍历(Traversal)      | 0..n    | R/W        |
+| 获取器(Getter)         | 1       | R          |
+| 仿射折叠(AffineFold)     | 0..1    | R          |
+| 折叠(Fold)           | 0..n    | R          |
+| 设置器(Setter)         | 1       | W          |
 
-## Rules of composition {#rules-of-composition}
+## 组合规则 {#rules-of-composition}
 
-Any read-write and read-only optic can be composed with another read-write and
-read-only optic. The type of the resulting optic can be determined from this
-diagram:
+任何读/写和只读光学都可以与另一个读/写和只读光学组合。可以从这个图表中确定结果光学的类型：
 
 ```
-Equivalence -> Iso -> Lens ---> Prism ------> Traversal
+等价性(Equivalence) -> 同构(Iso) -> 镜头(Lens) ---> 棱镜(Prism) ------> 遍历(Traversal)
                       |         |             |
                       v         v             v
-                      Getter -> AffineFold -> Fold
+                      获取器(Getter) -> 仿射折叠(AffineFold) -> 折叠(Fold)
 ```
 
-When you compose two optics A and B, the result is the nearest optic that you
-get by following the arrows starting from both A and B.
+当你组合两个光学A和B时，结果是从A和B开始沿着箭头得到的最近的光学。
 
-For example, composing a Getter with a Traversal yields a Fold. Composing an Iso
-with a Prism yields a Prism.
+例如，将获取器(Getter)与遍历(Traversal)组合会得到一个折叠(Fold)。将同构(Iso)与棱镜(Prism)组合会得到一个棱镜(Prism)。
 
-Setter is special. You can only compose writable optics with setters. Setters
-cannot be further composed with any other optic.
+设置器(Setter)是特殊的。你只能将可写光学与设置器(Setter)组合。设置器不能与任何其他光学进一步组合。
 
-RemovablePrism behaves like a regular prism, but it can be used to remove the
-focus from its parent container. When composed with other optics, composes like
-(and turns back into) a regular Prism.
+可移除棱镜(RemovablePrism)的行为像一个常规棱镜，但它可以用来从其父容器中移除焦点。当与其他光学组合时，像(并变回)一个常规棱镜。
