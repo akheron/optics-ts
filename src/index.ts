@@ -91,6 +91,9 @@ export interface Equivalence<S, T extends OpticParams, A> {
     ...path: K
   ): Lens<S, NextParams<T, SetTuplePath<A, K>>, TuplePath<A, K>>
   nth<N extends number>(n: N): Lens<S, NextParams<T, SetNth<A, N>>, Nth<A, N>>
+  omit<K extends keyof A>(
+    keys: K[]
+  ): Lens<S, NextParams<T, Plant<A, K>>, Omit<A, K>>
   pick<K extends keyof A>(
     keys: K[]
   ): Lens<S, NextParams<T, Plant<A, K>>, Pick<A, K>>
@@ -219,6 +222,9 @@ export interface Iso<S, T extends OpticParams, A> {
     ...path: K
   ): Lens<S, NextParams<T, SetTuplePath<A, K>>, TuplePath<A, K>>
   nth<N extends number>(n: N): Lens<S, NextParams<T, SetNth<A, N>>, Nth<A, N>>
+  omit<K extends keyof A>(
+    keys: K[]
+  ): Lens<S, NextParams<T, Plant<A, K>>, Omit<A, K>>
   pick<K extends keyof A>(
     keys: K[]
   ): Lens<S, NextParams<T, Plant<A, K>>, Pick<A, K>>
@@ -347,6 +353,9 @@ export interface Lens<S, T extends OpticParams, A> {
     ...path: K
   ): Lens<S, NextParams<T, SetTuplePath<A, K>>, TuplePath<A, K>>
   nth<N extends number>(n: N): Lens<S, NextParams<T, SetNth<A, N>>, Nth<A, N>>
+  omit<K extends keyof A>(
+    keys: K[]
+  ): Lens<S, NextParams<T, Plant<A, K>>, Omit<A, K>>
   pick<K extends keyof A>(
     keys: K[]
   ): Lens<S, NextParams<T, Plant<A, K>>, Pick<A, K>>
@@ -475,6 +484,9 @@ export interface Prism<S, T extends OpticParams, A> {
     ...path: K
   ): Prism<S, NextParams<T, SetTuplePath<A, K>>, TuplePath<A, K>>
   nth<N extends number>(n: N): Prism<S, NextParams<T, SetNth<A, N>>, Nth<A, N>>
+  omit<K extends keyof A>(
+    keys: K[]
+  ): Prism<S, NextParams<T, Plant<A, K>>, Omit<A, K>>
   pick<K extends keyof A>(
     keys: K[]
   ): Prism<S, NextParams<T, Plant<A, K>>, Pick<A, K>>
@@ -605,6 +617,9 @@ export interface Traversal<S, T extends OpticParams, A> {
   nth<N extends number>(
     n: N
   ): Traversal<S, NextParams<T, SetNth<A, N>>, Nth<A, N>>
+  omit<K extends keyof A>(
+    keys: K[]
+  ): Traversal<S, NextParams<T, Plant<A, K>>, Omit<A, K>>
   pick<K extends keyof A>(
     keys: K[]
   ): Traversal<S, NextParams<T, Plant<A, K>>, Pick<A, K>>
@@ -720,6 +735,7 @@ export interface Getter<S, A> {
   path<K extends keyof any>(path: K): Getter<S, DottedPath<A, K>>
   path<K extends (keyof any)[]>(...path: K): Getter<S, TuplePath<A, K>>
   nth<N extends number>(n: N): Getter<S, Nth<A, N>>
+  omit<K extends keyof A>(keys: K[]): Getter<S, Omit<A, K>>
   pick<K extends keyof A>(keys: K[]): Getter<S, Pick<A, K>>
   filter<B extends ElemType<A>>(
     predicate: (item: ElemType<A>) => item is B
@@ -796,6 +812,7 @@ export interface AffineFold<S, A> {
   path<K extends keyof any>(path: K): AffineFold<S, DottedPath<A, K>>
   path<K extends (keyof any)[]>(...path: K): AffineFold<S, TuplePath<A, K>>
   nth<N extends number>(n: N): AffineFold<S, Nth<A, N>>
+  omit<K extends keyof A>(keys: K[]): AffineFold<S, Omit<A, K>>
   pick<K extends keyof A>(keys: K[]): AffineFold<S, Pick<A, K>>
   filter<B extends ElemType<A>>(
     predicate: (item: ElemType<A>) => item is B
@@ -872,6 +889,7 @@ export interface Fold<S, A> {
   path<K extends keyof any>(path: K): Fold<S, DottedPath<A, K>>
   path<K extends (keyof any)[]>(...path: K): Fold<S, TuplePath<A, K>>
   nth<N extends number>(n: N): Fold<S, Nth<A, N>>
+  omit<K extends keyof A>(keys: K[]): Fold<S, Omit<A, K>>
   pick<K extends keyof A>(keys: K[]): Fold<S, Pick<A, K>>
   filter<B extends ElemType<A>>(
     predicate: (item: ElemType<A>) => item is B
