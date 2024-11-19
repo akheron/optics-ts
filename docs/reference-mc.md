@@ -247,6 +247,44 @@ length of `A` is checked on type level, so index `N` is always defined.
 See [`at`](#at) below for a similar prism that works on arrays of arbitrary
 length.
 
+### `omit`
+
+Signature: `omit<K extends keyof A>(keys: K[]): Lens<S, _, Omit<A, K>>`
+
+Create a lens that focuses on a sub-object of `A` removing the given properties.
+When writing through a polymorphic `.omit()` lens, you can add or remove
+properties.
+
+Example:
+
+```typescript
+const data = {
+  foo: 'something',
+  bar: 42,
+  baz: true,
+}
+const lens = O.optic_<typeof data>().omit(['foo'])
+
+O.get(lens)(data)
+// {
+//  bar: 42,
+//  baz: true,
+// }
+
+O.set(lens)({ quux: null })(data)
+// {
+//  bar: 42,
+//  baz: true,
+//  quux: null,
+// }
+
+// monomorphic version of the same lens
+const monoLens = O.optic<typeof data>().compose(lens)
+
+O.set(monoLens)({ quux: null })(data)
+// DisallowedTypeChange
+```
+
 ### `pick`
 
 Signature: `pick<K extends keyof A>(keys: K[]): Lens<S, _, Pick<A, K>>`
