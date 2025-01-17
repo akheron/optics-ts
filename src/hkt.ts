@@ -1,3 +1,4 @@
+import { DistributiveOmit } from './distributedOmit.js'
 import { ElemType, Eq, Prec } from './utils.js'
 
 export interface HKT {
@@ -53,7 +54,7 @@ export interface ElemUnion<A> extends HKT {
 }
 
 export interface Prop<S, K extends keyof S> extends HKT {
-  0: Omit<S, K> & { [KK in K]: this[1] }
+  0: DistributiveOmit<S, K> & { [KK in K]: this[1] }
 }
 
 export type SetTuplePath<S, K> = K extends []
@@ -87,7 +88,7 @@ export interface SetNth<S, N extends number> extends HKT {
 }
 
 export interface Plant<S, K extends keyof S> extends HKT {
-  0: Omit<S, K> & { [KK in keyof this[1]]: this[1][KK] }
+  0: DistributiveOmit<S, K> & { [KK in keyof this[1]]: this[1][KK] }
 }
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
