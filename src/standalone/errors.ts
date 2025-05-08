@@ -35,6 +35,12 @@ export interface InvalidModifyFn<Expected, Got> extends OpticError {
   readonly _expected: Expected
 }
 
+export interface InvalidOmit<K, A> extends OpticError {
+  readonly _: unique symbol
+  readonly _k: K
+  readonly _a: A
+}
+
 export interface InvalidPick<K, A> extends OpticError {
   readonly _: unique symbol
   readonly _k: K

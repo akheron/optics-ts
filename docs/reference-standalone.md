@@ -247,6 +247,49 @@ defined.
 
 See [`at`](#at) for a similar prism that works on arrays.
 
+### `omit`
+
+`omit :: (...keys) => Lens`
+
+Create a lens that omits the given properties from an object. When writing
+through the lens, you can add or remove properties.
+
+Example:
+
+```typescript
+const data = {
+  foo: 'something',
+  bar: 42,
+  baz: true,
+}
+
+O.get(O.omit('foo', 'bar'), data)
+// {
+//   baz: true,
+// }
+
+O.set(O.omit('foo'), {}, data)
+// {
+//   bar: 42,
+//   baz: true,
+// }
+
+O.set(O.omit('foo'), { quux: 'added' }, data)
+// {
+//   quux: 'added',
+//   bar: 42,
+//   baz: true,
+// }
+
+O.set(O.omit(), { quux: 'added' }, data)
+// {
+//   foo: 'something'
+//   bar: 42,
+//   baz: true,
+//   quux: 'added',
+// }
+```
+
 ### `pick`
 
 `pick :: (...keys) => Lens`
@@ -266,7 +309,7 @@ const data = {
 O.get(O.pick('foo', 'bar'), data)
 // {
 //  foo: 'something',
-//  baz: true,
+//  bar: 42,
 // }
 
 O.set(O.pick('foo'), {}, data)

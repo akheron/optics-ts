@@ -303,6 +303,26 @@ export const prop = (key: string): OpticFn =>
     ([value, source]: [any, any]) => ({ ...source, [key]: value })
   )
 
+export const omit = (keys: string[]): OpticFn =>
+  lens(
+    (source: any) => {
+      const value: any = {}
+      const sourceKeys = Object.keys(source)
+      for (const key of sourceKeys) {
+        if (!keys.includes(key)) value[key] = source[key]
+      }
+      return value
+    },
+    ([value, source]: [any, any]) => {
+      const result = { ...source }
+      const sourceKeys = Object.keys(source)
+      for (const key of sourceKeys) {
+        if (keys.includes(key)) delete result[key]
+      }
+      return Object.assign(result, value)
+    }
+  )
+
 export const pick = (keys: string[]): OpticFn =>
   lens(
     (source: any) => {
@@ -592,6 +612,10 @@ export class Optic {
     return new Optic(
       keys.reduce((ref, key) => compose(ref, prop(key)), this._ref)
     )
+  }
+
+  omit(keys: string[]): Optic {
+    return new Optic(compose(this._ref, omit(keys)))
   }
 
   pick(keys: string[]): Optic {
